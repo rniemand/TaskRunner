@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Enums;
+using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Mappers;
 using TaskRunner.Core.Steps;
 using TaskRunner.Core.Steps.Interfaces;
@@ -13,24 +14,26 @@ namespace TaskRunner.Steps.Console
   // TODO: [DOCS] (ConsoleLog) Document argument: Message
   // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
-  public class ConsoleLogger : IRunnerStep
+  public class ConsoleLogger : BaseTaskRunnerStep
   {
-    public string Name { get; }
-
     private readonly IConsole _console;
 
-    public ConsoleLogger(IConsole console)
+    public ConsoleLogger(IAppLogger logger, IConsole console)
+      : base(logger, "Console.Log")
     {
       _console = console;
 
-      Name = "Console.Log";
+      RegisterInput("Severity", InputValidator.String, false, "Info");
+      RegisterInput("Message", InputValidator.String);
     }
 
 
     // Public methods
-    public bool Execute(StepContext context)
+    public override bool Execute(StepContext context)
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
+
+      GetInput("Severity");
 
       var severity = SeverityMapper.MapSeverity(
         context.GetArgument("Severity"),

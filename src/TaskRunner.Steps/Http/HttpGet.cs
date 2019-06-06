@@ -57,7 +57,7 @@ namespace TaskRunner.Steps.Http
       context.Publish("response.content_length", responseBody.Length);
       context.Publish("response.execution_time", requestTimeMs);
 
-      foreach (var (header, value) in httpResponse.GetHeadersDictionary())
+      foreach (var (header, value) in httpResponse.GetHeaders())
       {
         context.Publish($"response.headers.{header}", value);
       }

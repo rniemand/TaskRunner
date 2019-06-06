@@ -6,7 +6,7 @@ namespace TaskRunner.Core.Extensions
 {
   public static class HttpExtensions
   {
-    public static Dictionary<string, string> GetHeadersDictionary(this HttpResponseMessage response)
+    public static Dictionary<string, string> GetHeaders(this HttpResponseMessage response)
     {
       // TODO: [TESTS] (HttpExtensions) Add tests
 

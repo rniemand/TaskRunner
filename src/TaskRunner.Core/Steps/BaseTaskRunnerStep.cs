@@ -48,7 +48,18 @@ namespace TaskRunner.Core.Steps
       return true;
     }
 
-    public void RegisterInput(string input, InputValidator validator, bool required = true)
+    public string GetInput(string name)
+    {
+      // TODO: [TESTS] (BaseTaskRunnerStep) Add tests
+
+
+
+
+
+      return string.Empty;
+    }
+
+    public void RegisterInput(string input, InputValidator validator, bool required = true, string defaultValue = null)
     {
       // TODO: [TESTS] (BaseTaskRunnerStep) Add tests
 
@@ -56,7 +67,8 @@ namespace TaskRunner.Core.Steps
       {
         Name = input,
         Required = required,
-        Validator = validator
+        Validator = validator,
+        DefaultValue = defaultValue
       });
     }
   }

@@ -6,6 +6,7 @@
 
     Stop,
     Continue,
-    Retry
+    Retry,
+    Delay // maybe rename this to reschedule
   }
 }

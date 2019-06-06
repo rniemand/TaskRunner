@@ -5,6 +5,8 @@
     // TODO: [DOCS] (InputValidator) Document this
 
     String,
-    Url
+    Url,
+    Number,
+    Boolean
   }
 }
