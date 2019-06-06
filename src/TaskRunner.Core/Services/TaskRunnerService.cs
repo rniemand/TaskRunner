@@ -85,11 +85,11 @@ namespace TaskRunner.Core.Services
 
         // TODO: [REFACTOR] (TaskRunnerService) Make this logging configurable
         // Log out all the new information published by the step
-        if (stepContext.TaskData.ContainsKey(stepContext.StepName) && stepContext.TaskData[stepContext.StepName].Count > 0)
+        if (stepContext.PublishedData.ContainsKey(stepContext.StepName) && stepContext.PublishedData[stepContext.StepName].Count > 0)
         {
           var sb = new StringBuilder();
-          var count = stepContext.TaskData[stepContext.StepName].Count;
-          var longestKey = stepContext.TaskData[stepContext.StepName]
+          var count = stepContext.PublishedData[stepContext.StepName].Count;
+          var longestKey = stepContext.PublishedData[stepContext.StepName]
             .Select(x => x.Key)
             .Max(x => x.Length);
 
@@ -99,7 +99,7 @@ namespace TaskRunner.Core.Services
             .Append("to the global arguments: ")
             .Append(Environment.NewLine);
 
-          foreach (var (key, value) in stepContext.TaskData[stepContext.StepName])
+          foreach (var (key, value) in stepContext.PublishedData[stepContext.StepName])
           {
             sb.Append($"    {stepContext.StepName}.{key.PadRight(longestKey, ' ')} : ");
             sb.Append(value);
@@ -216,7 +216,7 @@ namespace TaskRunner.Core.Services
         StepId = stepId,
         StepName = task.Steps[stepId].StepName,
         Arguments = new Dictionary<string, string>(),
-        TaskData = taskData
+        PublishedData = taskData
       };
 
       // Generate step arguments
@@ -226,7 +226,7 @@ namespace TaskRunner.Core.Services
         //        {!Section.Key}    => retrieves the provided sections key value from your secrets file
         //        {@StepName.Key}   => retrieves the published task data value from a previous step
 
-        context.Arguments[key] = context.ReplacePlaceholders(
+        context.Arguments[key] = context.ReplaceTags(
           _secretsService.ReplacePlaceholders(value)
         );
       }

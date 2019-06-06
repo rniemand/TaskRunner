@@ -29,7 +29,7 @@ namespace TaskRunner.Core.Services
       var context = new StepContext
       {
         Arguments = new Dictionary<string, string>(),
-        TaskData = taskData
+        PublishedData = taskData
       };
 
       _logger.Debug("Created initial context for task {task}", task.Name);
