@@ -40,7 +40,7 @@ namespace TaskRunner.Core.Services
 
 
     // Public methods
-    public void Reconfigure(TaskBuilderConfig baseConfig)
+    public void Reconfigure(TaskRunnerConfig baseConfig)
     {
       // TODO: [TESTS] (SecretsService) Add tests
 
@@ -65,8 +65,8 @@ namespace TaskRunner.Core.Services
         input = input.Replace(placeHolder, secretValue);
       }
 
-      // TODO: [RECURSE] (TaskBuilderConfig) Add recursion
-      // TODO: [OPTIMIZATION] (TaskBuilderConfig) Add some form of calculated values caching
+      // TODO: [RECURSE] (TaskRunnerConfig) Add recursion
+      // TODO: [OPTIMIZATION] (TaskRunnerConfig) Add some form of calculated values caching
 
       return input;
     }
@@ -107,7 +107,7 @@ namespace TaskRunner.Core.Services
 
 
     // Configuration file related methods
-    private void LoadSecretsFile(TaskBuilderConfig config)
+    private void LoadSecretsFile(TaskRunnerConfig config)
     {
       // TODO: [TESTS] (ConfigService) Add tests
 

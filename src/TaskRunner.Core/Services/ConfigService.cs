@@ -20,7 +20,7 @@ namespace TaskRunner.Core.Services
 
     public string ConfigFilePath { get; }
 
-    private TaskBuilderConfig _baseConfig;
+    private TaskRunnerConfig _baseConfig;
 
 
     public ConfigService(
@@ -70,7 +70,7 @@ namespace TaskRunner.Core.Services
       EnsureConfigFileExists();
       var configJson = _file.ReadAllText(ConfigFilePath);
 
-      _baseConfig = _jsonHelper.DeserializeObject<TaskBuilderConfig>(configJson);
+      _baseConfig = _jsonHelper.DeserializeObject<TaskRunnerConfig>(configJson);
       _logger.Debug("Loaded configuration file: {path}", ConfigFilePath);
     }
 
@@ -111,12 +111,12 @@ namespace TaskRunner.Core.Services
       _file.WriteAllText(ConfigFilePath, configJson);
     }
 
-    private static TaskBuilderConfig GenerateDefaultConfig()
+    private static TaskRunnerConfig GenerateDefaultConfig()
     {
       // TODO: [TESTS] (ConfigService) Add tests
       // TODO: [COMPLETE] (ConfigService) Ensure that we are setting sensible configuration here
 
-      return new TaskBuilderConfig
+      return new TaskRunnerConfig
       {
         // TODO: [REVERT] (ConfigService) Revert when the program is stable enough
         //SecretsFile = "./config/secrets.json",

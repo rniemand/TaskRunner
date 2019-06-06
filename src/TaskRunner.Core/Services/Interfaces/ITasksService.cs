@@ -4,6 +4,6 @@ namespace TaskRunner.Core.Services.Interfaces
 {
   public interface ITasksService
   {
-    void Reconfigure(TaskBuilderConfig baseConfig);
+    void Reconfigure(TaskRunnerConfig baseConfig);
   }
 }

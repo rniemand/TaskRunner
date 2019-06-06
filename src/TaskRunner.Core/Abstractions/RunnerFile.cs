@@ -3,7 +3,7 @@ using TaskRunner.Core.Abstractions.Interfaces;
 
 namespace TaskRunner.Core.Abstractions
 {
-  public class FileAbstraction : IFile
+  public class RunnerFile : IFile
   {
     public bool Exists(string path)
       => File.Exists(path);

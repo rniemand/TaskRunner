@@ -29,7 +29,7 @@ namespace TaskRunner.Core.Services
 
 
     // Public methods
-    public void Reconfigure(TaskBuilderConfig baseConfig)
+    public void Reconfigure(TaskRunnerConfig baseConfig)
     {
       // TODO: [TESTS] (TasksService) Add tests
 
@@ -38,7 +38,7 @@ namespace TaskRunner.Core.Services
 
 
     // Configuration file related methods
-    private void LoadTaskFiles(TaskBuilderConfig baseConfig)
+    private void LoadTaskFiles(TaskRunnerConfig baseConfig)
     {
       // TODO: [TESTS] (ConfigService) Add tests
       // TODO: [REVISE] (ConfigService) Move into a TasksService

@@ -1,6 +1,6 @@
 ﻿namespace TaskRunner.Core.Configuration
 {
-  public class TaskBuilderConfig
+  public class TaskRunnerConfig
   {
     public string SecretsFile { get; set; }
     public string TasksFolder { get; set; }

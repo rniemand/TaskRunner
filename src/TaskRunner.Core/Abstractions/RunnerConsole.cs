@@ -3,7 +3,7 @@ using TaskRunner.Core.Abstractions.Interfaces;
 
 namespace TaskRunner.Core.Abstractions
 {
-  public class ConsoleAbstraction : IConsole
+  public class RunnerConsole : IConsole
   {
     public ConsoleColor ForegroundColor
     {

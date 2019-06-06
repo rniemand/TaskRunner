@@ -46,11 +46,11 @@ namespace TaskRunner
 
       // Abstractions
       collection
-        .AddSingleton<IAppDomain, AppDomainAbstraction>()
+        .AddSingleton<IAppDomain, RunnerAppDomain>()
         .AddSingleton<IJsonHelper, JsonHelper>()
-        .AddSingleton<IFile, FileAbstraction>()
-        .AddSingleton<IDirectory, DirectoryAbstraction>()
-        .AddSingleton<IConsole, ConsoleAbstraction>();
+        .AddSingleton<IFile, RunnerFile>()
+        .AddSingleton<IDirectory, RunnerDirectory>()
+        .AddSingleton<IConsole, RunnerConsole>();
 
       // Services
       collection
