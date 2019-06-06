@@ -55,26 +55,19 @@ namespace TaskRunner.Core.Services
         return;
       }
 
-      var newContext = _stepContextService.CreateNewContext(task);
+      // Generate the initial step context and execute steps one by one
+      var stepContext = _stepContextService.CreateNewContext(task);
 
-      // Create a "global" data-bus for steps to push/pull values from
-      var taskGlobalData = new Dictionary<string, Dictionary<string, string>>();
-
-      // Execute task steps one by one
       foreach (var currentStep in task.Steps)
       {
-        // TODO: [CURRENT] (TaskRunnerService) Sync generated step context with "currentStep"
-
-        var stepContext = GenerateStepContext(task, currentStep.StepId, taskGlobalData);
-        var taskBuilderStep = GetRequestedStep(currentStep.Step);
+        _stepContextService.SyncStep(stepContext, currentStep);
+        var runnerStep = ResolveStep(currentStep.Step);
 
         // TODO: [CHECK] (TaskRunnerService) Check for and handle no step found
 
-
-        if (!taskBuilderStep.Execute(stepContext))
+        if (!runnerStep.Execute(stepContext))
         {
-          // TODO: [HANDLE] (TaskRunnerService) Handle step execution failed
-          // TODO: [COMPLETE] (TaskRunnerService) Check for and handle the continue action
+          // TODO: [COMPLETE] (TaskRunnerService) Handle step execution failed (based on configuration)
 
           // For now - bail out
           _logger.Error("Task {task} Step {stepName} execution failed",
@@ -83,32 +76,7 @@ namespace TaskRunner.Core.Services
           return;
         }
 
-        // TODO: [REFACTOR] (TaskRunnerService) Make this logging configurable
-        // Log out all the new information published by the step
-        if (stepContext.PublishedData.ContainsKey(stepContext.StepName) && stepContext.PublishedData[stepContext.StepName].Count > 0)
-        {
-          var sb = new StringBuilder();
-          var count = stepContext.PublishedData[stepContext.StepName].Count;
-          var longestKey = stepContext.PublishedData[stepContext.StepName]
-            .Select(x => x.Key)
-            .Max(x => x.Length);
-
-          sb
-            .Append($"Step '{stepContext.StepName}' published {count} ")
-            .Append(count == 1 ? "item " : "items ")
-            .Append("to the global arguments: ")
-            .Append(Environment.NewLine);
-
-          foreach (var (key, value) in stepContext.PublishedData[stepContext.StepName])
-          {
-            sb.Append($"    {stepContext.StepName}.{key.PadRight(longestKey, ' ')} : ");
-            sb.Append(value);
-            sb.Append(Environment.NewLine);
-          }
-
-          _logger.Debug(sb.ToString().Trim());
-        }
-
+        LogPublishedData(stepContext);
 
         // TODO: [COMPLETE] (TaskRunnerService) Complete step execution success
         _logger.Debug("Step {name} execution succeeded", currentStep.StepName);
@@ -202,39 +170,8 @@ namespace TaskRunner.Core.Services
     }
 
 
-    // Step context generation
-    private StepContext GenerateStepContext(
-      RunnerTask task,
-      int stepId,
-      Dictionary<string, Dictionary<string, string>> taskData)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-
-      // Create a new step context based on the provided data
-      var context = new StepContext
-      {
-        StepId = stepId,
-        StepName = task.Steps[stepId].StepName,
-        Arguments = new Dictionary<string, string>(),
-        PublishedData = taskData
-      };
-
-      // Generate step arguments
-      foreach (var (key, value) in task.Steps[stepId].Arguments)
-      {
-        // NOTE: Below is the current list of value placeholders the service is aware of
-        //        {!Section.Key}    => retrieves the provided sections key value from your secrets file
-        //        {@StepName.Key}   => retrieves the published task data value from a previous step
-
-        context.Arguments[key] = context.ReplaceTags(
-          _secretsService.ReplaceTags(value)
-        );
-      }
-
-      return context;
-    }
-
-    private IRunnerStep GetRequestedStep(string stepName)
+    // Step execution related methods
+    private IRunnerStep ResolveStep(string stepName)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
@@ -248,6 +185,40 @@ namespace TaskRunner.Core.Services
       // TODO: [LOGGING] (TaskRunnerService) Log if we are missing the requested step
 
       return builderStep;
+    }
+
+    private void LogPublishedData(StepContext stepContext)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [REFACTOR] (TaskRunnerService) Make this logging configurable
+
+      // Check to see if the step published any data
+      if (!stepContext.DataPublished)
+        return;
+
+      // Count published data points and work out the longest "key" length
+      var count = stepContext.PublishedData[stepContext.StepName].Count;
+      var longestKey = stepContext.PublishedData[stepContext.StepName]
+        .Select(x => x.Key)
+        .Max(x => x.Length);
+
+      // Generate published data message
+      var sb = new StringBuilder()
+        .Append($"Step '{stepContext.StepName}' published {count} ")
+        .Append(count == 1 ? "item " : "items ")
+        .Append("during its execution: ")
+        .Append(Environment.NewLine);
+
+      // Generate a line per published item (use "longestKey" to align logged data for easier reading)
+      foreach (var (key, value) in stepContext.PublishedData[stepContext.StepName])
+      {
+        sb.Append($"    {stepContext.StepName}.{key.PadRight(longestKey, ' ')} : ");
+        sb.Append(value);
+        sb.Append(Environment.NewLine);
+      }
+
+      // Finally log published data message
+      _logger.Debug(sb.ToString().Trim());
     }
   }
 }

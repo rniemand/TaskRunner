@@ -23,13 +23,10 @@ namespace TaskRunner.Core.Services
     {
       // TODO: [TESTS] (StepContextService) Add tests
 
-      var taskData = new Dictionary<string, Dictionary<string, string>>();
-
       // Create a new step context based on the provided data
       var context = new StepContext
       {
-        Arguments = new Dictionary<string, string>(),
-        PublishedData = taskData
+        Arguments = new Dictionary<string, string>()
       };
 
       _logger.Debug("Created initial context for task {task}", task.Name);
@@ -37,9 +34,41 @@ namespace TaskRunner.Core.Services
       return context;
     }
 
-    public void SyncCurrentStep(StepContext context, RunnerStep step)
+    public void SyncStep(StepContext context, RunnerStep step)
     {
-      throw new System.NotImplementedException();
+      // TODO: [TESTS] (StepContextService) Add tests
+
+      // Ensure that the StepId and StepName are correct
+      context.StepId = step.StepId;
+      context.StepName = step.StepName;
+
+      // Reset data published flag
+      context.DataPublished = false;
+
+      // Generate and update the current steps arguments
+      context.SetArguments(GenerateStepArguments(context, step));
+    }
+
+
+    // Internal methods
+    private Dictionary<string, string> GenerateStepArguments(StepContext context, RunnerStep step)
+    {
+      // TODO: [TESTS] (StepContextService) Add tests
+      // TODO: [LOGGING] (StepContextService) Add logging
+
+      // NOTE: Below is the current list of value placeholders the service is aware of
+      //        {!Section.Key}    => retrieves the provided sections key value from your secrets file
+      //        {@StepName.Key}   => retrieves the published task data value from a previous step
+
+      var arguments = new Dictionary<string, string>();
+
+      foreach (var (key, value) in step.Arguments)
+      {
+        var argWithSecrets = _secretsService.ReplaceTags(value);
+        arguments[key] = context.ReplaceTags(argWithSecrets);
+      }
+
+      return arguments;
     }
   }
 }

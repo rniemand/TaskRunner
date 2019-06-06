@@ -9,8 +9,8 @@ namespace TaskRunner.Core.Steps
     // TODO: [DOCS] (StepContext) Document this
 
     public int StepId { get; set; }
-
     public string StepName { get; set; }
+    public bool DataPublished { get; set; }
 
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
@@ -23,11 +23,26 @@ namespace TaskRunner.Core.Steps
     // Constructor
     public StepContext()
     {
+      // TODO: [TESTS] (StepContext) Add tests
+
       PublishedData = new Dictionary<string, Dictionary<string, string>>();
+      DataPublished = false;
     }
 
 
     // Public methods
+    public void SetArguments(Dictionary<string, string> arguments)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      Arguments.Clear();
+
+      if(arguments.Count == 0)
+        return;
+
+      Arguments = arguments;
+    }
+
     public string GetArgument(string argument, string fallback = null)
     {
       // TODO: [TESTS] (StepContext) Add tests
@@ -88,6 +103,7 @@ namespace TaskRunner.Core.Steps
 
       // Publish the given data
       PublishedData[StepName][key.TrimAndLower()] = value;
+      DataPublished = true;
     }
 
     public void Publish(string key, int value)

@@ -6,6 +6,6 @@ namespace TaskRunner.Core.Services.Interfaces
   public interface IStepContextService
   {
     StepContext CreateNewContext(RunnerTask task);
-    void SyncCurrentStep(StepContext context, RunnerStep step);
+    void SyncStep(StepContext context, RunnerStep step);
   }
 }
