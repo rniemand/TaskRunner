@@ -5,6 +5,7 @@ using TaskRunner.Core.Abstractions;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Builders;
 using TaskRunner.Core.Builders.Interfaces;
+using TaskRunner.Core.Configuration;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging;
 using TaskRunner.Core.Logging.Interfaces;
@@ -102,9 +103,9 @@ namespace TaskRunner
         ((IDisposable)_serviceProvider).Dispose();
     }
 
-    private static TaskBuilderTask GetDemoTask()
+    private static RunnerTask GetDemoTask()
     {
-      return new TaskBuilderTask
+      return new RunnerTask
       {
         Enabled = true,
         Name = "Console Logger Test Task",
@@ -112,7 +113,7 @@ namespace TaskRunner
         FrequencyArgs = "5",
         Steps = new[]
         {
-          new TaskBuilderStep
+          new RunnerStep
           {
             Enabled = true,
             Arguments = new Dictionary<string, string>
@@ -124,7 +125,7 @@ namespace TaskRunner
             Step = "Console.Log",
             StepName = "console1"
           },
-          new TaskBuilderStep
+          new RunnerStep
           {
             Enabled = true,
             Arguments = new Dictionary<string, string>
@@ -135,7 +136,7 @@ namespace TaskRunner
             Step = "Http.Get",
             StepName = "update_nas"
           },
-          new TaskBuilderStep
+          new RunnerStep
           {
             Enabled = true,
             Arguments = new Dictionary<string, string>

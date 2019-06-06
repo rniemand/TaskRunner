@@ -2,12 +2,12 @@
 using System.Diagnostics;
 using TaskRunner.Core.Enums;
 
-namespace TaskRunner.Core.Tasks
+namespace TaskRunner.Core.Configuration
 {
   [DebuggerDisplay("{StepId}: {StepName} ({Step})")]
-  public class TaskBuilderStep
+  public class RunnerStep
   {
-    // TODO: [DOCS] (TaskBuilderStep) Document this
+    // TODO: [DOCS] (RunnerStep) Document this
 
     /// <summary>
     /// Indicates the enabled state of the current step.
@@ -15,7 +15,7 @@ namespace TaskRunner.Core.Tasks
     /// </summary>
     public bool Enabled { get; set; }
 
-    // TODO: [DOCS] (TaskBuilderStep) Decide if {@xx:xx} works for this
+    // TODO: [DOCS] (RunnerStep) Decide if {@xx:xx} works for this
     /// <summary>
     /// The name of the step - this value is used to publish data against.
     /// In following steps you can access it's data by {@StepName:PropertyName}
@@ -51,7 +51,7 @@ namespace TaskRunner.Core.Tasks
     /// </summary>
     public string Step { get; set; }
 
-    public TaskBuilderStep()
+    public RunnerStep()
     {
       Enabled = true;
       FailAction = StepFailAction.Stop;

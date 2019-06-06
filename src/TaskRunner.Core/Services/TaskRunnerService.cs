@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaskRunner.Core.Configuration;
 using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
@@ -42,7 +43,7 @@ namespace TaskRunner.Core.Services
 
 
     // Public methods
-    public void RunTask(TaskBuilderTask task)
+    public void RunTask(RunnerTask task)
     {
       // TODO: [REMOVE] (ITaskRunnerService) Remove this once initial dev testing has been completed
 
@@ -117,7 +118,7 @@ namespace TaskRunner.Core.Services
 
 
     // Task and Step validation
-    private static void AssignStepIds(TaskBuilderTask task)
+    private static void AssignStepIds(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
@@ -131,7 +132,7 @@ namespace TaskRunner.Core.Services
       }
     }
 
-    private bool ValidateStepNames(TaskBuilderTask task)
+    private bool ValidateStepNames(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
       // TODO: [DOCS] (TaskRunnerService) Document this feature
@@ -185,7 +186,7 @@ namespace TaskRunner.Core.Services
       return false;
     }
 
-    private bool ValidateTask(TaskBuilderTask task)
+    private bool ValidateTask(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
@@ -203,7 +204,7 @@ namespace TaskRunner.Core.Services
 
     // Step context generation
     private StepContext GenerateStepContext(
-      TaskBuilderTask task,
+      RunnerTask task,
       int stepId,
       Dictionary<string, Dictionary<string, string>> taskData)
     {

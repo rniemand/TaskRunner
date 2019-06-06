@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskRunner.Core.Configuration;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Tasks;
@@ -18,7 +19,7 @@ namespace TaskRunner.Core.Services
       _secretsService = secretsService;
     }
 
-    public StepContext CreateNewContext(TaskBuilderTask task)
+    public StepContext CreateNewContext(RunnerTask task)
     {
       // TODO: [TESTS] (StepContextService) Add tests
 
@@ -36,7 +37,7 @@ namespace TaskRunner.Core.Services
       return context;
     }
 
-    public void SyncCurrentStep(StepContext context, TaskBuilderStep step)
+    public void SyncCurrentStep(StepContext context, RunnerStep step)
     {
       throw new System.NotImplementedException();
     }

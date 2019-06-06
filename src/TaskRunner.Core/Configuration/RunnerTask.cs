@@ -1,11 +1,11 @@
 ﻿using System;
 using TaskRunner.Core.Enums;
 
-namespace TaskRunner.Core.Tasks
+namespace TaskRunner.Core.Configuration
 {
-  public class TaskBuilderTask
+  public class RunnerTask
   {
-    // TODO: [DOCS] (TaskBuilderTask) Document this
+    // TODO: [DOCS] (RunnerTask) Document this
 
     /// <summary>
     /// Human friendly name for the given task.
@@ -21,7 +21,7 @@ namespace TaskRunner.Core.Tasks
     /// <summary>
     /// The steps that make up the task, steps will be executed in the order they appear
     /// </summary>
-    public TaskBuilderStep[] Steps { get; set; }
+    public RunnerStep[] Steps { get; set; }
 
     /// <summary>
     /// The frequency modifier for the task (how often it should run)
@@ -49,7 +49,7 @@ namespace TaskRunner.Core.Tasks
     /// </summary>
     public DateTime? NextRunTime { get; set; }
 
-    public TaskBuilderTask()
+    public RunnerTask()
     {
       Enabled = true;
     }
