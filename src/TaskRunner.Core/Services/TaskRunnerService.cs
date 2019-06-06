@@ -58,7 +58,21 @@ namespace TaskRunner.Core.Services
 
         // TODO: [CHECK] (TaskRunnerService) Check for and handle no step found
 
-        if (!runnerStep.Execute(stepContext))
+
+        // TODO: [CURRENT] (TaskRunnerService) Discover and load all task validators dynamically
+        var validators = new List<IStepSuccessValidator>
+        {
+          new PocSuccessValidator
+          {
+            Arguments = new Dictionary<string, string>
+            {
+              {"Property", "response.content"},
+              {"Contains", "has not changed"}
+            }
+          }
+        };
+
+        if (!runnerStep.Execute(stepContext, validators))
         {
           // TODO: [COMPLETE] (TaskRunnerService) Handle step execution failed (based on configuration)
 

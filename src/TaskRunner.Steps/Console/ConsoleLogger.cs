@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Mappers;
@@ -27,7 +28,7 @@ namespace TaskRunner.Steps.Console
 
 
     // Public methods
-    public bool Execute(StepContext context)
+    public bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
 

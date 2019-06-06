@@ -1,4 +1,5 @@
-﻿using TaskRunner.Core.Steps;
+﻿using System.Collections.Generic;
+using TaskRunner.Core.Steps;
 using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.File
@@ -15,7 +16,7 @@ namespace TaskRunner.Steps.File
       Name = "File.Copy";
     }
 
-    public bool Execute(StepContext context)
+    public bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
     {
       // TODO: [COMPLETE] (FileCopy) Complete this
 

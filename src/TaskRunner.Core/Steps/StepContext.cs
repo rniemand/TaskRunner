@@ -131,6 +131,19 @@ namespace TaskRunner.Core.Steps
       Publish(key, value.ToString("N"));
     }
 
+    public string GetPublishedData(string key)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      if (string.IsNullOrWhiteSpace(key) || !_publishedData.ContainsKey(StepName))
+        return string.Empty;
+
+      if (!_publishedData[StepName].ContainsKey(key))
+        return string.Empty;
+
+      return _publishedData[StepName][key];
+    }
+
 
     // Internal methods
     public string GetPublishedValue(string stepName, string key)
