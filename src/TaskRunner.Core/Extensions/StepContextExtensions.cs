@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using TaskRunner.Core.Steps;
 
 namespace TaskRunner.Core.Extensions
@@ -7,62 +6,6 @@ namespace TaskRunner.Core.Extensions
   public static class StepContextExtensions
   {
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
-
-    public static string GetArgument(this StepContext stepContext, string argument, string fallback = null)
-    {
-      // TODO: [TESTS] (StepContextExtensions) Add tests
-
-      // Ensure that we have something to work with
-      if (stepContext?.Arguments == null || stepContext.Arguments.Count == 0)
-        return fallback;
-
-      // Check to see if the requested argument exists
-      // ReSharper disable once ConvertIfStatementToReturnStatement
-      if (!stepContext.Arguments.ContainsKey(argument))
-        return fallback;
-
-      // Argument exists, return it
-      return stepContext.Arguments[argument];
-    }
-
-    // TODO: [RENAME] (StepContextExtensions) Come up with a better name for this
-    public static void AppendOutputValue(this StepContext stepContext, string key, string value)
-    {
-      // TODO: [TESTS] (StepContextExtensions) Add tests
-
-      if (stepContext == null || string.IsNullOrWhiteSpace(key))
-        return;
-
-      stepContext.EnsureOutputStepExists();
-
-      stepContext.TaskData[stepContext.StepName][key.TrimAndLower()] = value;
-    }
-
-    // TODO: [RENAME] (StepContextExtensions) Come up with a better name for this
-    public static void AppendOutputValue(this StepContext stepContext, string key, int value)
-    {
-      stepContext.AppendOutputValue(key, value.ToString("D"));
-    }
-
-    // TODO: [RENAME] (StepContextExtensions) Come up with a better name for this
-    public static void AppendOutputValue(this StepContext stepContext, string key, double value)
-    {
-      stepContext.AppendOutputValue(key, value.ToString("N"));
-    }
-
-    // TODO: [RENAME] (StepContextExtensions) Come up with a better name for this
-    public static void EnsureOutputStepExists(this StepContext stepContext)
-    {
-      // TODO: [TESTS] (StepContextExtensions) Add tests
-
-      if (stepContext == null)
-        return;
-
-      if (stepContext.TaskData.ContainsKey(stepContext.StepName))
-        return;
-
-      stepContext.TaskData[stepContext.StepName] = new Dictionary<string, string>();
-    }
 
     public static bool HasStepData(this StepContext stepContext, string stepName)
     {

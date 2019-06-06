@@ -49,15 +49,15 @@ namespace TaskRunner.Steps.Http
       // Publish useful information from the request
       var responseBody = httpResponse.GetBodyAsString();
 
-      context.AppendOutputValue("response.status", httpResponse.StatusCode.ToString("G"));
-      context.AppendOutputValue("response.status_code", (int)httpResponse.StatusCode);
-      context.AppendOutputValue("response.content", responseBody.Trim());
-      context.AppendOutputValue("response.content_length", responseBody.Length);
-      context.AppendOutputValue("response.execution_time", requestTimeMs);
+      context.Publish("response.status", httpResponse.StatusCode.ToString("G"));
+      context.Publish("response.status_code", (int)httpResponse.StatusCode);
+      context.Publish("response.content", responseBody.Trim());
+      context.Publish("response.content_length", responseBody.Length);
+      context.Publish("response.execution_time", requestTimeMs);
 
       foreach (var (header, value) in httpResponse.GetHeadersDictionary())
       {
-        context.AppendOutputValue($"response.headers.{header}", value);
+        context.Publish($"response.headers.{header}", value);
       }
 
       return true;
