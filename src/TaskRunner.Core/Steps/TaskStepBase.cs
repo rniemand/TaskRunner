@@ -5,14 +5,14 @@ using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Core.Steps
 {
-  public class BaseTaskRunnerStep : IRunnerStep
+  public class TaskStepBase : IRunnerStep
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }
     public List<StepParameter> Parameters { get; set; }
 
     // Constructor
-    public BaseTaskRunnerStep(IAppLogger logger, string name)
+    public TaskStepBase(IAppLogger logger, string name)
     {
       Logger = logger;
       Name = name;
@@ -50,7 +50,7 @@ namespace TaskRunner.Core.Steps
 
     public string GetInput(string name)
     {
-      // TODO: [TESTS] (BaseTaskRunnerStep) Add tests
+      // TODO: [TESTS] (TaskStepBase) Add tests
 
 
 
@@ -61,7 +61,7 @@ namespace TaskRunner.Core.Steps
 
     public void RegisterInput(string input, InputValidator validator, bool required = true, string defaultValue = null)
     {
-      // TODO: [TESTS] (BaseTaskRunnerStep) Add tests
+      // TODO: [TESTS] (TaskStepBase) Add tests
 
       Parameters.Add(new StepParameter
       {

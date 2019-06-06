@@ -14,7 +14,7 @@ namespace TaskRunner.Steps.Console
   // TODO: [DOCS] (ConsoleLog) Document argument: Message
   // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
-  public class ConsoleLogger : BaseTaskRunnerStep
+  public class ConsoleLogger : TaskStepBase
   {
     private readonly IConsole _console;
 

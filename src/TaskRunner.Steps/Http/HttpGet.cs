@@ -7,7 +7,7 @@ using TaskRunner.Core.Steps;
 
 namespace TaskRunner.Steps.Http
 {
-  public class HttpGet : BaseTaskRunnerStep
+  public class HttpGet : TaskStepBase
   {
     // TODO: [DOCS] (HttpGet) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
