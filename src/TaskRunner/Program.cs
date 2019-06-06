@@ -12,11 +12,12 @@ using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Tasks;
 using TaskRunner.Core.Tasks.Enums;
 using TaskRunner.Core.Tasks.Interfaces;
-using TaskRunner.Steps.Core;
+using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Directory;
 using TaskRunner.Steps.File;
 using TaskRunner.Steps.Http;
 using TaskRunner.Steps.Json;
+using TaskRunner.Steps.Win;
 using TaskRunner.Steps.Zip;
 
 namespace TaskRunner

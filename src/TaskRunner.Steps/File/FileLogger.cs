@@ -1,7 +1,7 @@
 ﻿using TaskRunner.Core.Tasks;
 using TaskRunner.Core.Tasks.Interfaces;
 
-namespace TaskRunner.Steps.Core
+namespace TaskRunner.Steps.File
 {
   public class FileLogger : ITaskBuilderStep
   {

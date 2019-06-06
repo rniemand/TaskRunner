@@ -1,7 +1,7 @@
 ﻿using TaskRunner.Core.Tasks;
 using TaskRunner.Core.Tasks.Interfaces;
 
-namespace TaskRunner.Steps.Core
+namespace TaskRunner.Steps.Win
 {
   public class WinShell : ITaskBuilderStep
   {
@@ -12,7 +12,7 @@ namespace TaskRunner.Steps.Core
 
     public WinShell()
     {
-      Name = "Core.WinShell";
+      Name = "Win.Shell";
     }
 
     public bool Execute(StepContext context)
