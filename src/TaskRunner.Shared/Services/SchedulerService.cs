@@ -1,6 +1,6 @@
-﻿using TaskBuilder.Common.Services.Interfaces;
+﻿using TaskRunner.Shared.Services.Interfaces;
 
-namespace TaskBuilder.Common.Services
+namespace TaskRunner.Shared.Services
 {
   public class SchedulerService : ISchedulerService
   {

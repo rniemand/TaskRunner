@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using TaskBuilder.Common.Abstractions.Interfaces;
-using TaskBuilder.Common.Builders.Interfaces;
-using TaskBuilder.Common.Configuration;
-using TaskBuilder.Common.Extensions;
-using TaskBuilder.Common.Logging.Interfaces;
-using TaskBuilder.Common.Services.Interfaces;
+using TaskRunner.Shared.Abstractions.Interfaces;
+using TaskRunner.Shared.Builders.Interfaces;
+using TaskRunner.Shared.Configuration;
+using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Logging.Interfaces;
+using TaskRunner.Shared.Services.Interfaces;
 
-namespace TaskBuilder.Common.Services
+namespace TaskRunner.Shared.Services
 {
   public class SecretsService : ISecretsService
   {

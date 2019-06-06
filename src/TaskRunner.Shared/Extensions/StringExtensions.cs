@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace TaskBuilder.Common.Extensions
+namespace TaskRunner.Shared.Extensions
 {
   public static class StringExtensions
   {

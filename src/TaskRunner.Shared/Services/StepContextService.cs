@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using TaskBuilder.Common.Logging.Interfaces;
-using TaskBuilder.Common.Services.Interfaces;
-using TaskBuilder.Common.Tasks;
+using TaskRunner.Shared.Logging.Interfaces;
+using TaskRunner.Shared.Services.Interfaces;
+using TaskRunner.Shared.Tasks;
 
-namespace TaskBuilder.Common.Services
+namespace TaskRunner.Shared.Services
 {
   public class StepContextService : IStepContextService
   {

@@ -1,12 +1,12 @@
 ﻿using System;
 using Newtonsoft.Json;
-using TaskBuilder.Common.Abstractions.Interfaces;
-using TaskBuilder.Common.Builders.Interfaces;
-using TaskBuilder.Common.Configuration;
-using TaskBuilder.Common.Logging.Interfaces;
-using TaskBuilder.Common.Services.Interfaces;
+using TaskRunner.Shared.Abstractions.Interfaces;
+using TaskRunner.Shared.Builders.Interfaces;
+using TaskRunner.Shared.Configuration;
+using TaskRunner.Shared.Logging.Interfaces;
+using TaskRunner.Shared.Services.Interfaces;
 
-namespace TaskBuilder.Common.Services
+namespace TaskRunner.Shared.Services
 {
   public class ConfigService : IConfigService
   {

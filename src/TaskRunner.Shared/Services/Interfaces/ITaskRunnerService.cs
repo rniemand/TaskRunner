@@ -1,6 +1,6 @@
-﻿using TaskBuilder.Common.Tasks;
+﻿using TaskRunner.Shared.Tasks;
 
-namespace TaskBuilder.Common.Services.Interfaces
+namespace TaskRunner.Shared.Services.Interfaces
 {
   public interface ITaskRunnerService
   {

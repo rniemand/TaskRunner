@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using TaskBuilder.Common.Extensions;
-using TaskBuilder.Common.Logging.Interfaces;
-using TaskBuilder.Common.Services.Interfaces;
-using TaskBuilder.Common.Tasks;
-using TaskBuilder.Common.Tasks.Interfaces;
+using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Logging.Interfaces;
+using TaskRunner.Shared.Services.Interfaces;
+using TaskRunner.Shared.Tasks;
+using TaskRunner.Shared.Tasks.Interfaces;
 
-namespace TaskBuilder.Common.Services
+namespace TaskRunner.Shared.Services
 {
   public class TaskRunnerService : ITaskRunnerService
   {

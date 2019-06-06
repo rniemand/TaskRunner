@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using TaskBuilder.Common.Abstractions.Interfaces;
+using TaskRunner.Shared.Abstractions.Interfaces;
 
-namespace TaskBuilder.Common.Abstractions
+namespace TaskRunner.Shared.Abstractions
 {
   public class FileAbstraction : IFile
   {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TaskBuilder.Common.Tasks
+namespace TaskRunner.Shared.Tasks
 {
   public class StepContext
   {

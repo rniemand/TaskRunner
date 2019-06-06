@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using TaskBuilder.Common.Extensions;
+using TaskRunner.Shared.Extensions;
 
-namespace TaskBuilder.Tests.Extensions.StringExtensionsTests
+namespace TaskRunner.Tests.Extensions.StringExtensionsTests
 {
   [TestFixture]
   public class StripTrailingCharacterTests

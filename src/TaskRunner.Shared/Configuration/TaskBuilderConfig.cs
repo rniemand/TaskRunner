@@ -1,4 +1,4 @@
-﻿namespace TaskBuilder.Common.Configuration
+﻿namespace TaskRunner.Shared.Configuration
 {
   public class TaskBuilderConfig
   {

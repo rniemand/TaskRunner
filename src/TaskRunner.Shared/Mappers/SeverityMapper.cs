@@ -1,7 +1,7 @@
-﻿using TaskBuilder.Common.Extensions;
-using TaskBuilder.Common.Tasks.Enums;
+﻿using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Tasks.Enums;
 
-namespace TaskBuilder.Common.Mappers
+namespace TaskRunner.Shared.Mappers
 {
   public class SeverityMapper
   {

@@ -1,5 +1,5 @@
-﻿using TaskBuilder.Common.Tasks;
-using TaskBuilder.Common.Tasks.Interfaces;
+﻿using TaskRunner.Shared.Tasks;
+using TaskRunner.Shared.Tasks.Interfaces;
 
 namespace TaskRunner.Steps.Core
 {

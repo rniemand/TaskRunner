@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskBuilder.Common.Abstractions.Interfaces
+namespace TaskRunner.Shared.Abstractions.Interfaces
 {
   public interface IConsole
   {

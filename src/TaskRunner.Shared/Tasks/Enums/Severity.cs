@@ -1,4 +1,4 @@
-﻿namespace TaskBuilder.Common.Tasks.Enums
+﻿namespace TaskRunner.Shared.Tasks.Enums
 {
   public enum Severity
   {

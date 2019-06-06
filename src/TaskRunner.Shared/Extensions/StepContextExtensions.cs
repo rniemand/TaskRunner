@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using TaskBuilder.Common.Tasks;
+using TaskRunner.Shared.Tasks;
 
-namespace TaskBuilder.Common.Extensions
+namespace TaskRunner.Shared.Extensions
 {
   public static class StepContextExtensions
   {

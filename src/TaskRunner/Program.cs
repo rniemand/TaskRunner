@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using TaskBuilder.Common.Abstractions;
-using TaskBuilder.Common.Abstractions.Interfaces;
-using TaskBuilder.Common.Builders;
-using TaskBuilder.Common.Builders.Interfaces;
-using TaskBuilder.Common.Logging;
-using TaskBuilder.Common.Logging.Interfaces;
-using TaskBuilder.Common.Services;
-using TaskBuilder.Common.Services.Interfaces;
-using TaskBuilder.Common.Tasks;
-using TaskBuilder.Common.Tasks.Enums;
-using TaskBuilder.Common.Tasks.Interfaces;
+using TaskRunner.Shared.Abstractions;
+using TaskRunner.Shared.Abstractions.Interfaces;
+using TaskRunner.Shared.Builders;
+using TaskRunner.Shared.Builders.Interfaces;
+using TaskRunner.Shared.Logging;
+using TaskRunner.Shared.Logging.Interfaces;
+using TaskRunner.Shared.Services;
+using TaskRunner.Shared.Services.Interfaces;
+using TaskRunner.Shared.Tasks;
+using TaskRunner.Shared.Tasks.Enums;
+using TaskRunner.Shared.Tasks.Interfaces;
 using TaskRunner.Steps.Core;
 using TaskRunner.Steps.Directory;
 using TaskRunner.Steps.File;
@@ -19,7 +19,7 @@ using TaskRunner.Steps.Http;
 using TaskRunner.Steps.Json;
 using TaskRunner.Steps.Zip;
 
-namespace TaskBuilder
+namespace TaskRunner
 {
   class Program
   {

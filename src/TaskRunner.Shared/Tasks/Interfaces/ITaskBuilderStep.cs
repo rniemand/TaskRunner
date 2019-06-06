@@ -1,4 +1,4 @@
-﻿namespace TaskBuilder.Common.Tasks.Interfaces
+﻿namespace TaskRunner.Shared.Tasks.Interfaces
 {
   public interface ITaskBuilderStep
   {

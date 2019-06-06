@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using TaskBuilder.Common.Abstractions.Interfaces;
-using TaskBuilder.Common.Builders.Interfaces;
-using TaskBuilder.Common.Extensions;
+using TaskRunner.Shared.Abstractions.Interfaces;
+using TaskRunner.Shared.Builders.Interfaces;
+using TaskRunner.Shared.Extensions;
 
-namespace TaskBuilder.Common.Builders
+namespace TaskRunner.Shared.Builders
 {
   public class PathBuilder : IPathBuilder
   {

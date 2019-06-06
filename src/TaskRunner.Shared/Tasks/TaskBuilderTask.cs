@@ -1,7 +1,7 @@
 ﻿using System;
-using TaskBuilder.Common.Tasks.Enums;
+using TaskRunner.Shared.Tasks.Enums;
 
-namespace TaskBuilder.Common.Tasks
+namespace TaskRunner.Shared.Tasks
 {
   public class TaskBuilderTask
   {

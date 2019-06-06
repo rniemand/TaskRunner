@@ -1,9 +1,9 @@
 ﻿using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using TaskBuilder.Common.Logging.Interfaces;
+using TaskRunner.Shared.Logging.Interfaces;
 
-namespace TaskBuilder.Common.Logging
+namespace TaskRunner.Shared.Logging
 {
   public partial class AppLogger : IAppLogger
   {

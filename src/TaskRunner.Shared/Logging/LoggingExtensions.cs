@@ -2,7 +2,7 @@
 using Serilog;
 using Serilog.Configuration;
 
-namespace TaskBuilder.Common.Logging
+namespace TaskRunner.Shared.Logging
 {
   public static class LoggingExtensions
   {

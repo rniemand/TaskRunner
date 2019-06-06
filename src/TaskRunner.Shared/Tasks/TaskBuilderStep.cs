@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using TaskBuilder.Common.Tasks.Enums;
+using TaskRunner.Shared.Tasks.Enums;
 
-namespace TaskBuilder.Common.Tasks
+namespace TaskRunner.Shared.Tasks
 {
   [DebuggerDisplay("{StepId}: {StepName} ({Step})")]
   public class TaskBuilderStep

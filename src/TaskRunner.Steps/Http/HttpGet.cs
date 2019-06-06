@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
-using TaskBuilder.Common.Extensions;
-using TaskBuilder.Common.Tasks;
-using TaskBuilder.Common.Tasks.Interfaces;
+using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Tasks;
+using TaskRunner.Shared.Tasks.Interfaces;
 
 namespace TaskRunner.Steps.Http
 {
