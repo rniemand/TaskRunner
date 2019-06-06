@@ -49,7 +49,10 @@ namespace TaskRunner.Core.Services
       }
 
       // Generate the initial step context and execute steps one by one
-      var stepContext = new StepContext();
+      var stepContext = new StepContext
+      {
+        TaskName = task.Name
+      };
 
       foreach (var currentStep in task.Steps)
       {

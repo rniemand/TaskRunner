@@ -11,6 +11,7 @@ namespace TaskRunner.Core.Steps
     public int StepId { get; set; }
     public string StepName { get; set; }
     public bool DataPublished { get; private set; }
+    public string TaskName { get; set; }
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
 

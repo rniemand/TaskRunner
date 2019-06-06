@@ -9,7 +9,7 @@ using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Http
 {
-  public class HttpGet : IRunnerStep
+  public class HttpGet : BaseTaskRunnerStep
   {
     // TODO: [DOCS] (HttpGet) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
@@ -21,17 +21,11 @@ namespace TaskRunner.Steps.Http
     // TODO: [DOCS] (HttpGet) Document output: response.content_length [number] (always)
     // TODO: [DOCS] (HttpGet) Document output: response.execution_time [double] (always) - maybe rename this?
 
-    public string Name { get; }
-
-    private readonly IAppLogger _logger;
-
     public HttpGet(IAppLogger logger)
-    {
-      _logger = logger;
-      Name = "Http.Get";
-    }
+      : base(logger, "Http.Get")
+    { }
 
-    public bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
+    public override bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
     {
       // TODO: [TESTS] (HttpGet) Add tests
 
@@ -66,30 +60,8 @@ namespace TaskRunner.Steps.Http
         context.Publish($"response.headers.{header}", value);
       }
 
-
-      // TODO: [REFACTOR] (HttpGet) Move into a base class (no need to repeat this logic all the time)
-      // Run the task success validators if any were provided
-
-      if (validators != null && validators.Any())
-      {
-        var success = true;
-
-        foreach (var validator in validators)
-        {
-          success = validator.Validate(context);
-
-          if (!success)
-          {
-            _logger.Debug("Step validation failed for 'validator' ....");
-            break;
-          }
-        }
-
-        return success;
-      }
-
-
-      return true;
+      // Verify that the task execution was successful
+      return RunTaskValidators(context, validators);
     }
   }
 }
