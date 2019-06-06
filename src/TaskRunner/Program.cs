@@ -59,7 +59,7 @@ namespace TaskRunner
             Enabled = true,
             Arguments = new Dictionary<string, string>
             {
-              {"Severity", "Info"},
+              {"Severity", "warn"},
               {"Message", "Attempting to do something different!"}
             },
             FailAction = StepFailAction.Continue,
@@ -85,7 +85,8 @@ namespace TaskRunner
               {"Message", "Http.Get completed with a '{@update_nas.response.status_code}' response code!"}
             },
             FailAction = StepFailAction.Continue,
-            Step = "Console.Log"
+            Step = "Console.Log",
+            StepName = "log_result"
           }
         }
       };

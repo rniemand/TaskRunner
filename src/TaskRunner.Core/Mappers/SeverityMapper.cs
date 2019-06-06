@@ -5,7 +5,7 @@ namespace TaskRunner.Core.Mappers
 {
   public class SeverityMapper
   {
-    public static RunnerSeverity MapSeverity(string input, RunnerSeverity fallback = RunnerSeverity.Debug)
+    public static RunnerSeverity MapSeverity(string input, RunnerSeverity fallback)
     {
       // TODO: [TESTS] (SeverityMapper) Add tests
 
@@ -42,6 +42,13 @@ namespace TaskRunner.Core.Mappers
         default:
           return fallback;
       }
+    }
+
+    public static RunnerSeverity MapSeverity(string input)
+    {
+      // TODO: [TESTS] (SeverityMapper) Add tests
+
+      return MapSeverity(input, RunnerSeverity.Info);
     }
   }
 }

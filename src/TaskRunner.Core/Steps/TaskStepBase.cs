@@ -70,6 +70,22 @@ namespace TaskRunner.Core.Steps
       return argument;
     }
 
+    public T GetInput<T>(StepContext context, string name, Func<string, T> convertFunc)
+    {
+      // TODO: [DOCS] (TaskStepBase) Document this function
+      // TODO: [TESTS] (TaskStepBase) Add tests
+
+      var value = string.Empty;
+
+      if (Parameters.Any(x => x.Name == name))
+      {
+        var defaultValue = Parameters.First(x=>x.Name==name).DefaultValue;
+        value = context.GetArgument(name, defaultValue);
+      }
+
+      return convertFunc.Invoke(value);
+    }
+
     public void RegisterInput(string input, InputValidator validator, bool required = true, string defaultValue = null)
     {
       // TODO: [TESTS] (TaskStepBase) Add tests

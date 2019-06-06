@@ -31,10 +31,10 @@ namespace TaskRunner.Steps.Console
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
 
-      var severity = SeverityMapper.MapSeverity(GetInput(context, "Severity"));
-      var message = GetInput(context, "Message");
-
-      Log(severity, message);
+      Log(
+        GetInput(context, "Severity", SeverityMapper.MapSeverity),
+        GetInput(context, "Message")
+      );
 
       return true;
     }
