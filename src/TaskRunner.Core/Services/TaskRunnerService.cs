@@ -66,7 +66,7 @@ namespace TaskRunner.Core.Services
         // TODO: [CURRENT] (TaskRunnerService) Sync generated step context with "currentStep"
 
         var stepContext = GenerateStepContext(task, currentStep.StepId, taskGlobalData);
-        var taskBuilderStep = GetRequestedStep(stepContext.Step);
+        var taskBuilderStep = GetRequestedStep(currentStep.Step);
 
         // TODO: [CHECK] (TaskRunnerService) Check for and handle no step found
 
@@ -215,7 +215,6 @@ namespace TaskRunner.Core.Services
       {
         StepId = stepId,
         StepName = task.Steps[stepId].StepName,
-        Step = task.Steps[stepId].Step,
         Arguments = new Dictionary<string, string>(),
         TaskData = taskData
       };
