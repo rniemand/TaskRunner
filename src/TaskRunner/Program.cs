@@ -116,8 +116,7 @@ namespace TaskRunner
         .AddSingleton<ISecretsService, SecretsService>()
         .AddSingleton<ITasksService, TasksService>()
         .AddSingleton<ITaskRunnerService, TaskRunnerService>()
-        .AddSingleton<ISchedulerService, SchedulerService>()
-        .AddSingleton<IStepContextService, StepContextService>();
+        .AddSingleton<ISchedulerService, SchedulerService>();
 
       // Misc
       collection

@@ -16,16 +16,16 @@ namespace TaskRunner.Core.Services
     private readonly IAppLogger _logger;
 
     private readonly List<IRunnerStep> _steps;
-    private readonly IStepContextService _stepContextService;
+    private readonly ISecretsService _secretsService;
 
 
     public TaskRunnerService(
       IAppLogger logger,
       IEnumerable<IRunnerStep> steps,
-      IStepContextService stepContextService)
+      ISecretsService secretsService)
     {
       _logger = logger;
-      _stepContextService = stepContextService;
+      _secretsService = secretsService;
       _steps = steps.ToList();
 
       // Log all loaded steps for troubleshooting
@@ -49,11 +49,11 @@ namespace TaskRunner.Core.Services
       }
 
       // Generate the initial step context and execute steps one by one
-      var stepContext = _stepContextService.CreateNewContext(task);
+      var stepContext = new StepContext();
 
       foreach (var currentStep in task.Steps)
       {
-        _stepContextService.SyncStep(stepContext, currentStep);
+        SyncStep(stepContext, currentStep);
         var runnerStep = ResolveStep(currentStep.Step);
 
         // TODO: [CHECK] (TaskRunnerService) Check for and handle no step found
@@ -225,6 +225,39 @@ namespace TaskRunner.Core.Services
 
       // Finally log published data message
       _logger.Debug(sb.ToString().Trim());
+    }
+
+    private Dictionary<string, string> GenerateStepArguments(StepContext context, RunnerStep step)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [LOGGING] (TaskRunnerService) Add logging
+
+      // NOTE: Below is the current list of value placeholders the service is aware of
+      //        {!Section.Key}    => retrieves the provided sections key value from your secrets file
+      //        {@StepName.Key}   => retrieves the published task data value from a previous step
+
+      var arguments = new Dictionary<string, string>();
+
+      foreach (var (key, value) in step.Arguments)
+      {
+        var argWithSecrets = _secretsService.ReplaceTags(value);
+        arguments[key] = context.ReplaceTags(argWithSecrets);
+      }
+
+      return arguments;
+    }
+
+    private void SyncStep(StepContext context, RunnerStep step)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      // Ensure that the StepId and StepName are correct
+      context.StepId = step.StepId;
+      context.StepName = step.StepName;
+
+      // Generate and update the current steps arguments
+      // NOTE: this call also resets the "DataPublished" flag
+      context.SetArguments(GenerateStepArguments(context, step));
     }
   }
 }
