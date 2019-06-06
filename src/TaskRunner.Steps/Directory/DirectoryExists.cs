@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Directory
+namespace TaskRunner.Steps.Directory
 {
-  public class DirectoryDelete : ITaskBuilderStep
+  public class DirectoryExists : ITaskBuilderStep
   {
-    // TODO: [DOCS] (DirectoryDelete) Document step
+    // TODO: [DOCS] (DirectoryExists) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public DirectoryDelete()
+    public DirectoryExists()
     {
-      Name = "Directory.Delete";
+      Name = "Directory.Exists";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (DirectoryDelete) Complete step
+      // TODO: [COMPLETE] (DirectoryExists) Complete step
 
       return true;
     }

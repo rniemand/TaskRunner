@@ -4,7 +4,7 @@ using TaskBuilder.Common.Extensions;
 using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Http
+namespace TaskRunner.Steps.Http
 {
   public class HttpGet : ITaskBuilderStep
   {

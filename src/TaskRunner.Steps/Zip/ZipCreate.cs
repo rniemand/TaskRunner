@@ -1,7 +1,7 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Zip
+namespace TaskRunner.Steps.Zip
 {
   public class ZipCreate : ITaskBuilderStep
   {

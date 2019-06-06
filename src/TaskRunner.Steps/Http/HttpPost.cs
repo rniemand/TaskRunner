@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Core
+namespace TaskRunner.Steps.Http
 {
-  public class FileLogger : ITaskBuilderStep
+  public class HttpPost : ITaskBuilderStep
   {
-    // TODO: [DOCS] (ConsoleLog) Document this step
+    // TODO: [DOCS] (HttpPost) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public FileLogger()
+    public HttpPost()
     {
-      Name = "File.Log";
+      Name = "Http.Post";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (FileLogger) Complete me
+      // TODO: [COMPLETE] (HttpPost) Complete this step
 
       return true;
     }

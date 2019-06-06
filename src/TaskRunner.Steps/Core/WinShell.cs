@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Zip
+namespace TaskRunner.Steps.Core
 {
-  public class ZipRemoveFiles : ITaskBuilderStep
+  public class WinShell : ITaskBuilderStep
   {
-    // TODO: [DOCS] (ZipRemoveFiles) Document step
+    // TODO: [DOCS] (WinShell) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public ZipRemoveFiles()
+    public WinShell()
     {
-      Name = "Zip.RemoveFiles";
+      Name = "Core.WinShell";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (ZipRemoveFiles) Complete step
+      // TODO: [COMPLETE] (WinShell) Complete step
 
       return true;
     }

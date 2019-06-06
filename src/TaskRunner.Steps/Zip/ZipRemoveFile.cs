@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Json
+namespace TaskRunner.Steps.Zip
 {
-  public class JsonLoadFromFile : ITaskBuilderStep
+  public class ZipRemoveFile : ITaskBuilderStep
   {
-    // TODO: [DOCS] (JsonLoadFromFile) Document step
+    // TODO: [DOCS] (ZipRemoveFile) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public JsonLoadFromFile()
+    public ZipRemoveFile()
     {
-      Name = "Json.LoadFromFile";
+      Name = "Zip.RemoveFile";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (JsonLoadFromFile) Complete step
+      // TODO: [COMPLETE] (ZipRemoveFile) Complete step
 
       return true;
     }

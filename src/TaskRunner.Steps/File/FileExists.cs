@@ -1,7 +1,7 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.File
+namespace TaskRunner.Steps.File
 {
   public class FileExists : ITaskBuilderStep
   {

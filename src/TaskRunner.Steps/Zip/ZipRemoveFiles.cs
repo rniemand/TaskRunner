@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Directory
+namespace TaskRunner.Steps.Zip
 {
-  public class DirectoryExists : ITaskBuilderStep
+  public class ZipRemoveFiles : ITaskBuilderStep
   {
-    // TODO: [DOCS] (DirectoryExists) Document step
+    // TODO: [DOCS] (ZipRemoveFiles) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public DirectoryExists()
+    public ZipRemoveFiles()
     {
-      Name = "Directory.Exists";
+      Name = "Zip.RemoveFiles";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (DirectoryExists) Complete step
+      // TODO: [COMPLETE] (ZipRemoveFiles) Complete step
 
       return true;
     }

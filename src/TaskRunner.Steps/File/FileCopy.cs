@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Directory
+namespace TaskRunner.Steps.File
 {
-  public class DirectoryCreate : ITaskBuilderStep
+  public class FileCopy : ITaskBuilderStep
   {
-    // TODO: [DOCS] (DirectoryCreate) Document step
+    // TODO: [DOCS] (FileCopy) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public DirectoryCreate()
+    public FileCopy()
     {
-      Name = "Directory.Create";
+      Name = "File.Copy";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (DirectoryCreate) Complete step
+      // TODO: [COMPLETE] (FileCopy) Complete this
 
       return true;
     }

@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using TaskBuilder.BaseSteps.Core;
-using TaskBuilder.BaseSteps.Directory;
-using TaskBuilder.BaseSteps.File;
-using TaskBuilder.BaseSteps.Http;
-using TaskBuilder.BaseSteps.Json;
-using TaskBuilder.BaseSteps.Zip;
 using TaskBuilder.Common.Abstractions;
 using TaskBuilder.Common.Abstractions.Interfaces;
 using TaskBuilder.Common.Builders;
@@ -18,6 +12,12 @@ using TaskBuilder.Common.Services.Interfaces;
 using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Enums;
 using TaskBuilder.Common.Tasks.Interfaces;
+using TaskRunner.Steps.Core;
+using TaskRunner.Steps.Directory;
+using TaskRunner.Steps.File;
+using TaskRunner.Steps.Http;
+using TaskRunner.Steps.Json;
+using TaskRunner.Steps.Zip;
 
 namespace TaskBuilder
 {

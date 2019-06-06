@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Core
+namespace TaskRunner.Steps.Core
 {
-  public class WinShell : ITaskBuilderStep
+  public class FileLogger : ITaskBuilderStep
   {
-    // TODO: [DOCS] (WinShell) Document step
+    // TODO: [DOCS] (ConsoleLog) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public WinShell()
+    public FileLogger()
     {
-      Name = "Core.WinShell";
+      Name = "File.Log";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (WinShell) Complete step
+      // TODO: [COMPLETE] (FileLogger) Complete me
 
       return true;
     }

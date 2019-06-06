@@ -6,7 +6,7 @@ using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Enums;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Core
+namespace TaskRunner.Steps.Core
 {
   // TODO: [DOCS] (ConsoleLog) Document this step
   // TODO: [DOCS] (ConsoleLog) Document argument: Severity (Optional - default Info)

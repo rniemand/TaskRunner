@@ -1,23 +1,23 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.File
+namespace TaskRunner.Steps.Zip
 {
-  public class FileDelete : ITaskBuilderStep
+  public class ZipAddFile : ITaskBuilderStep
   {
-    // TODO: [DOCS] (FileDelete) Document this step
+    // TODO: [DOCS] (ZipAddFile) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
     public string Name { get; }
 
-    public FileDelete()
+    public ZipAddFile()
     {
-      Name = "File.Delete";
+      Name = "Zip.AddFile";
     }
 
     public bool Execute(StepContext context)
     {
-      // TODO: [COMPLETE] (FileDelete) Complete this step
+      // TODO: [COMPLETE] (ZipAddFile) Complete step
 
       return true;
     }

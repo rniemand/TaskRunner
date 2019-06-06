@@ -1,7 +1,7 @@
 ﻿using TaskBuilder.Common.Tasks;
 using TaskBuilder.Common.Tasks.Interfaces;
 
-namespace TaskBuilder.BaseSteps.Json
+namespace TaskRunner.Steps.Json
 {
   public class JsonSaveToFile : ITaskBuilderStep
   {
