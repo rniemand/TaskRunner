@@ -13,12 +13,7 @@ using TaskRunner.Core.Services;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
 using TaskRunner.Steps.Console;
-using TaskRunner.Steps.Directory;
-using TaskRunner.Steps.File;
 using TaskRunner.Steps.Http;
-using TaskRunner.Steps.Json;
-using TaskRunner.Steps.Win;
-using TaskRunner.Steps.Zip;
 
 namespace TaskRunner
 {
@@ -126,23 +121,7 @@ namespace TaskRunner
       // Steps
       collection
         .AddSingleton<IRunnerStep, ConsoleLogger>()
-        .AddSingleton<IRunnerStep, FileLogger>()
-        .AddSingleton<IRunnerStep, FileCopy>()
-        .AddSingleton<IRunnerStep, FileDelete>()
-        .AddSingleton<IRunnerStep, FileExists>()
-        .AddSingleton<IRunnerStep, HttpPost>()
-        .AddSingleton<IRunnerStep, HttpGet>()
-        .AddSingleton<IRunnerStep, JsonSaveToFile>()
-        .AddSingleton<IRunnerStep, JsonLoadFromFile>()
-        .AddSingleton<IRunnerStep, ZipCreate>()
-        .AddSingleton<IRunnerStep, ZipAddFile>()
-        .AddSingleton<IRunnerStep, ZipAddFiles>()
-        .AddSingleton<IRunnerStep, ZipRemoveFile>()
-        .AddSingleton<IRunnerStep, ZipRemoveFiles>()
-        .AddSingleton<IRunnerStep, DirectoryExists>()
-        .AddSingleton<IRunnerStep, DirectoryCreate>()
-        .AddSingleton<IRunnerStep, DirectoryDelete>()
-        .AddSingleton<IRunnerStep, WinShell>();
+        .AddSingleton<IRunnerStep, HttpGet>();
 
       _serviceProvider = collection.BuildServiceProvider();
     }
