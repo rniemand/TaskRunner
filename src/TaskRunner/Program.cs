@@ -30,16 +30,69 @@ namespace TaskRunner
     {
       RegisterServices();
 
+
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
-
-
-      taskRunner.RunTask(GetDemoTask());
+      var testTask = GetDemoTask();
+      taskRunner.RunTask(testTask);
 
 
       DisposeServices();
       Console.ReadLine();
     }
 
+
+
+    // Initial development support methods
+    private static RunnerTask GetDemoTask()
+    {
+      return new RunnerTask
+      {
+        Enabled = true,
+        Name = "Console Logger Test Task",
+        Frequency = TaskInterval.Seconds,
+        FrequencyArgs = "5",
+        Steps = new[]
+        {
+          new RunnerStep
+          {
+            Enabled = true,
+            Arguments = new Dictionary<string, string>
+            {
+              {"RunnerSeverity", "Debug"},
+              {"Message", "Attempting to do something different!"}
+            },
+            FailAction = StepFailAction.Continue,
+            Step = "Console.Log",
+            StepName = "console1"
+          },
+          new RunnerStep
+          {
+            Enabled = true,
+            Arguments = new Dictionary<string, string>
+            {
+              {"Url", "{!FreeDns.NAS}"}
+            },
+            FailAction = StepFailAction.Continue,
+            Step = "Http.Get",
+            StepName = "update_nas"
+          },
+          new RunnerStep
+          {
+            Enabled = true,
+            Arguments = new Dictionary<string, string>
+            {
+              {"Message", "Http.Get completed with a '{@update_nas.response.status_code}' response code!"}
+            },
+            FailAction = StepFailAction.Continue,
+            Step = "Console.Log",
+            StepName = "log_output"
+          }
+        }
+      };
+    }
+
+
+    // Service management
     private static void RegisterServices()
     {
       var collection = new ServiceCollection();
@@ -100,54 +153,6 @@ namespace TaskRunner
       // ReSharper disable once MergeCastWithTypeCheck
       if (_serviceProvider is IDisposable)
         ((IDisposable)_serviceProvider).Dispose();
-    }
-
-    private static RunnerTask GetDemoTask()
-    {
-      return new RunnerTask
-      {
-        Enabled = true,
-        Name = "Console Logger Test Task",
-        Frequency = TaskInterval.Seconds,
-        FrequencyArgs = "5",
-        Steps = new[]
-        {
-          new RunnerStep
-          {
-            Enabled = true,
-            Arguments = new Dictionary<string, string>
-            {
-              {"RunnerSeverity", "Debug"},
-              {"Message", "Attempting to do something different!"}
-            },
-            FailAction = StepFailAction.Continue,
-            Step = "Console.Log",
-            StepName = "console1"
-          },
-          new RunnerStep
-          {
-            Enabled = true,
-            Arguments = new Dictionary<string, string>
-            {
-              {"Url", "{!FreeDns.NAS}"}
-            },
-            FailAction = StepFailAction.Continue,
-            Step = "Http.Get",
-            StepName = "update_nas"
-          },
-          new RunnerStep
-          {
-            Enabled = true,
-            Arguments = new Dictionary<string, string>
-            {
-              {"Message", "Http.Get completed with a '{@update_nas.response.status_code}' response code!"}
-            },
-            FailAction = StepFailAction.Continue,
-            Step = "Console.Log",
-            StepName = "log_output"
-          }
-        }
-      };
     }
   }
 }
