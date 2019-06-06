@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.Http;
+using TaskRunner.Core.Enums;
 using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps;
-using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Http
 {
@@ -23,7 +21,11 @@ namespace TaskRunner.Steps.Http
 
     public HttpGet(IAppLogger logger)
       : base(logger, "Http.Get")
-    { }
+    {
+      // TODO: [TESTS] (HttpGet) Add tests
+
+      RegisterInput("Url", InputValidator.Url);
+    }
 
     public override bool Execute(StepContext context)
     {

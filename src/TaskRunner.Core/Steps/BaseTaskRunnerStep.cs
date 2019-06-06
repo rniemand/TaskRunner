@@ -1,4 +1,6 @@
-﻿using TaskRunner.Core.Logging.Interfaces;
+﻿using System.Collections.Generic;
+using TaskRunner.Core.Enums;
+using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Core.Steps
@@ -7,13 +9,19 @@ namespace TaskRunner.Core.Steps
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }
+    public List<StepParameter> Parameters { get; set; }
 
+    // Constructor
     public BaseTaskRunnerStep(IAppLogger logger, string name)
     {
       Logger = logger;
       Name = name;
+
+      Parameters = new List<StepParameter>();
     }
 
+
+    // Public methods
     public virtual bool Execute(StepContext context)
     {
       throw new System.NotImplementedException();
@@ -38,6 +46,18 @@ namespace TaskRunner.Core.Steps
       }
 
       return true;
+    }
+
+    public void RegisterInput(string input, InputValidator validator, bool required = true)
+    {
+      // TODO: [TESTS] (BaseTaskRunnerStep) Add tests
+
+      Parameters.Add(new StepParameter
+      {
+        Name = input,
+        Required = required,
+        Validator = validator
+      });
     }
   }
 }
