@@ -63,7 +63,7 @@ namespace TaskRunner.Core.Services
 
 
         // TODO: [CURRENT] (TaskRunnerService) Discover and load all task validators dynamically
-        var validators = new List<IStepSuccessValidator>
+        stepContext.RegisterStepValidators(new List<IStepSuccessValidator>
         {
           new PocSuccessValidator
           {
@@ -73,9 +73,9 @@ namespace TaskRunner.Core.Services
               {"Contains", "has not changed"}
             }
           }
-        };
+        });
 
-        if (!runnerStep.Execute(stepContext, validators))
+        if (!runnerStep.Execute(stepContext))
         {
           // TODO: [COMPLETE] (TaskRunnerService) Handle step execution failed (based on configuration)
 

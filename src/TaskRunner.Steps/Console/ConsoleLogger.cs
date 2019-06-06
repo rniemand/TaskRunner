@@ -28,7 +28,7 @@ namespace TaskRunner.Steps.Console
 
 
     // Public methods
-    public bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
+    public bool Execute(StepContext context)
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
 

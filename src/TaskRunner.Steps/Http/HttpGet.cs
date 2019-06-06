@@ -25,7 +25,7 @@ namespace TaskRunner.Steps.Http
       : base(logger, "Http.Get")
     { }
 
-    public override bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
+    public override bool Execute(StepContext context)
     {
       // TODO: [TESTS] (HttpGet) Add tests
 
@@ -61,7 +61,7 @@ namespace TaskRunner.Steps.Http
       }
 
       // Verify that the task execution was successful
-      return RunTaskValidators(context, validators);
+      return RunTaskValidators(context);
     }
   }
 }

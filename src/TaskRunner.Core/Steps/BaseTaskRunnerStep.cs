@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TaskRunner.Core.Logging.Interfaces;
+﻿using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Core.Steps
@@ -15,18 +14,18 @@ namespace TaskRunner.Core.Steps
       Name = name;
     }
 
-    public virtual bool Execute(StepContext context, List<IStepSuccessValidator> validators = null)
+    public virtual bool Execute(StepContext context)
     {
       throw new System.NotImplementedException();
     }
 
-    public bool RunTaskValidators(StepContext context, List<IStepSuccessValidator> validators = null)
+    public bool RunTaskValidators(StepContext context)
     {
-      if (validators == null)
+      if (context.Validators == null)
         return true;
 
       // Execute each validation function looking for failures
-      foreach (var validator in validators)
+      foreach (var validator in context.Validators)
       {
         if (validator.Validate(context))
           continue;

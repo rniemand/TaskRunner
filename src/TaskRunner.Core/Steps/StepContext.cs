@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TaskRunner.Core.Extensions;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Core.Steps
 {
@@ -12,6 +13,7 @@ namespace TaskRunner.Core.Steps
     public string StepName { get; set; }
     public bool DataPublished { get; private set; }
     public string TaskName { get; set; }
+    public List<IStepSuccessValidator> Validators { get; private set; }
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
 
@@ -26,6 +28,7 @@ namespace TaskRunner.Core.Steps
 
       _arguments = new Dictionary<string, string>();
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
+      Validators = new List<IStepSuccessValidator>();
       DataPublished = false;
     }
 
@@ -59,6 +62,18 @@ namespace TaskRunner.Core.Steps
 
       // Argument exists, return it
       return _arguments[argument];
+    }
+
+    public void RegisterStepValidators(List<IStepSuccessValidator> validators = null)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      Validators.Clear();
+
+      if(validators == null || validators.Count == 0)
+        return;
+
+      Validators = validators;
     }
 
     public Dictionary<string, string> GetCurrentStepsPublishedData()
