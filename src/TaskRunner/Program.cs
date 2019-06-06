@@ -11,8 +11,7 @@ using TaskRunner.Core.Logging;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services;
 using TaskRunner.Core.Services.Interfaces;
-using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+using TaskRunner.Core.Steps.Interfaces;
 using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Directory;
 using TaskRunner.Steps.File;
@@ -69,24 +68,24 @@ namespace TaskRunner
 
       // Steps
       collection
-        .AddSingleton<ITaskBuilderStep, ConsoleLogger>()
-        .AddSingleton<ITaskBuilderStep, FileLogger>()
-        .AddSingleton<ITaskBuilderStep, FileCopy>()
-        .AddSingleton<ITaskBuilderStep, FileDelete>()
-        .AddSingleton<ITaskBuilderStep, FileExists>()
-        .AddSingleton<ITaskBuilderStep, HttpPost>()
-        .AddSingleton<ITaskBuilderStep, HttpGet>()
-        .AddSingleton<ITaskBuilderStep, JsonSaveToFile>()
-        .AddSingleton<ITaskBuilderStep, JsonLoadFromFile>()
-        .AddSingleton<ITaskBuilderStep, ZipCreate>()
-        .AddSingleton<ITaskBuilderStep, ZipAddFile>()
-        .AddSingleton<ITaskBuilderStep, ZipAddFiles>()
-        .AddSingleton<ITaskBuilderStep, ZipRemoveFile>()
-        .AddSingleton<ITaskBuilderStep, ZipRemoveFiles>()
-        .AddSingleton<ITaskBuilderStep, DirectoryExists>()
-        .AddSingleton<ITaskBuilderStep, DirectoryCreate>()
-        .AddSingleton<ITaskBuilderStep, DirectoryDelete>()
-        .AddSingleton<ITaskBuilderStep, WinShell>();
+        .AddSingleton<IRunnerStep, ConsoleLogger>()
+        .AddSingleton<IRunnerStep, FileLogger>()
+        .AddSingleton<IRunnerStep, FileCopy>()
+        .AddSingleton<IRunnerStep, FileDelete>()
+        .AddSingleton<IRunnerStep, FileExists>()
+        .AddSingleton<IRunnerStep, HttpPost>()
+        .AddSingleton<IRunnerStep, HttpGet>()
+        .AddSingleton<IRunnerStep, JsonSaveToFile>()
+        .AddSingleton<IRunnerStep, JsonLoadFromFile>()
+        .AddSingleton<IRunnerStep, ZipCreate>()
+        .AddSingleton<IRunnerStep, ZipAddFile>()
+        .AddSingleton<IRunnerStep, ZipAddFiles>()
+        .AddSingleton<IRunnerStep, ZipRemoveFile>()
+        .AddSingleton<IRunnerStep, ZipRemoveFiles>()
+        .AddSingleton<IRunnerStep, DirectoryExists>()
+        .AddSingleton<IRunnerStep, DirectoryCreate>()
+        .AddSingleton<IRunnerStep, DirectoryDelete>()
+        .AddSingleton<IRunnerStep, WinShell>();
 
       _serviceProvider = collection.BuildServiceProvider();
     }

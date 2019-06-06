@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.File
 {
-  public class FileDelete : ITaskBuilderStep
+  public class FileDelete : IRunnerStep
   {
     // TODO: [DOCS] (FileDelete) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

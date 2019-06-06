@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Zip
 {
-  public class ZipAddFile : ITaskBuilderStep
+  public class ZipAddFile : IRunnerStep
   {
     // TODO: [DOCS] (ZipAddFile) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Directory
 {
-  public class DirectoryCreate : ITaskBuilderStep
+  public class DirectoryCreate : IRunnerStep
   {
     // TODO: [DOCS] (DirectoryCreate) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

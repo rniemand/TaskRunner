@@ -2,7 +2,7 @@
 using TaskRunner.Core.Configuration;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
-using TaskRunner.Core.Tasks;
+using TaskRunner.Core.Steps;
 
 namespace TaskRunner.Core.Services
 {

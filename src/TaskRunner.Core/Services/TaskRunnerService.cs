@@ -6,8 +6,8 @@ using TaskRunner.Core.Configuration;
 using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
-using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Core.Services
 {
@@ -15,7 +15,7 @@ namespace TaskRunner.Core.Services
   {
     private readonly IAppLogger _logger;
 
-    private readonly List<ITaskBuilderStep> _steps;
+    private readonly List<IRunnerStep> _steps;
     // TODO: [REMOVE] (TaskRunnerService) Remove once we have a running service - used at the moment to bootstrap the secrets service
     private readonly IConfigService _configService;
     private readonly ISecretsService _secretsService;
@@ -26,7 +26,7 @@ namespace TaskRunner.Core.Services
       IAppLogger logger,
       ISecretsService secretsService,
       IConfigService configService,
-      IEnumerable<ITaskBuilderStep> steps,
+      IEnumerable<IRunnerStep> steps,
       IStepContextService stepContextService)
     {
       _logger = logger;
@@ -235,7 +235,7 @@ namespace TaskRunner.Core.Services
       return context;
     }
 
-    private ITaskBuilderStep GetRequestedStep(string stepName)
+    private IRunnerStep GetRequestedStep(string stepName)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 

@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Json
 {
-  public class JsonLoadFromFile : ITaskBuilderStep
+  public class JsonLoadFromFile : IRunnerStep
   {
     // TODO: [DOCS] (JsonLoadFromFile) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

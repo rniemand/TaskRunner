@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.File
 {
-  public class FileCopy : ITaskBuilderStep
+  public class FileCopy : IRunnerStep
   {
     // TODO: [DOCS] (FileCopy) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

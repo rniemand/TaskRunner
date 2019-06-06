@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
 using TaskRunner.Core.Extensions;
-using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Http
 {
-  public class HttpGet : ITaskBuilderStep
+  public class HttpGet : IRunnerStep
   {
     // TODO: [DOCS] (HttpGet) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

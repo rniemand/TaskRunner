@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.File
 {
-  public class FileExists : ITaskBuilderStep
+  public class FileExists : IRunnerStep
   {
     // TODO: [DOCS] (FileExists) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

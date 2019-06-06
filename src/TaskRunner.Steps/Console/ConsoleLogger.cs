@@ -3,8 +3,8 @@ using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Mappers;
-using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Console
 {
@@ -13,7 +13,7 @@ namespace TaskRunner.Steps.Console
   // TODO: [DOCS] (ConsoleLog) Document argument: Message
   // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
-  public class ConsoleLogger : ITaskBuilderStep
+  public class ConsoleLogger : IRunnerStep
   {
     public string Name { get; }
 

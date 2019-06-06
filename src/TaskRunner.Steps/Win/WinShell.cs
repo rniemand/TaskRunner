@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Win
 {
-  public class WinShell : ITaskBuilderStep
+  public class WinShell : IRunnerStep
   {
     // TODO: [DOCS] (WinShell) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

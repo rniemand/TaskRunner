@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using TaskRunner.Core.Tasks;
+using TaskRunner.Core.Steps;
 
 namespace TaskRunner.Core.Extensions
 {

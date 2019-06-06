@@ -1,9 +1,9 @@
-﻿using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Interfaces;
+﻿using TaskRunner.Core.Steps;
+using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Zip
 {
-  public class ZipRemoveFiles : ITaskBuilderStep
+  public class ZipRemoveFiles : IRunnerStep
   {
     // TODO: [DOCS] (ZipRemoveFiles) Document step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
