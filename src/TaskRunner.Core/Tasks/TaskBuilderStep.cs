@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using TaskRunner.Core.Tasks.Enums;
+using TaskRunner.Core.Enums;
 
 namespace TaskRunner.Core.Tasks
 {

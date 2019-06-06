@@ -5,12 +5,12 @@ using TaskRunner.Core.Abstractions;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Builders;
 using TaskRunner.Core.Builders.Interfaces;
+using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Enums;
 using TaskRunner.Core.Tasks.Interfaces;
 using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Directory;
@@ -117,7 +117,7 @@ namespace TaskRunner
             Enabled = true,
             Arguments = new Dictionary<string, string>
             {
-              {"Severity", "Debug"},
+              {"RunnerSeverity", "Debug"},
               {"Message", "Attempting to do something different!"}
             },
             FailAction = StepFailAction.Continue,

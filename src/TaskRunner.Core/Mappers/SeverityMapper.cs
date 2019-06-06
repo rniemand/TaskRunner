@@ -1,11 +1,11 @@
-﻿using TaskRunner.Core.Extensions;
-using TaskRunner.Core.Tasks.Enums;
+﻿using TaskRunner.Core.Enums;
+using TaskRunner.Core.Extensions;
 
 namespace TaskRunner.Core.Mappers
 {
   public class SeverityMapper
   {
-    public static Severity MapSeverity(string input, Severity fallback = Severity.Debug)
+    public static RunnerSeverity MapSeverity(string input, RunnerSeverity fallback = RunnerSeverity.Debug)
     {
       // TODO: [TESTS] (SeverityMapper) Add tests
 
@@ -17,27 +17,27 @@ namespace TaskRunner.Core.Mappers
         case "v":
         case "ver":
         case "verbose":
-          return Severity.Verbose;
+          return RunnerSeverity.Verbose;
 
         case "d":
         case "dbg":
         case "debug":
-          return Severity.Debug;
+          return RunnerSeverity.Debug;
 
         case "i":
         case "info":
         case "informational":
-          return Severity.Info;
+          return RunnerSeverity.Info;
 
         case "w":
         case "warn":
         case "warning":
-          return Severity.Warn;
+          return RunnerSeverity.Warn;
 
         case "e":
         case "err":
         case "error":
-          return Severity.Error;
+          return RunnerSeverity.Error;
 
         default:
           return fallback;

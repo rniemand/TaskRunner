@@ -1,5 +1,5 @@
 ﻿using System;
-using TaskRunner.Core.Tasks.Enums;
+using TaskRunner.Core.Enums;
 
 namespace TaskRunner.Core.Tasks
 {

@@ -1,15 +1,15 @@
 ﻿using System;
 using TaskRunner.Core.Abstractions.Interfaces;
+using TaskRunner.Core.Enums;
 using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Mappers;
 using TaskRunner.Core.Tasks;
-using TaskRunner.Core.Tasks.Enums;
 using TaskRunner.Core.Tasks.Interfaces;
 
 namespace TaskRunner.Steps.Console
 {
   // TODO: [DOCS] (ConsoleLog) Document this step
-  // TODO: [DOCS] (ConsoleLog) Document argument: Severity (Optional - default Info)
+  // TODO: [DOCS] (ConsoleLog) Document argument: RunnerSeverity (Optional - default Info)
   // TODO: [DOCS] (ConsoleLog) Document argument: Message
   // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
@@ -33,8 +33,8 @@ namespace TaskRunner.Steps.Console
       // TODO: [TESTS] (ConsoleLog) Add tests
 
       var severity = SeverityMapper.MapSeverity(
-        context.GetArgument("Severity"),
-        Severity.Info
+        context.GetArgument("RunnerSeverity"),
+        RunnerSeverity.Info
       );
 
       Log(severity, context.GetArgument("Message"));
@@ -44,26 +44,26 @@ namespace TaskRunner.Steps.Console
 
 
     // Internal methods
-    private void Log(Severity severity, string message)
+    private void Log(RunnerSeverity severity, string message)
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
 
       // ReSharper disable once SwitchStatementMissingSomeCases
       switch (severity)
       {
-        case Severity.Verbose:
+        case RunnerSeverity.Verbose:
           LogVerbose(message);
           return;
 
-        case Severity.Debug:
+        case RunnerSeverity.Debug:
           LogDebug(message);
           return;
 
-        case Severity.Info:
+        case RunnerSeverity.Info:
           LogInfo(message);
           return;
 
-        case Severity.Warn:
+        case RunnerSeverity.Warn:
           LogWarn(message);
           return;
 

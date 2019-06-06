@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Core.Tasks.Enums
+﻿namespace TaskRunner.Core.Enums
 {
   public enum StepFailAction
   {
