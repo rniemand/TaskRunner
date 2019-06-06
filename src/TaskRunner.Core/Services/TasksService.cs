@@ -44,7 +44,7 @@ namespace TaskRunner.Core.Services
       // TODO: [REVISE] (ConfigService) Move into a TasksService
 
       // Generate the task folder path and ensure that it exists
-      var rawTasksDir = _secretsService.ReplacePlaceholders(baseConfig.TasksFolder);
+      var rawTasksDir = _secretsService.ReplaceTags(baseConfig.TasksFolder);
       var tasksDir = _pathBuilder.Build(rawTasksDir);
 
       EnsureTaskDirExists(tasksDir);

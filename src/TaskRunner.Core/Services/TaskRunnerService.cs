@@ -227,7 +227,7 @@ namespace TaskRunner.Core.Services
         //        {@StepName.Key}   => retrieves the published task data value from a previous step
 
         context.Arguments[key] = context.ReplaceTags(
-          _secretsService.ReplacePlaceholders(value)
+          _secretsService.ReplaceTags(value)
         );
       }
 

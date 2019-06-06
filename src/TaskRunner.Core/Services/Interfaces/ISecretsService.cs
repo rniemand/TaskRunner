@@ -5,7 +5,7 @@ namespace TaskRunner.Core.Services.Interfaces
   public interface ISecretsService
   {
     void Reconfigure(TaskRunnerConfig baseConfig);
-    string ReplacePlaceholders(string input);
+    string ReplaceTags(string input);
     bool HasSecret(string secretKey);
     string GetSecret(string secretKey);
   }

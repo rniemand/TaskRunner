@@ -47,7 +47,7 @@ namespace TaskRunner.Core.Services
       LoadSecretsFile(baseConfig);
     }
 
-    public string ReplacePlaceholders(string input)
+    public string ReplaceTags(string input)
     {
       // TODO: [TESTS] (SecretsService) Add tests
 
