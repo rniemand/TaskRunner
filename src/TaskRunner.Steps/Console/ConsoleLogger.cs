@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Mappers;
 using TaskRunner.Core.Steps;
-using TaskRunner.Core.Steps.Interfaces;
 
 namespace TaskRunner.Steps.Console
 {
@@ -33,14 +31,10 @@ namespace TaskRunner.Steps.Console
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
 
-      GetInput("Severity");
+      var severity = SeverityMapper.MapSeverity(GetInput(context, "Severity"));
+      var message = GetInput(context, "Message");
 
-      var severity = SeverityMapper.MapSeverity(
-        context.GetArgument("Severity"),
-        RunnerSeverity.Info
-      );
-
-      Log(severity, context.GetArgument("Message"));
+      Log(severity, message);
 
       return true;
     }

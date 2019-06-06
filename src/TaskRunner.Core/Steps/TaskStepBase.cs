@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
@@ -29,6 +31,8 @@ namespace TaskRunner.Core.Steps
 
     public bool RunTaskValidators(StepContext context)
     {
+      // TODO: [TESTS] (TaskStepBase) Add tests
+
       if (context.Validators == null)
         return true;
 
@@ -48,15 +52,22 @@ namespace TaskRunner.Core.Steps
       return true;
     }
 
-    public string GetInput(string name)
+    public string GetInput(StepContext context, string name)
     {
       // TODO: [TESTS] (TaskStepBase) Add tests
 
+      // TODO: [COMPLETE] (TaskStepBase) Handle this better - should we LOG or THROW?
+      if (Parameters.All(x => x.Name != name))
+        throw new Exception($"Requested parameter {name} was not provided");
 
+      // Grab the parameter - we may need the default value
+      var param = Parameters.FirstOrDefault(x => x.Name == name);
 
+      var argument = context.GetArgument(param.Name, param.DefaultValue);
 
+      // TODO: [COMPLETE] (TaskStepBase) Validate the parameter based on "param.Validator"
 
-      return string.Empty;
+      return argument;
     }
 
     public void RegisterInput(string input, InputValidator validator, bool required = true, string defaultValue = null)
