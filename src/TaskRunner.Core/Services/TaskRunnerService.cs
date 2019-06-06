@@ -16,22 +16,15 @@ namespace TaskRunner.Core.Services
     private readonly IAppLogger _logger;
 
     private readonly List<IRunnerStep> _steps;
-    // TODO: [REMOVE] (TaskRunnerService) Remove once we have a running service - used at the moment to bootstrap the secrets service
-    private readonly IConfigService _configService;
-    private readonly ISecretsService _secretsService;
     private readonly IStepContextService _stepContextService;
 
 
     public TaskRunnerService(
       IAppLogger logger,
-      ISecretsService secretsService,
-      IConfigService configService,
       IEnumerable<IRunnerStep> steps,
       IStepContextService stepContextService)
     {
       _logger = logger;
-      _secretsService = secretsService;
-      _configService = configService;
       _stepContextService = stepContextService;
       _steps = steps.ToList();
 

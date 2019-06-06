@@ -31,6 +31,12 @@ namespace TaskRunner
       RegisterServices();
 
 
+      // Hack:  for now - need "IConfigService" to configure secrets and tasks
+      //        This will be resolved when we make use of the TaskService to resolve and run tasks
+      var configService = _serviceProvider.GetService<IConfigService>();
+      Console.WriteLine($"Using config file: {configService.ConfigFilePath}");
+
+      // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
       var testTask = GetDemoTask();
       taskRunner.RunTask(testTask);
