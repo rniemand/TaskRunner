@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TaskRunner.Shared\TaskRunner.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

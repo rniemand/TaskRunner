@@ -1,5 +1,5 @@
-﻿using TaskRunner.Shared.Tasks;
-using TaskRunner.Shared.Tasks.Interfaces;
+﻿using TaskRunner.Core.Tasks;
+using TaskRunner.Core.Tasks.Interfaces;
 
 namespace TaskRunner.Steps.Directory
 {

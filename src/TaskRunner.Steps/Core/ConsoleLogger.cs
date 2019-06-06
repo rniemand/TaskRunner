@@ -1,10 +1,10 @@
 ﻿using System;
-using TaskRunner.Shared.Abstractions.Interfaces;
-using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Mappers;
-using TaskRunner.Shared.Tasks;
-using TaskRunner.Shared.Tasks.Enums;
-using TaskRunner.Shared.Tasks.Interfaces;
+using TaskRunner.Core.Abstractions.Interfaces;
+using TaskRunner.Core.Extensions;
+using TaskRunner.Core.Mappers;
+using TaskRunner.Core.Tasks;
+using TaskRunner.Core.Tasks.Enums;
+using TaskRunner.Core.Tasks.Interfaces;
 
 namespace TaskRunner.Steps.Core
 {
