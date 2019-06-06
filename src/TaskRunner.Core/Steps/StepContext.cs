@@ -10,14 +10,12 @@ namespace TaskRunner.Core.Steps
 
     public int StepId { get; set; }
     public string StepName { get; set; }
-    public bool DataPublished { get; set; }
-
+    public bool DataPublished { get; private set; }
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
-    // TODO: [REFACTOR] (StepContext) Convert to private
-    public Dictionary<string, string> Arguments { get; set; }
-    // TODO: [REFACTOR] (StepContext) Convert to private
-    public Dictionary<string, Dictionary<string, string>> PublishedData { get; set; }
+
+    private Dictionary<string, string> _arguments;
+    private readonly Dictionary<string, Dictionary<string, string>> _publishedData;
 
 
     // Constructor
@@ -25,7 +23,8 @@ namespace TaskRunner.Core.Steps
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      PublishedData = new Dictionary<string, Dictionary<string, string>>();
+      _arguments = new Dictionary<string, string>();
+      _publishedData = new Dictionary<string, Dictionary<string, string>>();
       DataPublished = false;
     }
 
@@ -35,12 +34,13 @@ namespace TaskRunner.Core.Steps
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      Arguments.Clear();
+      _arguments.Clear();
+      DataPublished = false;
 
-      if(arguments.Count == 0)
+      if (arguments.Count == 0)
         return;
 
-      Arguments = arguments;
+      _arguments = arguments;
     }
 
     public string GetArgument(string argument, string fallback = null)
@@ -48,16 +48,27 @@ namespace TaskRunner.Core.Steps
       // TODO: [TESTS] (StepContext) Add tests
 
       // Ensure that we have something to work with
-      if (Arguments == null || Arguments.Count == 0)
+      if (_arguments == null || _arguments.Count == 0)
         return fallback;
 
       // Check to see if the requested argument exists
       // ReSharper disable once ConvertIfStatementToReturnStatement
-      if (!Arguments.ContainsKey(argument))
+      if (!_arguments.ContainsKey(argument))
         return fallback;
 
       // Argument exists, return it
-      return Arguments[argument];
+      return _arguments[argument];
+    }
+
+    public Dictionary<string, string> GetCurrentStepsPublishedData()
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      // Check to see if there is any published data to return
+      if (_publishedData.Count == 0 || !_publishedData.ContainsKey(StepName))
+        return new Dictionary<string, string>();
+
+      return _publishedData[StepName];
     }
 
     public string ReplaceTags(string input)
@@ -98,11 +109,11 @@ namespace TaskRunner.Core.Steps
         return;
 
       // Ensure we have a dictionary to store data in
-      if (!PublishedData.ContainsKey(StepName))
-        PublishedData[StepName] = new Dictionary<string, string>();
+      if (!_publishedData.ContainsKey(StepName))
+        _publishedData[StepName] = new Dictionary<string, string>();
 
       // Publish the given data
-      PublishedData[StepName][key.TrimAndLower()] = value;
+      _publishedData[StepName][key.TrimAndLower()] = value;
       DataPublished = true;
     }
 
@@ -131,13 +142,13 @@ namespace TaskRunner.Core.Steps
         return string.Empty;
 
       // Check if the step published any data
-      if (!PublishedData.ContainsKey(stepName))
+      if (!_publishedData.ContainsKey(stepName))
         return string.Empty;
 
       // Check if the requested key exists
-      return !PublishedData[stepName].ContainsKey(key)
+      return !_publishedData[stepName].ContainsKey(key)
         ? string.Empty
-        : PublishedData[stepName][key];
+        : _publishedData[stepName][key];
     }
   }
 }

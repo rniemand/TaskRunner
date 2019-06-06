@@ -54,7 +54,7 @@ namespace TaskRunner
       return new RunnerTask
       {
         Enabled = true,
-        Name = "Console Logger Test Task",
+        Name = "Development super task 1",
         Frequency = TaskInterval.Seconds,
         FrequencyArgs = "5",
         Steps = new[]
@@ -64,7 +64,7 @@ namespace TaskRunner
             Enabled = true,
             Arguments = new Dictionary<string, string>
             {
-              {"RunnerSeverity", "Debug"},
+              {"Severity", "Info"},
               {"Message", "Attempting to do something different!"}
             },
             FailAction = StepFailAction.Continue,
@@ -90,8 +90,7 @@ namespace TaskRunner
               {"Message", "Http.Get completed with a '{@update_nas.response.status_code}' response code!"}
             },
             FailAction = StepFailAction.Continue,
-            Step = "Console.Log",
-            StepName = "log_output"
+            Step = "Console.Log"
           }
         }
       };

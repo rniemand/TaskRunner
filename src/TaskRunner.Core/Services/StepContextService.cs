@@ -24,10 +24,7 @@ namespace TaskRunner.Core.Services
       // TODO: [TESTS] (StepContextService) Add tests
 
       // Create a new step context based on the provided data
-      var context = new StepContext
-      {
-        Arguments = new Dictionary<string, string>()
-      };
+      var context = new StepContext();
 
       _logger.Debug("Created initial context for task {task}", task.Name);
 
@@ -42,10 +39,8 @@ namespace TaskRunner.Core.Services
       context.StepId = step.StepId;
       context.StepName = step.StepName;
 
-      // Reset data published flag
-      context.DataPublished = false;
-
       // Generate and update the current steps arguments
+      // NOTE: this call also resets the "DataPublished" flag
       context.SetArguments(GenerateStepArguments(context, step));
     }
 

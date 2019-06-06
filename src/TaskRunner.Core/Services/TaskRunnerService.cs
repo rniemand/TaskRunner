@@ -190,10 +190,9 @@ namespace TaskRunner.Core.Services
         return;
 
       // Count published data points and work out the longest "key" length
-      var count = stepContext.PublishedData[stepContext.StepName].Count;
-      var longestKey = stepContext.PublishedData[stepContext.StepName]
-        .Select(x => x.Key)
-        .Max(x => x.Length);
+      var publishedData = stepContext.GetCurrentStepsPublishedData();
+      var longestKey = publishedData.Select(x => x.Key).Max(x => x.Length);
+      var count = publishedData.Count;
 
       // Generate published data message
       var sb = new StringBuilder()
@@ -203,7 +202,7 @@ namespace TaskRunner.Core.Services
         .Append(Environment.NewLine);
 
       // Generate a line per published item (use "longestKey" to align logged data for easier reading)
-      foreach (var (key, value) in stepContext.PublishedData[stepContext.StepName])
+      foreach (var (key, value) in publishedData)
       {
         sb.Append($"    {stepContext.StepName}.{key.PadRight(longestKey, ' ')} : ");
         sb.Append(value);

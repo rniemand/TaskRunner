@@ -1,7 +1,6 @@
 ﻿using System;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Enums;
-using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Mappers;
 using TaskRunner.Core.Steps;
 using TaskRunner.Core.Steps.Interfaces;
@@ -9,7 +8,7 @@ using TaskRunner.Core.Steps.Interfaces;
 namespace TaskRunner.Steps.Console
 {
   // TODO: [DOCS] (ConsoleLog) Document this step
-  // TODO: [DOCS] (ConsoleLog) Document argument: RunnerSeverity (Optional - default Info)
+  // TODO: [DOCS] (ConsoleLog) Document argument: Severity (Optional - default Info)
   // TODO: [DOCS] (ConsoleLog) Document argument: Message
   // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
@@ -33,7 +32,7 @@ namespace TaskRunner.Steps.Console
       // TODO: [TESTS] (ConsoleLog) Add tests
 
       var severity = SeverityMapper.MapSeverity(
-        context.GetArgument("RunnerSeverity"),
+        context.GetArgument("Severity"),
         RunnerSeverity.Info
       );
 
