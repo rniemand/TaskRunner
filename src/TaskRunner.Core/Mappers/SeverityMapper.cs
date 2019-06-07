@@ -1,4 +1,4 @@
-﻿using TaskRunner.Core.Enums;
+﻿using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Extensions;
 
 namespace TaskRunner.Core.Mappers

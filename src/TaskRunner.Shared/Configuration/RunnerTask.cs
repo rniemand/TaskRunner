@@ -1,7 +1,7 @@
 ﻿using System;
-using TaskRunner.Core.Enums;
+using TaskRunner.Shared.Enums;
 
-namespace TaskRunner.Core.Configuration
+namespace TaskRunner.Shared.Configuration
 {
   public class RunnerTask
   {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using TaskRunner.Core.Enums;
+using TaskRunner.Shared.Enums;
 
-namespace TaskRunner.Core.Configuration
+namespace TaskRunner.Shared.Configuration
 {
   [DebuggerDisplay("{StepId}: {StepName} ({Step})")]
   public class RunnerStep

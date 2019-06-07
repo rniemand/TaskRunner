@@ -5,13 +5,13 @@ using TaskRunner.Core.Abstractions;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Builders;
 using TaskRunner.Core.Builders.Interfaces;
-using TaskRunner.Core.Configuration;
-using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Shared.Configuration;
+using TaskRunner.Shared.Enums;
 using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Http;
 

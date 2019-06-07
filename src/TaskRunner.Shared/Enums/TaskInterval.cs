@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Core.Enums
+﻿namespace TaskRunner.Shared.Enums
 {
   public enum TaskInterval
   {

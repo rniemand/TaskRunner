@@ -1,8 +1,8 @@
-﻿using TaskRunner.Core.Enums;
+﻿using TaskRunner.Shared.Enums;
 
 namespace TaskRunner.Core.Steps
 {
-  public struct StepInpt
+  public struct StepInput
   {
     public string Name { get; set; }
     public bool Required { get; set; }

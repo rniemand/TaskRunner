@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TaskRunner.Core.Configuration;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Steps;
 using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Tasks;
 

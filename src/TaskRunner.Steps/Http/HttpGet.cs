@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
-using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps;
+using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Tasks;
 

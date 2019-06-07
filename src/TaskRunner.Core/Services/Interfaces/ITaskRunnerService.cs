@@ -1,4 +1,4 @@
-﻿using TaskRunner.Core.Configuration;
+﻿using TaskRunner.Shared.Configuration;
 
 namespace TaskRunner.Core.Services.Interfaces
 {

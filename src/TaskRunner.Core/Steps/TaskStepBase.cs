@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Core.Steps
@@ -14,7 +14,7 @@ namespace TaskRunner.Core.Steps
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }
-    public List<StepInpt> Inputs { get; set; }
+    public List<StepInput> Inputs { get; set; }
 
 
     // Constructor
@@ -23,7 +23,7 @@ namespace TaskRunner.Core.Steps
       Logger = logger;
       Name = name;
 
-      Inputs = new List<StepInpt>();
+      Inputs = new List<StepInput>();
     }
 
 
@@ -129,7 +129,7 @@ namespace TaskRunner.Core.Steps
     {
       // TODO: [TESTS] (TaskStepBase) Add tests
 
-      Inputs.Add(new StepInpt
+      Inputs.Add(new StepInput
       {
         Name = inputName,
         Required = required,

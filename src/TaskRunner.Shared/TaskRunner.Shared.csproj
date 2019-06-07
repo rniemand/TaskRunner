@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\RunnerStep.cs" />
+    <Compile Include="Configuration\RunnerTask.cs" />
+    <Compile Include="Enums\InputValidator.cs" />
+    <Compile Include="Enums\RunnerSeverity.cs" />
+    <Compile Include="Enums\StepFailAction.cs" />
+    <Compile Include="Enums\TaskInterval.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interfaces\IStepSuccessValidator.cs" />
