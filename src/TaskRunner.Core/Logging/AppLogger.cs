@@ -34,6 +34,9 @@ namespace TaskRunner.Core.Logging
     }
 
 
+    // TODO: [CURRENT] (AppLogger) Add Verbose() to logger - this can be used for noisy important DEBUG messages
+
+
     // Debug
     public void Debug(string template)
     {
@@ -50,6 +53,11 @@ namespace TaskRunner.Core.Logging
       _logger.Debug(template, p1, p2);
     }
 
+    public void Debug<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3)
+    {
+      _logger.Debug(template, p1, p2, p3);
+    }
+
 
     // Info
     public void Info(string template)
@@ -60,6 +68,11 @@ namespace TaskRunner.Core.Logging
     public void Info<T>(string template, T p1)
     {
       _logger.Information(template, p1);
+    }
+
+    public void Info<T1, T2>(string template, T1 p1, T2 p2)
+    {
+      _logger.Information(template, p1, p2);
     }
 
 

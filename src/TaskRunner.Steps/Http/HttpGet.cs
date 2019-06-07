@@ -31,7 +31,7 @@ namespace TaskRunner.Steps.Http
     {
       // TODO: [TESTS] (HttpGet) Add tests
 
-      var url = context.GetArgument("Url");
+      var url = GetInput(context, "Url");
 
       // TODO: [REFACTOR] (HttpGet) Break out into a service (perhaps HttpService)
       // TODO: [REFACTOR] (HttpGet) Wrap in try \ catch block?
@@ -62,8 +62,7 @@ namespace TaskRunner.Steps.Http
         context.Publish($"response.headers.{header}", value);
       }
 
-      // Verify that the task execution was successful
-      return RunTaskValidators(context);
+      return true;
     }
   }
 }

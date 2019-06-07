@@ -10,7 +10,7 @@ namespace TaskRunner.Core.Steps
     // TODO: [MOVE] (PocSuccessValidator) Move this into config (not required for the actual validator)
     public string Name { get; set; }
     public Dictionary<string, string> Arguments { get; set; }
-    
+
     public PocSuccessValidator()
     {
       Name = "PocValidator";
@@ -23,7 +23,7 @@ namespace TaskRunner.Core.Steps
       var property = Arguments["Property"];
       var contains = Arguments["Contains"];
 
-      var propertyValue = context.GetPublishedData(property);
+      var propertyValue = context.GetPublishedData(context.StepName, property);
 
       // Run a simple response validation on the step
       if (string.IsNullOrWhiteSpace(propertyValue))

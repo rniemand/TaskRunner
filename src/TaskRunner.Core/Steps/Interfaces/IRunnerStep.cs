@@ -4,7 +4,5 @@
   public interface IRunnerStep
   {
     string Name { get; }
-
-    bool Execute(StepContext context);
   }
 }

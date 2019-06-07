@@ -17,7 +17,8 @@ namespace TaskRunner.Core.Steps
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
 
-    private Dictionary<string, string> _arguments;
+    // TODO: [RENAME] (StepContext) Not happy with the name "_publishedData" - think of something better
+    private Dictionary<string, string> _inputs;
     private readonly Dictionary<string, Dictionary<string, string>> _publishedData;
 
 
@@ -26,96 +27,15 @@ namespace TaskRunner.Core.Steps
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      _arguments = new Dictionary<string, string>();
+      _inputs = new Dictionary<string, string>();
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
       Validators = new List<IStepSuccessValidator>();
       DataPublished = false;
     }
 
 
-    // Public methods
-    public void SetArguments(Dictionary<string, string> arguments)
-    {
-      // TODO: [TESTS] (StepContext) Add tests
 
-      _arguments.Clear();
-      DataPublished = false;
-
-      if (arguments.Count == 0)
-        return;
-
-      _arguments = arguments;
-    }
-
-    public string GetArgument(string argument, string fallback = null)
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      // Ensure that we have something to work with
-      if (_arguments == null || _arguments.Count == 0)
-        return fallback;
-
-      // Check to see if the requested argument exists
-      // ReSharper disable once ConvertIfStatementToReturnStatement
-      if (!_arguments.ContainsKey(argument))
-        return fallback;
-
-      // Argument exists, return it
-      return _arguments[argument];
-    }
-
-    public void RegisterStepValidators(List<IStepSuccessValidator> validators = null)
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      Validators.Clear();
-
-      if(validators == null || validators.Count == 0)
-        return;
-
-      Validators = validators;
-    }
-
-    public Dictionary<string, string> GetCurrentStepsPublishedData()
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      // Check to see if there is any published data to return
-      if (_publishedData.Count == 0 || !_publishedData.ContainsKey(StepName))
-        return new Dictionary<string, string>();
-
-      return _publishedData[StepName];
-    }
-
-    public string ReplaceTags(string input)
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      // Ensure we have something to work with
-      if (string.IsNullOrWhiteSpace(input))
-        return input;
-
-      // Look for any placeholders
-      if (!input.MatchesRxPattern(TaskDataRx))
-        return input;
-
-      // Find and replace all placeholders
-      var matches = input.GetRxMatches(TaskDataRx);
-      foreach (Match match in matches)
-      {
-        var stepName = match.Groups[2].Value;
-        var dataKey = match.Groups[3].Value;
-
-        input = input.Replace(
-          match.Groups[1].Value,
-          GetPublishedValue(stepName, dataKey)
-        );
-      }
-
-      // Return the modified input
-      return input;
-    }
-
+    // Public methods | called from "Steps"
     public void Publish(string key, string value)
     {
       // TODO: [TESTS] (StepContext) Add tests
@@ -147,37 +67,129 @@ namespace TaskRunner.Core.Steps
       Publish(key, value.ToString("N"));
     }
 
-    public string GetPublishedData(string key)
+
+
+    // Public methods | called from "TaskRunnerService"
+    public void ResetDataPublished()
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      if (string.IsNullOrWhiteSpace(key) || !_publishedData.ContainsKey(StepName))
-        return string.Empty;
+      DataPublished = false;
+    }
 
-      if (!_publishedData[StepName].ContainsKey(key))
-        return string.Empty;
+    public void ClearStepValidators()
+    {
+      // TODO: [TESTS] (StepContext) Add tests
 
-      return _publishedData[StepName][key];
+      Validators.Clear();
+    }
+
+    public void SetCurrentStepInputs(Dictionary<string, string> inputs)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      _inputs.Clear();
+
+      if (inputs.Count == 0)
+        return;
+
+      _inputs = inputs;
+    }
+
+    public void RegisterSuccessValidators(List<IStepSuccessValidator> validators = null)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      Validators.Clear();
+
+      if (validators == null || validators.Count == 0)
+        return;
+
+      Validators = validators;
+    }
+
+    public Dictionary<string, string> GetLastPublishedData()
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      // Check to see if there is any published data to return
+      if (_publishedData.Count == 0 || !_publishedData.ContainsKey(StepName))
+        return new Dictionary<string, string>();
+
+      return _publishedData[StepName];
+    }
+
+    public string ReplaceTags(string input)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      // Ensure we have something to work with
+      if (string.IsNullOrWhiteSpace(input))
+        return input;
+
+      // Look for any placeholders
+      if (!input.MatchesRxPattern(TaskDataRx))
+        return input;
+
+      // Find and replace all placeholders
+      var matches = input.GetRxMatches(TaskDataRx);
+      foreach (Match match in matches)
+      {
+        var stepName = match.Groups[2].Value;
+        var dataKey = match.Groups[3].Value;
+
+        input = input.Replace(
+          match.Groups[1].Value,
+          GetPublishedData(stepName, dataKey)
+        );
+      }
+
+      // Return the modified input
+      return input;
     }
 
 
-    // Internal methods
-    public string GetPublishedValue(string stepName, string key)
+
+    // Public methods | called from "TaskStepBase"
+    public string GetInput(string input, string fallback = null)
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      // Ensure that we have a valid stepName and key
-      if (string.IsNullOrWhiteSpace(stepName) || string.IsNullOrWhiteSpace(key))
+      // Ensure that we have something to work with
+      if (_inputs == null || _inputs.Count == 0)
+        return fallback;
+
+      // Check to see if the requested input exists
+      // ReSharper disable once ConvertIfStatementToReturnStatement
+      if (!_inputs.ContainsKey(input))
+        return fallback;
+
+      // Argument exists, return it
+      return _inputs[input];
+    }
+
+    public Dictionary<string, string> GetResolvedInputs()
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      return _inputs;
+    }
+
+
+
+    // Public methods | called from "IStepSuccessValidator"
+    public string GetPublishedData(string stepName, string key)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+      // TODO: [RENAME] (StepContext) I am not happy with this name
+
+      if (string.IsNullOrWhiteSpace(key) || !_publishedData.ContainsKey(stepName))
         return string.Empty;
 
-      // Check if the step published any data
-      if (!_publishedData.ContainsKey(stepName))
+      if (!_publishedData[stepName].ContainsKey(key))
         return string.Empty;
 
-      // Check if the requested key exists
-      return !_publishedData[stepName].ContainsKey(key)
-        ? string.Empty
-        : _publishedData[stepName][key];
+      return _publishedData[stepName][key];
     }
   }
 }

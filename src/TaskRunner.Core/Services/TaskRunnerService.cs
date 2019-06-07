@@ -63,19 +63,24 @@ namespace TaskRunner.Core.Services
 
 
         // TODO: [CURRENT] (TaskRunnerService) Discover and load all task validators dynamically
-        stepContext.RegisterStepValidators(new List<IStepSuccessValidator>
+        // TODO: [CURRENT] (TaskRunnerService) Take into consideration the "Enabled" state of the validator when loading
+        if (currentStep.Step == "Http.Get")
         {
-          new PocSuccessValidator
+          stepContext.RegisterSuccessValidators(new List<IStepSuccessValidator>
           {
-            Arguments = new Dictionary<string, string>
+            new PocSuccessValidator
             {
-              {"Property", "response.content"},
-              {"Contains", "has not changed"}
+              Arguments = new Dictionary<string, string>
+              {
+                {"Property", "response.content"},
+                {"Contains", "has not changed"}
+              }
             }
-          }
-        });
+          });
+        }
 
-        if (!runnerStep.Execute(stepContext))
+        //if (!runnerStep.Execute(stepContext))
+        if (!runnerStep.RunMe(stepContext))
         {
           // TODO: [COMPLETE] (TaskRunnerService) Handle step execution failed (based on configuration)
 
@@ -320,7 +325,7 @@ namespace TaskRunner.Core.Services
         return;
 
       // Count published data points and work out the longest "key" length
-      var publishedData = stepContext.GetCurrentStepsPublishedData();
+      var publishedData = stepContext.GetLastPublishedData();
       var longestKey = publishedData.Select(x => x.Key).Max(x => x.Length);
       var count = publishedData.Count;
 
@@ -343,7 +348,7 @@ namespace TaskRunner.Core.Services
       _logger.Debug(sb.ToString().Trim());
     }
 
-    private Dictionary<string, string> GenerateStepArguments(StepContext context, RunnerStep step)
+    private Dictionary<string, string> GenerateStepInputs(StepContext context, RunnerStep step)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
       // TODO: [LOGGING] (TaskRunnerService) Add logging
@@ -371,9 +376,12 @@ namespace TaskRunner.Core.Services
       context.StepId = step.StepId;
       context.StepName = step.StepName;
 
+      // Clear out all validators and reset the "DataPublished" flag
+      context.ResetDataPublished();
+      context.ClearStepValidators();
+
       // Generate and update the current steps arguments
-      // NOTE: this call also resets the "DataPublished" flag
-      context.SetArguments(GenerateStepArguments(context, step));
+      context.SetCurrentStepInputs(GenerateStepInputs(context, step));
     }
   }
 }

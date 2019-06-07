@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
@@ -25,33 +27,46 @@ namespace TaskRunner.Core.Steps
 
 
     // Public methods
-    public virtual bool Execute(StepContext context)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool RunTaskValidators(StepContext context)
+    public bool RunMe(StepContext context)
     {
       // TODO: [TESTS] (TaskStepBase) Add tests
+      // TODO: [RENAME] (TaskStepBase) Rename this to something more meaningful
 
-      if (context.Validators == null)
-        return true;
+      // Time and run the step
+      var executeStopwatch = Stopwatch.StartNew();
+      var success = Execute(context);
+      executeStopwatch.Stop();
 
-      // Execute each validation function looking for failures
-      foreach (var validator in context.Validators)
+      // TODO: [COMPLETE] (TaskStepBase) Publish total elapsed MS for step execution
+
+      Logger.Info(
+        "Step {name} took {ms} ms to run",
+        context.StepName,
+        executeStopwatch.ElapsedMilliseconds);
+
+
+      // TODO: [COMPLETE] (TaskStepBase) Publish resolved arguments used for the task
+      LogResolvedInputs(context.GetResolvedInputs(), context.StepName);
+
+      // ReSharper disable once InvertIf
+      if (context.Validators.Count > 0 && RunStepValidators(context) == false)
       {
-        if (validator.Validate(context))
-          continue;
-
-        // Validation failed, log and return false
-        Logger.Error("Step validation failed for '{step}' in task '{task}'",
+        Logger.Error("Step '{step}' for task '{task}' failed validation - stopping task",
           context.StepName, context.TaskName);
 
         return false;
       }
 
-      return true;
+      // Step execution was a success
+      return success;
     }
+
+    public virtual bool Execute(StepContext context)
+    {
+      throw new NotImplementedException();
+    }
+
+
 
     public bool RequiredInputsSet(Dictionary<string, string> stepInputs, string stepName, string taskName)
     {
@@ -86,7 +101,7 @@ namespace TaskRunner.Core.Steps
       // Grab the parameter - we may need the default value
       var param = Inputs.FirstOrDefault(x => x.Name == name);
 
-      var argument = context.GetArgument(param.Name, param.DefaultValue);
+      var argument = context.GetInput(param.Name, param.DefaultValue);
 
       // TODO: [COMPLETE] (TaskStepBase) Validate the parameter based on "param.Validator"
 
@@ -103,7 +118,7 @@ namespace TaskRunner.Core.Steps
       if (Inputs.Any(x => x.Name == name))
       {
         var defaultValue = Inputs.First(x => x.Name == name).DefaultValue;
-        value = context.GetArgument(name, defaultValue);
+        value = context.GetInput(name, defaultValue);
       }
 
       return convertFunc.Invoke(value);
@@ -120,6 +135,55 @@ namespace TaskRunner.Core.Steps
         Validator = validator,
         DefaultValue = defaultValue
       });
+    }
+
+
+
+    // Internal methods
+    private bool RunStepValidators(StepContext context)
+    {
+      // TODO: [TESTS] (TaskStepBase) Add tests
+
+      Logger.Debug("Running {count} validator(s) against step '{name}' from task '{task}'",
+        context.Validators.Count, context.StepName, context.TaskName);
+
+      foreach (var validator in context.Validators)
+      {
+        // PASS - continue
+        if (validator.Validate(context))
+          continue;
+
+        // FAILURE - log and stop running validation
+        Logger.Error("Step validation failed for '{step}' in task '{task}'",
+          context.StepName, context.TaskName);
+
+        // Validation FAILED
+        return false;
+      }
+
+      // Validation PASSED
+      Logger.Debug("Validation for step '{step}' passed", context.StepName);
+
+      return true;
+    }
+
+    private void LogResolvedInputs(Dictionary<string, string> inputs, string stepName)
+    {
+      if (inputs == null || inputs.Count == 0)
+        return;
+
+      var longestKey = inputs.Select(x => x.Key.Length).Max() + 1;
+      var sb = new StringBuilder()
+        .Append($"Step '{stepName}' was called with the following inputs: ")
+        .Append(Environment.NewLine);
+
+      foreach (var (key, value) in inputs)
+      {
+        sb.Append($"    {key.PadRight(longestKey, ' ')}: {value}");
+        sb.Append(Environment.NewLine);
+      }
+
+      Logger.Debug(sb.ToString());
     }
   }
 }

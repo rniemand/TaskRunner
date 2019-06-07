@@ -6,10 +6,14 @@
     void Debug(string template);
     void Debug<T>(string template, T p1);
     void Debug<T1, T2>(string template, T1 p1, T2 p2);
+    void Debug<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3);
+
 
     // Info
     void Info(string template);
     void Info<T>(string template, T p1);
+    void Info<T1, T2>(string template, T1 p1, T2 p2);
+
 
     // Warn
     void Warn<T1, T2>(string template, T1 p1, T2 p2);
