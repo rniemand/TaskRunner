@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using TaskRunner.Core.Abstractions;
-using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Builders;
-using TaskRunner.Core.Builders.Interfaces;
 using TaskRunner.Core.Logging;
-using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services;
-using TaskRunner.Core.Services.Interfaces;
-using TaskRunner.Core.Steps.Interfaces;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Enums;
+using TaskRunner.Shared.Interfaces.Abstractions;
+using TaskRunner.Shared.Interfaces.Builders;
+using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Interfaces.Services;
+using TaskRunner.Shared.Interfaces.Steps;
 using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Http;
 
@@ -21,6 +21,8 @@ namespace TaskRunner
   {
     private static IServiceProvider _serviceProvider;
 
+    // ReSharper disable once ArrangeTypeMemberModifiers
+    // ReSharper disable once UnusedParameter.Local
     static void Main(string[] args)
     {
       RegisterServices();

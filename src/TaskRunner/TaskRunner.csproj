@@ -11,7 +11,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskRunner.Core\TaskRunner.Core.csproj" />
+    <ProjectReference Include="..\TaskRunner.Shared\TaskRunner.Shared.csproj" />
     <ProjectReference Include="..\TaskRunner.Steps\TaskRunner.Steps.csproj" />
+    <ProjectReference Include="..\TaskRunner.Validators\TaskRunner.Validators.csproj" />
   </ItemGroup>
 
 </Project>

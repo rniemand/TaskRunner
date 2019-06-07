@@ -1,9 +1,9 @@
 ﻿using System;
-using TaskRunner.Core.Abstractions.Interfaces;
-using TaskRunner.Core.Builders.Interfaces;
-using TaskRunner.Core.Configuration;
-using TaskRunner.Core.Logging.Interfaces;
-using TaskRunner.Core.Services.Interfaces;
+using TaskRunner.Shared.Configuration;
+using TaskRunner.Shared.Interfaces.Abstractions;
+using TaskRunner.Shared.Interfaces.Builders;
+using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Interfaces.Services;
 
 namespace TaskRunner.Core.Services
 {

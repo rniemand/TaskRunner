@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Interfaces;
+using TaskRunner.Shared.Interfaces.Steps;
 
 namespace TaskRunner.Shared.Tasks
 {

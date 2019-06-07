@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TaskRunner.Core.Abstractions.Interfaces
+namespace TaskRunner.Shared.Interfaces.Abstractions
 {
   public interface IDirectory
   {

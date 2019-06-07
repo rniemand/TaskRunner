@@ -1,7 +1,7 @@
 ﻿using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using TaskRunner.Core.Logging.Interfaces;
+using TaskRunner.Shared.Interfaces.Logging;
 
 namespace TaskRunner.Core.Logging
 {

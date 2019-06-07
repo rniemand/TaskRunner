@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using TaskRunner.Core.Abstractions.Interfaces;
-using TaskRunner.Core.Builders.Interfaces;
-using TaskRunner.Core.Configuration;
-using TaskRunner.Core.Logging.Interfaces;
-using TaskRunner.Core.Services.Interfaces;
+using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Interfaces.Abstractions;
+using TaskRunner.Shared.Interfaces.Builders;
+using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Interfaces.Services;
 
 namespace TaskRunner.Core.Services
 {
@@ -71,40 +71,7 @@ namespace TaskRunner.Core.Services
       return input;
     }
 
-    public bool HasSecret(string secretKey)
-    {
-      // TODO: [TESTS] (SecretsService) Add tests
-
-      if (string.IsNullOrWhiteSpace(secretKey))
-        return false;
-
-      var parts = secretKey.Split('.');
-
-      // TODO: [EXCEPTION] (SecretsService) Use a better Exception type here
-      if (parts.Length <= 0 || parts.Length > 2)
-        throw new Exception($"Invalid secret key '{secretKey}'");
-
-      var section = parts[0];
-      var key = parts[1];
-
-      // Ensure that the requested secret exists
-      return HasSectionKey(section, key);
-    }
-
-    public string GetSecret(string secretKey)
-    {
-      // TODO: [TESTS] (SecretsService) Add tests
-
-      // TODO: [LOGGING] (SecretsService) Add some logging
-      if (!HasSecret(secretKey))
-        return string.Empty;
-
-      // Safe to split here as "HasSecret()" validates the structure
-      var parts = secretKey.Split('.');
-
-      return _secrets[parts[0]][parts[1]];
-    }
-
+    
 
     // Configuration file related methods
     private void LoadSecretsFile(TaskRunnerConfig config)
@@ -198,6 +165,7 @@ namespace TaskRunner.Core.Services
     }
 
 
+
     // Resolving secrets methods
     private bool HasSection(string section)
     {
@@ -220,6 +188,40 @@ namespace TaskRunner.Core.Services
         return false;
 
       return _secrets[section].ContainsKey(key);
+    }
+
+    private bool HasSecret(string secretKey)
+    {
+      // TODO: [TESTS] (SecretsService) Add tests
+
+      if (string.IsNullOrWhiteSpace(secretKey))
+        return false;
+
+      var parts = secretKey.Split('.');
+
+      // TODO: [EXCEPTION] (SecretsService) Use a better Exception type here
+      if (parts.Length <= 0 || parts.Length > 2)
+        throw new Exception($"Invalid secret key '{secretKey}'");
+
+      var section = parts[0];
+      var key = parts[1];
+
+      // Ensure that the requested secret exists
+      return HasSectionKey(section, key);
+    }
+
+    private string GetSecret(string secretKey)
+    {
+      // TODO: [TESTS] (SecretsService) Add tests
+
+      // TODO: [LOGGING] (SecretsService) Add some logging
+      if (!HasSecret(secretKey))
+        return string.Empty;
+
+      // Safe to split here as "HasSecret()" validates the structure
+      var parts = secretKey.Split('.');
+
+      return _secrets[parts[0]][parts[1]];
     }
   }
 }

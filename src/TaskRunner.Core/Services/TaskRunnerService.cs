@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TaskRunner.Core.Logging.Interfaces;
-using TaskRunner.Core.Services.Interfaces;
-using TaskRunner.Core.Steps;
-using TaskRunner.Core.Steps.Interfaces;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Interfaces.Services;
+using TaskRunner.Shared.Interfaces.Steps;
+using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Core.Services

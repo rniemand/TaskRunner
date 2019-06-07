@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Core.Builders.Interfaces
+﻿namespace TaskRunner.Shared.Interfaces.Builders
 {
   public interface IPathBuilder
   {

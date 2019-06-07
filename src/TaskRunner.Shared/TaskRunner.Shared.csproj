@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,16 +46,35 @@
   <ItemGroup>
     <Compile Include="Configuration\RunnerStep.cs" />
     <Compile Include="Configuration\RunnerTask.cs" />
+    <Compile Include="Configuration\TaskRunnerConfig.cs" />
     <Compile Include="Enums\InputValidator.cs" />
     <Compile Include="Enums\RunnerSeverity.cs" />
     <Compile Include="Enums\StepFailAction.cs" />
     <Compile Include="Enums\TaskInterval.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Interfaces\IStepSuccessValidator.cs" />
+    <Compile Include="Interfaces\Abstractions\IAppDomain.cs" />
+    <Compile Include="Interfaces\Abstractions\IConsole.cs" />
+    <Compile Include="Interfaces\Abstractions\IDirectory.cs" />
+    <Compile Include="Interfaces\Abstractions\IFile.cs" />
+    <Compile Include="Interfaces\Abstractions\IJsonHelper.cs" />
+    <Compile Include="Interfaces\Builders\IPathBuilder.cs" />
+    <Compile Include="Interfaces\Steps\IStepSuccessValidator.cs" />
+    <Compile Include="Interfaces\Logging\IAppLogger.cs" />
+    <Compile Include="Interfaces\Services\IConfigService.cs" />
+    <Compile Include="Interfaces\Services\ISchedulerService.cs" />
+    <Compile Include="Interfaces\Services\ISecretsService.cs" />
+    <Compile Include="Interfaces\Services\ITaskRunnerService.cs" />
+    <Compile Include="Interfaces\Services\ITasksService.cs" />
+    <Compile Include="Interfaces\Steps\IRunnerStep.cs" />
+    <Compile Include="Mappers\SeverityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Steps\StepInput.cs" />
+    <Compile Include="Steps\TaskStepBase.cs" />
     <Compile Include="Tasks\StepContext.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

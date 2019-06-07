@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using TaskRunner.Core.Logging.Interfaces;
-using TaskRunner.Core.Steps.Interfaces;
 using TaskRunner.Shared.Enums;
+using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Interfaces.Steps;
 using TaskRunner.Shared.Tasks;
 
-namespace TaskRunner.Core.Steps
+namespace TaskRunner.Shared.Steps
 {
   public class TaskStepBase : IRunnerStep
   {
@@ -178,9 +178,9 @@ namespace TaskRunner.Core.Steps
         .Append($"Step '{stepName}' was called with the following inputs: ")
         .Append(Environment.NewLine);
 
-      foreach (var (key, value) in inputs)
+      foreach (var entry in inputs)
       {
-        sb.Append($"    {key.PadRight(longestKey, ' ')}: {value}");
+        sb.Append($"    {entry.Key.PadRight(longestKey, ' ')}: {entry.Value}");
         sb.Append(Environment.NewLine);
       }
 

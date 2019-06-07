@@ -1,9 +1,9 @@
 ﻿using System;
-using TaskRunner.Core.Abstractions.Interfaces;
-using TaskRunner.Core.Logging.Interfaces;
-using TaskRunner.Core.Mappers;
-using TaskRunner.Core.Steps;
 using TaskRunner.Shared.Enums;
+using TaskRunner.Shared.Interfaces.Abstractions;
+using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Mappers;
+using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Steps.Console

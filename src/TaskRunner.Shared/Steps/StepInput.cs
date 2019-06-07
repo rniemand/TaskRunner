@@ -1,6 +1,6 @@
 ﻿using TaskRunner.Shared.Enums;
 
-namespace TaskRunner.Core.Steps
+namespace TaskRunner.Shared.Steps
 {
   public struct StepInput
   {

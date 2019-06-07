@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Core.Logging.Interfaces
+﻿namespace TaskRunner.Shared.Interfaces.Logging
 {
   public interface IAppLogger
   {

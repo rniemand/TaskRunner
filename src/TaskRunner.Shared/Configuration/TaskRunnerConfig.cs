@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Core.Configuration
+﻿namespace TaskRunner.Shared.Configuration
 {
   public class TaskRunnerConfig
   {

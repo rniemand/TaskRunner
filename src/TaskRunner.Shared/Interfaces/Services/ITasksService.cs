@@ -1,6 +1,6 @@
-﻿using TaskRunner.Core.Configuration;
+﻿using TaskRunner.Shared.Configuration;
 
-namespace TaskRunner.Core.Services.Interfaces
+namespace TaskRunner.Shared.Interfaces.Services
 {
   public interface ITasksService
   {
