@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TaskRunner.Core.Configuration;
-using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Steps;
 using TaskRunner.Core.Steps.Interfaces;
-using TaskRunner.Core.Validators.Core;
-using TaskRunner.Core.Validators.Interfaces;
+using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Core.Services
 {
@@ -66,20 +65,21 @@ namespace TaskRunner.Core.Services
 
         // TODO: [CURRENT] (TaskRunnerService) Discover and load all task validators dynamically
         // TODO: [CURRENT] (TaskRunnerService) Take into consideration the "Enabled" state of the validator when loading
-        if (currentStep.Step == "Http.Get")
-        {
-          stepContext.RegisterSuccessValidators(new List<IStepSuccessValidator>
-          {
-            new PocSuccessValidator
-            {
-              Arguments = new Dictionary<string, string>
-              {
-                {"Property", "response.content"},
-                {"Contains", "has not changed"}
-              }
-            }
-          });
-        }
+        // TODO: [0000000] (TaskRunnerService) Replace
+        //if (currentStep.Step == "Http.Get")
+        //{
+        //  stepContext.RegisterSuccessValidators(new List<IStepSuccessValidator>
+        //  {
+        //    new PocSuccessValidator
+        //    {
+        //      Arguments = new Dictionary<string, string>
+        //      {
+        //        {"Property", "response.content"},
+        //        {"Contains", "has not changed"}
+        //      }
+        //    }
+        //  });
+        //}
 
         //if (!runnerStep.Execute(stepContext))
         if (!runnerStep.RunMe(stepContext))

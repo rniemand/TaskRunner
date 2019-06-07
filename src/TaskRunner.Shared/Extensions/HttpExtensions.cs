@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 
-namespace TaskRunner.Core.Extensions
+namespace TaskRunner.Shared.Extensions
 {
   public static class HttpExtensions
   {

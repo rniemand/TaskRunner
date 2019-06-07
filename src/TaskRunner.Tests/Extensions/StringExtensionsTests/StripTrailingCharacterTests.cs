@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TaskRunner.Core.Extensions;
+using TaskRunner.Shared.Extensions;
 
 namespace TaskRunner.Tests.Extensions.StringExtensionsTests
 {

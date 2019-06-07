@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using TaskRunner.Core.Steps;
-using TaskRunner.Core.Validators.Interfaces;
+using TaskRunner.Shared.Interfaces;
+using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Core.Validators.Core
 {

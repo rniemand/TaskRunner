@@ -6,6 +6,7 @@ using System.Text;
 using TaskRunner.Core.Enums;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Core.Steps
 {

@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
 using TaskRunner.Core.Enums;
-using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Steps;
+using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Steps.Http
 {

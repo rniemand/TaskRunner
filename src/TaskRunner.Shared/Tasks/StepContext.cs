@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using TaskRunner.Core.Extensions;
-using TaskRunner.Core.Validators.Interfaces;
+using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Interfaces;
 
-namespace TaskRunner.Core.Steps
+namespace TaskRunner.Shared.Tasks
 {
   public class StepContext
   {

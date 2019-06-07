@@ -1,5 +1,5 @@
 ﻿using TaskRunner.Core.Enums;
-using TaskRunner.Core.Extensions;
+using TaskRunner.Shared.Extensions;
 
 namespace TaskRunner.Core.Mappers
 {

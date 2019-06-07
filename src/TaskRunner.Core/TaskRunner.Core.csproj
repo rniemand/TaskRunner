@@ -11,4 +11,8 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskRunner.Shared\TaskRunner.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

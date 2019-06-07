@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 using TaskRunner.Core.Abstractions.Interfaces;
 using TaskRunner.Core.Builders.Interfaces;
 using TaskRunner.Core.Configuration;
-using TaskRunner.Core.Extensions;
 using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
+using TaskRunner.Shared.Extensions;
 
 namespace TaskRunner.Core.Services
 {
