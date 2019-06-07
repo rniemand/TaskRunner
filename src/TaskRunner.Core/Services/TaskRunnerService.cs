@@ -96,6 +96,55 @@ namespace TaskRunner.Core.Services
 
 
     // Task and Step validation
+    private bool ValidateTask(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      // Ensure that each task has an associated stepId
+      AssignStepIds(task);
+
+      // Ensure that all the enabled steps for the task have the required arguments
+      // ReSharper disable once InvertIf
+      if (!ValidateStepArguments(task))
+      {
+        task.Enabled = false;
+        return false;
+      }
+
+      // TODO: [VALIDATE] (TaskRunnerService) Add logic to check each step against "_steps" and disable if a step is missing
+      // TODO: [VALIDATE] (TaskRunnerService) Check for and handle the "Enabled" state
+      // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments (at a step by step level)
+
+      // Ensure that each step has an unique name
+      return ValidateStepNames(task);
+    }
+
+    private bool ValidateStepArguments(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      // Get all enabled steps to check
+      var enabledSteps = task.Steps.Where(x => x.Enabled).ToList();
+
+      foreach (var currentStep in enabledSteps)
+      {
+        var step = ResolveStep(currentStep.Step);
+        var stepArgs = task.Steps[currentStep.StepId].Arguments;
+
+        if (step.RequiredArgumentsSet(stepArgs, currentStep.StepName, task.Name))
+          continue;
+
+        // Step argument validation failed, we won't be able to run the given task
+        _logger.Error("Task '{task}' step '{step}' is missing required arguments, disabling",
+          task.Name, currentStep.StepName);
+
+        return false;
+      }
+
+      // All task steps have passed argument validation
+      return true;
+    }
+
     private static void AssignStepIds(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
@@ -164,24 +213,9 @@ namespace TaskRunner.Core.Services
       return false;
     }
 
-    private bool ValidateTask(RunnerTask task)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-
-      // Ensure that each task has an associated stepId
-      AssignStepIds(task);
-
-      // TODO: [VALIDATE] (TaskRunnerService) Add logic to check each step against "_steps" and disable if a step is missing
-      // TODO: [VALIDATE] (TaskRunnerService) Check for and handle the "Enabled" state
-      // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments (at a step by step level)
-
-      // Ensure that each step has an unique name
-      return ValidateStepNames(task);
-    }
-
 
     // Step execution related methods
-    private IRunnerStep ResolveStep(string stepName)
+    private TaskStepBase ResolveStep(string stepName)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
@@ -189,12 +223,14 @@ namespace TaskRunner.Core.Services
       if (string.IsNullOrWhiteSpace(stepName))
         throw new Exception("Provided 'step' is blank!");
 
-      var builderStep = _steps.FirstOrDefault(x => x.Name.Equals(stepName, StringComparison.InvariantCultureIgnoreCase));
+      // TODO: [REFACTOR] (TaskRunnerService) ToLower() all step names when registering - drop the IgnoreCase below
+      var builderStep = _steps
+        .FirstOrDefault(x => x.Name.Equals(stepName, StringComparison.InvariantCultureIgnoreCase));
 
       // TODO: [VALIDATION] (TaskRunnerService) Ensure that we have a match
       // TODO: [LOGGING] (TaskRunnerService) Log if we are missing the requested step
 
-      return builderStep;
+      return (TaskStepBase)builderStep;
     }
 
     private void LogPublishedData(StepContext stepContext)

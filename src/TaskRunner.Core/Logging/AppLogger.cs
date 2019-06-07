@@ -5,7 +5,7 @@ using TaskRunner.Core.Logging.Interfaces;
 
 namespace TaskRunner.Core.Logging
 {
-  public partial class AppLogger : IAppLogger
+  public class AppLogger : IAppLogger
   {
     private readonly Logger _logger;
 
@@ -35,64 +35,65 @@ namespace TaskRunner.Core.Logging
 
 
     // Debug
-    public void Debug(string message)
+    public void Debug(string template)
     {
-      _logger.Debug(message);
+      _logger.Debug(template);
     }
 
-    public void Debug<T>(string message, T p1)
+    public void Debug<T>(string template, T p1)
     {
-      _logger.Debug(message, p1);
+      _logger.Debug(template, p1);
     }
 
-    public void Debug<T1, T2>(string message, T1 p1, T2 p2)
+    public void Debug<T1, T2>(string template, T1 p1, T2 p2)
     {
-      _logger.Debug(message, p1, p2);
+      _logger.Debug(template, p1, p2);
     }
 
 
     // Info
-    public void Info(string message)
+    public void Info(string template)
     {
-      _logger.Information(message);
+      _logger.Information(template);
     }
 
-    public void Info<T>(string message, T p1)
+    public void Info<T>(string template, T p1)
     {
-      _logger.Information(message, p1);
-    }
-
-    public void Info<T1, T2>(string message, T1 p1, T2 p2)
-    {
-      _logger.Information(message, p1, p2);
+      _logger.Information(template, p1);
     }
 
 
     // Warn
-    public void Warn<T1, T2>(string message, T1 p1, T2 p2)
+    public void Warn<T1, T2>(string template, T1 p1, T2 p2)
     {
-      _logger.Warning(message, p1, p2);
+      _logger.Warning(template, p1, p2);
     }
 
-    public void Warn<T1, T2, T3>(string message, T1 p1, T2 p2, T3 p3)
+    public void Warn<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3)
     {
-      _logger.Warning(message, p1, p2, p3);
+      _logger.Warning(template, p1, p2, p3);
     }
 
-    public void Warn<T1, T2, T3, T4>(string message, T1 p1, T2 p2, T3 p3, T4 p4)
+    public void Warn<T1, T2, T3, T4>(string template, T1 p1, T2 p2, T3 p3, T4 p4)
     {
-      _logger.Warning(message, p1, p2, p3, p4);
+      _logger.Warning(template, p1, p2, p3, p4);
     }
+
 
     // Error
-    public void Error<T1>(string message, T1 p1)
+    public void Error<T1>(string template, T1 p1)
     {
-      _logger.Error(message, p1);
+      _logger.Error(template, p1);
     }
 
-    public void Error<T1, T2>(string message, T1 p1, T2 p2)
+    public void Error<T1, T2>(string template, T1 p1, T2 p2)
     {
-      _logger.Error(message, p1, p2);
+      _logger.Error(template, p1, p2);
+    }
+
+    public void Error<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3)
+    {
+      _logger.Error(template, p1, p2, p3);
     }
   }
 }

@@ -19,12 +19,13 @@ namespace TaskRunner.Steps.Console
     public ConsoleLogger(IAppLogger logger, IConsole console)
       : base(logger, "Console.Log")
     {
+      // TODO: [TESTS] (ConsoleLogger) Add tests
+
       _console = console;
 
       RegisterInput("Severity", InputValidator.String, false, "Info");
       RegisterInput("Message", InputValidator.String);
     }
-
 
     // Public methods
     public override bool Execute(StepContext context)
@@ -38,7 +39,6 @@ namespace TaskRunner.Steps.Console
 
       return true;
     }
-
 
     // Internal methods
     private void Log(RunnerSeverity severity, string message)

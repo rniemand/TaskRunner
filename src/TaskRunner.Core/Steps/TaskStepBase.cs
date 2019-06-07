@@ -13,6 +13,7 @@ namespace TaskRunner.Core.Steps
     public IAppLogger Logger { get; set; }
     public List<StepParameter> Parameters { get; set; }
 
+
     // Constructor
     public TaskStepBase(IAppLogger logger, string name)
     {
@@ -26,7 +27,7 @@ namespace TaskRunner.Core.Steps
     // Public methods
     public virtual bool Execute(StepContext context)
     {
-      throw new System.NotImplementedException();
+      throw new NotImplementedException();
     }
 
     public bool RunTaskValidators(StepContext context)
@@ -49,6 +50,28 @@ namespace TaskRunner.Core.Steps
         return false;
       }
 
+      return true;
+    }
+
+    public bool RequiredArgumentsSet(Dictionary<string, string> stepArgs, string stepName, string taskName)
+    {
+      // TODO: [TESTS] (TaskStepBase) Add tests
+
+      // Ensure that all required parameters are present
+      var requiredParams = Parameters.Where(p => p.Required).ToList();
+
+      foreach (var param in requiredParams)
+      {
+        if (stepArgs.ContainsKey(param.Name))
+          continue;
+
+        Logger.Error("Required argument '{arg}' is missing from step '{step}' for task '{task}'",
+          param.Name, stepName, taskName);
+
+        return false;
+      }
+
+      // All required parameters are set - validation passed
       return true;
     }
 
@@ -79,7 +102,7 @@ namespace TaskRunner.Core.Steps
 
       if (Parameters.Any(x => x.Name == name))
       {
-        var defaultValue = Parameters.First(x=>x.Name==name).DefaultValue;
+        var defaultValue = Parameters.First(x => x.Name == name).DefaultValue;
         value = context.GetArgument(name, defaultValue);
       }
 
