@@ -95,33 +95,140 @@ namespace TaskRunner.Core.Services
     }
 
 
-    // Task and Step validation
+    // Task and Step validation methods
     private bool ValidateTask(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [DOCS] (TaskRunnerService) Document this feature
 
-      // Ensure that each task has an associated stepId
-      AssignStepIds(task);
+      // Ensure that the task has some steps defined
+      if (task.Steps == null || task.Steps.Length == 0)
+      {
+        _logger.Error("Task '{task}' has no steps defined, disabling", task.Name);
+        task.Enabled = false;
+        return false;
+      }
 
-      // Ensure that all the enabled steps for the task have the required arguments
-      // ReSharper disable once InvertIf
-      if (!ValidateStepInputs(task))
+      // Ensure that there is at least one enabled step
+      if (!task.Steps.Any(x => x.Enabled))
+      {
+        _logger.Error("Task '{task}' has no enabled steps, disabling", task.Name);
+        task.Enabled = false;
+        return false;
+      }
+
+      // Ensure each step has all required inputs set
+      if (ValidateRequiredInputsPresent(task) == false)
       {
         task.Enabled = false;
         return false;
       }
 
-      // TODO: [VALIDATE] (TaskRunnerService) Add logic to check each step against "_steps" and disable if a step is missing
-      // TODO: [VALIDATE] (TaskRunnerService) Check for and handle the "Enabled" state
-      // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments (at a step by step level)
+      // Ensure all steps have an ID and StepName assigned
+      AssignStepIds(task);
+      AssignStepNames(task);
+      NormalizeStepNames(task);
+      EnsureAllStepNamesAreUnique(task);
 
-      // Ensure that each step has an unique name
-      return ValidateStepNames(task);
+      // TODO: [COMPLETE] (TaskRunnerService) Ensure that any changes are persisted to the original task file
+
+      // It looks like we are good to go with this task
+      return true;
     }
 
-    private bool ValidateStepInputs(RunnerTask task)
+    private static void AssignStepIds(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      // We assign all steps an ID (even disabled) as the ID is used for indexing
+
+      var stepId = 0;
+      foreach (var step in task.Steps)
+      {
+        step.StepId = stepId++;
+      }
+    }
+
+    private void AssignStepNames(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [DOCS] (TaskRunnerService) Document this feature
+
+      foreach (var step in task.Steps)
+      {
+        // Step has a name - we can skip it
+        if (string.IsNullOrWhiteSpace(step.StepName) == false)
+          continue;
+
+        // We are missing a StepName - let's fix that
+        step.StepName = $"{step.Step}_{step.StepId}".CleanStepName();
+
+        _logger.Warn("Step {id} on Task '{task}' has no StepName - setting it to {name}",
+          step.StepId, task.Name, step.StepName);
+      }
+    }
+
+    private void NormalizeStepNames(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [DOCS] (TaskRunnerService) Document this feature
+
+      foreach (var step in task.Steps)
+      {
+        // Generate the IDEAL step name
+        var cleanStepName = step.StepName.CleanStepName();
+
+        // If the current step name == IDEAL NAME we are good
+        if (cleanStepName == step.StepName)
+          continue;
+
+        // Bad step name defined, let's fix that
+        _logger.Warn(
+          "The assigned step name '{name}' for stepId {id} on task '{task}' does " +
+          "not meet the naming convention - setting step name to '{newName}'",
+          step.StepName, step.StepId, task.Name, cleanStepName);
+
+        step.StepName = cleanStepName;
+      }
+    }
+
+    private void EnsureAllStepNamesAreUnique(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [DOCS] (TaskRunnerService) Document this feature
+
+      var duplicateStepNames = task.Steps
+        .Select(x => x.StepName).GroupBy(x => x).Where(x => x.Count() > 1)
+        .Select(x => x.Key)
+        .ToList();
+
+      // No duplicates - we are good
+      if (duplicateStepNames.Count == 0)
+        return;
+
+      // Got duplicate names - let's fix them
+      foreach (var duplicateName in duplicateStepNames)
+      {
+        var steps = task.Steps.Where(x => x.StepName == duplicateName).ToList();
+        var counter = 1;
+
+        foreach (var step in steps)
+        {
+          // Generate an unique name for each duplicate step
+          step.StepName = $"{step.StepName}_{counter++}".CleanStepName();
+
+          _logger.Warn(
+            "StepName '{name}' (stepId: {id}) is not unique and is shared with {count} other " +
+            "step(s) - renaming this step to '{newName}' to avoid collisions.",
+            duplicateName, step.StepId, steps.Count, step.StepName);
+        }
+      }
+    }
+
+    private bool ValidateRequiredInputsPresent(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [DOCS] (TaskRunnerService) Document this feature
 
       // Get all enabled steps to check
       var enabledSteps = task.Steps.Where(x => x.Enabled).ToList();
@@ -145,76 +252,8 @@ namespace TaskRunner.Core.Services
       return true;
     }
 
-    private static void AssignStepIds(RunnerTask task)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
 
-      if (task?.Steps == null || task.Steps.Length == 0)
-        return;
-
-      var stepId = 0;
-      foreach (var step in task.Steps)
-      {
-        step.StepId = stepId++;
-      }
-    }
-
-    private bool ValidateStepNames(RunnerTask task)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-      // TODO: [DOCS] (TaskRunnerService) Document this feature
-      // TODO: [REFACTOR] (TaskRunnerService) Break up into smaller methods
-
-      // Ensure that all steps have a name associated to them
-      var stepCounter = 0;
-      foreach (var step in task.Steps)
-      {
-        stepCounter++;
-
-        // There is a name associated with the step - make sure it meets the requirements
-        if (!string.IsNullOrWhiteSpace(step.StepName))
-        {
-          var cleanStepName = step.StepName.CleanStepName();
-          if (cleanStepName == step.StepName)
-            continue;
-
-          _logger.Warn(
-            "Renaming step {number} for Task {taskName} to {newName} (originally: {originalName})",
-            stepCounter, task.Name, cleanStepName, step.StepName);
-
-          step.StepName = cleanStepName;
-          continue;
-        }
-
-
-        // Assign a step name and log
-        step.StepName = $"{step.Step}_{step.StepId}".CleanStepName();
-
-        _logger.Warn(
-          "Step {number} for Task {taskName} has no 'StepName' defined, setting value to {newName}",
-          stepCounter, task.Name, step.StepName);
-      }
-
-      // Ensure that all step names are unique
-      var duplicateStepNames = task.Steps
-        .Select(x => x.StepName)
-        .GroupBy(x => x)
-        .Where(x => x.Count() > 1)
-        .Select(x => x.Key)
-        .ToList();
-
-      if (duplicateStepNames.Count == 0)
-        return true;
-
-      _logger.Warn("Duplicate step name(s) used for Task {task}, duplicate step name(s): {name}",
-        task.Name,
-        string.Join(", ", duplicateStepNames));
-
-      return false;
-    }
-
-
-    // Step execution related methods
+    // Step execution methods
     private TaskStepBase ResolveStep(string stepName)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
