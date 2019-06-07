@@ -120,6 +120,14 @@ namespace TaskRunner.Core.Services
       // Ensure each step has an associated stepId (do not move this method!)
       AssignStepIds(task);
 
+
+      // Ensure that all task steps have been registered through DI
+      if (!EnsureTaskStepRunnersExist(task))
+      {
+        task.Enabled = false;
+        return false;
+      }
+
       // Ensure each step has all required inputs set
       if (ValidateRequiredInputsPresent(task) == false)
       {
@@ -251,6 +259,34 @@ namespace TaskRunner.Core.Services
       }
 
       // All task steps have passed argument validation
+      return true;
+    }
+
+    private bool EnsureTaskStepRunnersExist(RunnerTask task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      // Get a list of all unique step-runners used for this task
+      var uniqueStepRunners = task.Steps
+        .Where(x => x.Enabled)
+        .Select(x => x.Step)
+        .Distinct()
+        .ToList();
+
+      // Ensure that the requested step-runners are in the DI container
+      foreach (var stepRunnerName in uniqueStepRunners)
+      {
+        if (_steps.Any(x => x.Name == stepRunnerName))
+          continue;
+
+        // Unable to find the requested step-runner
+        _logger.Error("Unable to find requested step-runner '{name}' for task '{task}', disabling task",
+          stepRunnerName, task.Name);
+
+        return false;
+      }
+
+      // It looks like all requested step-runners exist
       return true;
     }
 
