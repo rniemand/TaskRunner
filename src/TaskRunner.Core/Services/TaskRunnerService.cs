@@ -117,6 +117,9 @@ namespace TaskRunner.Core.Services
         return false;
       }
 
+      // Ensure each step has an associated stepId (do not move this method!)
+      AssignStepIds(task);
+
       // Ensure each step has all required inputs set
       if (ValidateRequiredInputsPresent(task) == false)
       {
@@ -124,8 +127,7 @@ namespace TaskRunner.Core.Services
         return false;
       }
 
-      // Ensure all steps have an ID and StepName assigned
-      AssignStepIds(task);
+      // Ensure all steps have valid names
       AssignStepNames(task);
       NormalizeStepNames(task);
       EnsureAllStepNamesAreUnique(task);
