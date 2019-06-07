@@ -29,10 +29,10 @@ namespace TaskRunner.Core.Configuration
     public int StepId { get; set; }
 
     /// <summary>
-    /// Arguments to pass to the step - differs based on the selected step.
+    /// Inputs to pass to the step - differs based on the selected step.
     /// These arguments will be cast into the expected types by the step
     /// </summary>
-    public Dictionary<string, string> Arguments { get; set; }
+    public Dictionary<string, string> Inputs { get; set; }
 
     /// <summary>
     /// Action to take when the given step fails.
@@ -55,7 +55,7 @@ namespace TaskRunner.Core.Configuration
     {
       Enabled = true;
       FailAction = StepFailAction.Stop;
-      Arguments = new Dictionary<string, string>();
+      Inputs = new Dictionary<string, string>();
     }
   }
 }

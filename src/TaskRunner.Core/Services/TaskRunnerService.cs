@@ -105,7 +105,7 @@ namespace TaskRunner.Core.Services
 
       // Ensure that all the enabled steps for the task have the required arguments
       // ReSharper disable once InvertIf
-      if (!ValidateStepArguments(task))
+      if (!ValidateStepInputs(task))
       {
         task.Enabled = false;
         return false;
@@ -119,7 +119,7 @@ namespace TaskRunner.Core.Services
       return ValidateStepNames(task);
     }
 
-    private bool ValidateStepArguments(RunnerTask task)
+    private bool ValidateStepInputs(RunnerTask task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
@@ -129,13 +129,13 @@ namespace TaskRunner.Core.Services
       foreach (var currentStep in enabledSteps)
       {
         var step = ResolveStep(currentStep.Step);
-        var stepArgs = task.Steps[currentStep.StepId].Arguments;
+        var inputs = task.Steps[currentStep.StepId].Inputs;
 
-        if (step.RequiredArgumentsSet(stepArgs, currentStep.StepName, task.Name))
+        if (step.RequiredInputsSet(inputs, currentStep.StepName, task.Name))
           continue;
 
         // Step argument validation failed, we won't be able to run the given task
-        _logger.Error("Task '{task}' step '{step}' is missing required arguments, disabling",
+        _logger.Error("Task '{task}' step '{step}' is missing required inputs, disabling",
           task.Name, currentStep.StepName);
 
         return false;
@@ -277,7 +277,7 @@ namespace TaskRunner.Core.Services
 
       var arguments = new Dictionary<string, string>();
 
-      foreach (var (key, value) in step.Arguments)
+      foreach (var (key, value) in step.Inputs)
       {
         var argWithSecrets = _secretsService.ReplaceTags(value);
         arguments[key] = context.ReplaceTags(argWithSecrets);

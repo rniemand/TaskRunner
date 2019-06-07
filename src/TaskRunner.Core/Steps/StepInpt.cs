@@ -2,7 +2,7 @@
 
 namespace TaskRunner.Core.Steps
 {
-  public struct StepParameter
+  public struct StepInpt
   {
     public string Name { get; set; }
     public bool Required { get; set; }

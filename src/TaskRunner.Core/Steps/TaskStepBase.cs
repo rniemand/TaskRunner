@@ -11,7 +11,7 @@ namespace TaskRunner.Core.Steps
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }
-    public List<StepParameter> Parameters { get; set; }
+    public List<StepInpt> Inputs { get; set; }
 
 
     // Constructor
@@ -20,7 +20,7 @@ namespace TaskRunner.Core.Steps
       Logger = logger;
       Name = name;
 
-      Parameters = new List<StepParameter>();
+      Inputs = new List<StepInpt>();
     }
 
 
@@ -53,16 +53,16 @@ namespace TaskRunner.Core.Steps
       return true;
     }
 
-    public bool RequiredArgumentsSet(Dictionary<string, string> stepArgs, string stepName, string taskName)
+    public bool RequiredInputsSet(Dictionary<string, string> stepInputs, string stepName, string taskName)
     {
       // TODO: [TESTS] (TaskStepBase) Add tests
 
       // Ensure that all required parameters are present
-      var requiredParams = Parameters.Where(p => p.Required).ToList();
+      var requiredParams = Inputs.Where(p => p.Required).ToList();
 
       foreach (var param in requiredParams)
       {
-        if (stepArgs.ContainsKey(param.Name))
+        if (stepInputs.ContainsKey(param.Name))
           continue;
 
         Logger.Error("Required argument '{arg}' is missing from step '{step}' for task '{task}'",
@@ -80,11 +80,11 @@ namespace TaskRunner.Core.Steps
       // TODO: [TESTS] (TaskStepBase) Add tests
 
       // TODO: [COMPLETE] (TaskStepBase) Handle this better - should we LOG or THROW?
-      if (Parameters.All(x => x.Name != name))
+      if (Inputs.All(x => x.Name != name))
         throw new Exception($"Requested parameter {name} was not provided");
 
       // Grab the parameter - we may need the default value
-      var param = Parameters.FirstOrDefault(x => x.Name == name);
+      var param = Inputs.FirstOrDefault(x => x.Name == name);
 
       var argument = context.GetArgument(param.Name, param.DefaultValue);
 
@@ -100,22 +100,22 @@ namespace TaskRunner.Core.Steps
 
       var value = string.Empty;
 
-      if (Parameters.Any(x => x.Name == name))
+      if (Inputs.Any(x => x.Name == name))
       {
-        var defaultValue = Parameters.First(x => x.Name == name).DefaultValue;
+        var defaultValue = Inputs.First(x => x.Name == name).DefaultValue;
         value = context.GetArgument(name, defaultValue);
       }
 
       return convertFunc.Invoke(value);
     }
 
-    public void RegisterInput(string input, InputValidator validator, bool required = true, string defaultValue = null)
+    public void RegisterInput(string inputName, InputValidator validator, bool required = true, string defaultValue = null)
     {
       // TODO: [TESTS] (TaskStepBase) Add tests
 
-      Parameters.Add(new StepParameter
+      Inputs.Add(new StepInpt
       {
-        Name = input,
+        Name = inputName,
         Required = required,
         Validator = validator,
         DefaultValue = defaultValue

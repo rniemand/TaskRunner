@@ -57,7 +57,7 @@ namespace TaskRunner
           new RunnerStep
           {
             Enabled = true,
-            Arguments = new Dictionary<string, string>
+            Inputs = new Dictionary<string, string>
             {
               {"Severity", "warn"},
               {"Message", "Attempting to do something different!"}
@@ -69,7 +69,7 @@ namespace TaskRunner
           new RunnerStep
           {
             Enabled = true,
-            Arguments = new Dictionary<string, string>
+            Inputs = new Dictionary<string, string>
             {
               {"Url", "{!FreeDns.NAS}"}
             },
@@ -80,7 +80,7 @@ namespace TaskRunner
           new RunnerStep
           {
             Enabled = true,
-            Arguments = new Dictionary<string, string>
+            Inputs = new Dictionary<string, string>
             {
               {"Message", "Http.Get completed with a '{@update_nas.response.status_code}' response code!"}
             },
