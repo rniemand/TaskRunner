@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using TaskRunner.Core.Steps;
 
-namespace TaskRunner.Core.Steps.Interfaces
+namespace TaskRunner.Core.Validators.Interfaces
 {
   public interface IStepSuccessValidator
   {

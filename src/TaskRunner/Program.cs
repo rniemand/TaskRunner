@@ -33,7 +33,7 @@ namespace TaskRunner
 
       // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
-      var testTask = GetDemoTask();
+      var testTask = GetDnsUpdateTask();
       taskRunner.RunTask(testTask);
 
 
@@ -44,49 +44,43 @@ namespace TaskRunner
 
 
     // Initial development support methods
-    private static RunnerTask GetDemoTask()
+    private static RunnerTask GetDnsUpdateTask()
     {
       return new RunnerTask
       {
         Enabled = true,
-        Name = "Development super task 1",
+        Name = "DNS Update Task",
         Frequency = TaskInterval.Seconds,
         FrequencyArgs = "5",
         Steps = new[]
         {
           new RunnerStep
           {
-            Enabled = true,
+            StepName = "log_start",
+            Step = "Console.Log",
             Inputs = new Dictionary<string, string>
             {
               {"Severity", "warn"},
               {"Message", "Attempting to do something different!"}
-            },
-            FailAction = StepFailAction.Continue,
-            Step = "Console.Log",
-            StepName = "console1"
+            }
           },
           new RunnerStep
           {
-            Enabled = true,
+            StepName = "update_dns",
+            Step = "Http.Get",
             Inputs = new Dictionary<string, string>
             {
               {"Url", "{!FreeDns.NAS}"}
-            },
-            FailAction = StepFailAction.Continue,
-            Step = "Http.Get",
-            StepName = "update_nas"
+            }
           },
           new RunnerStep
           {
-            Enabled = true,
+            StepName = "log_result",
+            Step = "Console.Log",
             Inputs = new Dictionary<string, string>
             {
-              {"Message", "Http.Get completed with a '{@update_nas.response.status_code}' response code!"}
-            },
-            FailAction = StepFailAction.Continue,
-            Step = "Console.Log",
-            StepName = "log_result"
+              {"Message", "Http.Get completed with a '{@update_dns.response.status_code}' response code!"}
+            }
           }
         }
       };

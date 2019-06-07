@@ -8,6 +8,8 @@ using TaskRunner.Core.Logging.Interfaces;
 using TaskRunner.Core.Services.Interfaces;
 using TaskRunner.Core.Steps;
 using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Core.Validators.Core;
+using TaskRunner.Core.Validators.Interfaces;
 
 namespace TaskRunner.Core.Services
 {

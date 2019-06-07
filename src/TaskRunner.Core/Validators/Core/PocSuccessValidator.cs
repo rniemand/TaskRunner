@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Core.Steps;
+using TaskRunner.Core.Validators.Interfaces;
 
-namespace TaskRunner.Core.Steps
+namespace TaskRunner.Core.Validators.Core
 {
   public class PocSuccessValidator : IStepSuccessValidator
   {

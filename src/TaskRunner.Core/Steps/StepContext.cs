@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TaskRunner.Core.Extensions;
-using TaskRunner.Core.Steps.Interfaces;
+using TaskRunner.Core.Validators.Interfaces;
 
 namespace TaskRunner.Core.Steps
 {
