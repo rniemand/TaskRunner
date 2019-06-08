@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Interfaces.Steps;
+using TaskRunner.Shared.Steps;
 
 namespace TaskRunner.Shared.Tasks
 {
@@ -13,7 +13,9 @@ namespace TaskRunner.Shared.Tasks
     public string StepName { get; set; }
     public bool DataPublished { get; private set; }
     public string TaskName { get; set; }
-    public List<IStepValidator> Validators { get; private set; }
+
+    // TODO: [RENAME] (StepContext) Come up with a better name for this
+    public List<ValidatorAndArguments> ValidatorInfo { get; private set; }
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
 
@@ -29,7 +31,7 @@ namespace TaskRunner.Shared.Tasks
 
       _inputs = new Dictionary<string, string>();
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
-      Validators = new List<IStepValidator>();
+      ValidatorInfo = new List<ValidatorAndArguments>();
       DataPublished = false;
     }
 
@@ -81,7 +83,7 @@ namespace TaskRunner.Shared.Tasks
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      Validators.Clear();
+      ValidatorInfo.Clear();
     }
 
     public void SetCurrentStepInputs(Dictionary<string, string> inputs)
@@ -96,16 +98,16 @@ namespace TaskRunner.Shared.Tasks
       _inputs = inputs;
     }
 
-    public void RegisterSuccessValidators(List<IStepValidator> validators = null)
+    public void RegisterSuccessValidators(List<ValidatorAndArguments> validators = null)
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      Validators.Clear();
+      ValidatorInfo.Clear();
 
       if (validators == null || validators.Count == 0)
         return;
 
-      Validators = validators;
+      ValidatorInfo = validators;
     }
 
     public Dictionary<string, string> GetLastPublishedData()

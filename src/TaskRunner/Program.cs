@@ -14,6 +14,7 @@ using TaskRunner.Shared.Interfaces.Services;
 using TaskRunner.Shared.Interfaces.Steps;
 using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Http;
+using TaskRunner.Validators.Core;
 
 namespace TaskRunner
 {
@@ -46,9 +47,9 @@ namespace TaskRunner
 
 
     // Initial development support methods
-    private static RunnerTask GetDnsUpdateTask()
+    private static TaskConfig GetDnsUpdateTask()
     {
-      return new RunnerTask
+      return new TaskConfig
       {
         Enabled = true,
         Name = "DNS Update Task",
@@ -56,9 +57,9 @@ namespace TaskRunner
         FrequencyArgs = "5",
         Steps = new[]
         {
-          new RunnerStep
+          new StepConfig
           {
-            StepName = "log_start",
+            Name = "log_start",
             Step = "Console.Log",
             Inputs = new Dictionary<string, string>
             {
@@ -66,18 +67,31 @@ namespace TaskRunner
               {"Message", "Attempting to do something different!"}
             }
           },
-          new RunnerStep
+          new StepConfig
           {
-            StepName = "update_dns",
+            Name = "update_dns",
             Step = "Http.Get",
             Inputs = new Dictionary<string, string>
             {
               {"Url", "{!FreeDns.NAS}"}
+            },
+            Validators = new List<StepValidatorConfig>
+            {
+              new StepValidatorConfig
+              {
+                Enabled = true,
+                Validator = "Property.Contains",
+                Arguments = new Dictionary<string, string>
+                {
+                  {"Property", "response.content"},
+                  {"Contains", "has not changed"}
+                }
+              }
             }
           },
-          new RunnerStep
+          new StepConfig
           {
-            StepName = "log_result",
+            Name = "log_result",
             Step = "Console.Log",
             Inputs = new Dictionary<string, string>
             {
@@ -119,6 +133,10 @@ namespace TaskRunner
       collection
         .AddSingleton<ITaskStep, ConsoleLogger>()
         .AddSingleton<ITaskStep, HttpGet>();
+
+      // Validators
+      collection
+        .AddSingleton<IStepValidator, PropertyContainsValidator>();
 
       _serviceProvider = collection.BuildServiceProvider();
     }

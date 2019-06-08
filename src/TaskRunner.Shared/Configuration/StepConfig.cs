@@ -4,10 +4,10 @@ using TaskRunner.Shared.Enums;
 
 namespace TaskRunner.Shared.Configuration
 {
-  [DebuggerDisplay("{StepId}: {StepName} ({Step})")]
-  public class RunnerStep
+  [DebuggerDisplay("{StepId}: {Name} ({Step})")]
+  public class StepConfig
   {
-    // TODO: [DOCS] (RunnerStep) Document this
+    // TODO: [DOCS] (StepConfig) Document this
 
     /// <summary>
     /// Indicates the enabled state of the current step.
@@ -15,12 +15,12 @@ namespace TaskRunner.Shared.Configuration
     /// </summary>
     public bool Enabled { get; set; }
 
-    // TODO: [DOCS] (RunnerStep) Decide if {@xx:xx} works for this
+    // TODO: [DOCS] (StepConfig) Decide if {@xx:xx} works for this
     /// <summary>
     /// The name of the step - this value is used to publish data against.
-    /// In following steps you can access it's data by {@StepName:PropertyName}
+    /// In following steps you can access it's data by {@Name:PropertyName}
     /// </summary>
-    public string StepName { get; set; }
+    public string Name { get; set; }
 
     /// <summary>
     /// The ID for this step in the main Tasks.Steps array.
@@ -51,11 +51,20 @@ namespace TaskRunner.Shared.Configuration
     /// </summary>
     public string Step { get; set; }
 
-    public RunnerStep()
+    /// <summary>
+    /// List of validators to run after the step has executed. These will determine the overall
+    /// success of the step execution. If there are no validators we will fall back to using the
+    /// determined outcome from the step itself. This is mainly used to allow the user to add
+    /// additional validation to a step. <= rough doc - will update
+    /// </summary>
+    public List<StepValidatorConfig> Validators { get; set; }
+
+    public StepConfig()
     {
       Enabled = true;
       FailAction = StepFailAction.Stop;
       Inputs = new Dictionary<string, string>();
+      Validators = new List<StepValidatorConfig>();
     }
   }
 }

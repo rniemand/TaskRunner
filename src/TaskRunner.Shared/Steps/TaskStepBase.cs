@@ -10,6 +10,7 @@ using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Shared.Steps
 {
+  // TODO: [RENAME] (TaskStepBase) I do not like this name
   public class TaskStepBase : ITaskStep
   {
     public string Name { get; }
@@ -50,7 +51,7 @@ namespace TaskRunner.Shared.Steps
       LogResolvedInputs(context.GetResolvedInputs(), context.StepName);
 
       // ReSharper disable once InvertIf
-      if (context.Validators.Count > 0 && RunStepValidators(context) == false)
+      if (context.ValidatorInfo.Count > 0 && RunStepValidators(context) == false)
       {
         Logger.Error("Step '{step}' for task '{task}' failed validation - stopping task",
           context.StepName, context.TaskName);
@@ -146,12 +147,12 @@ namespace TaskRunner.Shared.Steps
       // TODO: [TESTS] (TaskStepBase) Add tests
 
       Logger.Debug("Running {count} validator(s) against step '{name}' from task '{task}'",
-        context.Validators.Count, context.StepName, context.TaskName);
+        context.ValidatorInfo.Count, context.StepName, context.TaskName);
 
-      foreach (var validator in context.Validators)
+      foreach (var validatorInfo in context.ValidatorInfo)
       {
         // PASS - continue
-        if (validator.Validate(context))
+        if (validatorInfo.Validator.Run(context, validatorInfo.Config))
           continue;
 
         // FAILURE - log and stop running validation
