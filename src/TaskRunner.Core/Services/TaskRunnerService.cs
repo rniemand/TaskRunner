@@ -16,13 +16,13 @@ namespace TaskRunner.Core.Services
   {
     private readonly IAppLogger _logger;
 
-    private readonly List<IRunnerStep> _steps;
+    private readonly List<ITaskStep> _steps;
     private readonly ISecretsService _secretsService;
 
 
     public TaskRunnerService(
       IAppLogger logger,
-      IEnumerable<IRunnerStep> steps,
+      IEnumerable<ITaskStep> steps,
       ISecretsService secretsService)
     {
       _logger = logger;

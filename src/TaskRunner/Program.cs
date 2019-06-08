@@ -117,8 +117,8 @@ namespace TaskRunner
 
       // Steps
       collection
-        .AddSingleton<IRunnerStep, ConsoleLogger>()
-        .AddSingleton<IRunnerStep, HttpGet>();
+        .AddSingleton<ITaskStep, ConsoleLogger>()
+        .AddSingleton<ITaskStep, HttpGet>();
 
       _serviceProvider = collection.BuildServiceProvider();
     }

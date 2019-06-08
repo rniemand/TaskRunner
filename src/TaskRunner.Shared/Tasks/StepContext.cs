@@ -13,7 +13,7 @@ namespace TaskRunner.Shared.Tasks
     public string StepName { get; set; }
     public bool DataPublished { get; private set; }
     public string TaskName { get; set; }
-    public List<IStepSuccessValidator> Validators { get; private set; }
+    public List<IStepValidator> Validators { get; private set; }
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
 
@@ -29,7 +29,7 @@ namespace TaskRunner.Shared.Tasks
 
       _inputs = new Dictionary<string, string>();
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
-      Validators = new List<IStepSuccessValidator>();
+      Validators = new List<IStepValidator>();
       DataPublished = false;
     }
 
@@ -96,7 +96,7 @@ namespace TaskRunner.Shared.Tasks
       _inputs = inputs;
     }
 
-    public void RegisterSuccessValidators(List<IStepSuccessValidator> validators = null)
+    public void RegisterSuccessValidators(List<IStepValidator> validators = null)
     {
       // TODO: [TESTS] (StepContext) Add tests
 

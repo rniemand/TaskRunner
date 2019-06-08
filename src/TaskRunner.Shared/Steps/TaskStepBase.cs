@@ -10,7 +10,7 @@ using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Shared.Steps
 {
-  public class TaskStepBase : IRunnerStep
+  public class TaskStepBase : ITaskStep
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }

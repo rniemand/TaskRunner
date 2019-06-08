@@ -3,7 +3,7 @@ using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Shared.Interfaces.Steps
 {
-  public interface IStepSuccessValidator
+  public interface IStepValidator
   {
     bool Enabled { get; set; }
     string Name { get; set; }

@@ -2,9 +2,9 @@
 using TaskRunner.Shared.Interfaces.Steps;
 using TaskRunner.Shared.Tasks;
 
-namespace TaskRunner.Core.Validators.Core
+namespace TaskRunner.Validators.Core
 {
-  public class PocSuccessValidator : IStepSuccessValidator
+  public class PocSuccessValidator : IStepValidator
   {
     // TODO: [MOVE] (PocSuccessValidator) Move this into config (not required for the actual validator)
     public bool Enabled { get; set; }
