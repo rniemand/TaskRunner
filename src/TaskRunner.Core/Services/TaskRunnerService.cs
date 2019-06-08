@@ -54,10 +54,19 @@ namespace TaskRunner.Core.Services
         return;
       }
 
+      // TODO: [MOVE] (TaskRunnerService) Move into better place
+      var stepLookup = new Dictionary<int, string>();
+
+      foreach (var step in task.Steps)
+      {
+        stepLookup[step.StepId] = step.Name;
+      }
+
       // Generate the initial step context and execute steps one by one
       var stepContext = new StepContext
       {
-        TaskName = task.Name
+        TaskName = task.Name,
+        StepNameLookup = stepLookup
       };
 
       foreach (var currentStep in task.Steps)
@@ -463,7 +472,8 @@ namespace TaskRunner.Core.Services
       context.ClearStepValidators();
 
       // Generate and update the current steps arguments
-      context.SetCurrentStepInputs(GenerateStepInputs(context, step));
+      var stepInputs = GenerateStepInputs(context, step);
+      context.SetCurrentStepInputs(stepInputs);
     }
 
     private BaseStepValidator GetStepValidator(string validatorName)

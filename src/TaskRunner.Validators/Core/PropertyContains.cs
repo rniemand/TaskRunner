@@ -5,9 +5,9 @@ using TaskRunner.Shared.Validators;
 
 namespace TaskRunner.Validators.Core
 {
-  public class PropertyContainsValidator : BaseStepValidator
+  public class PropertyContains : BaseStepValidator
   {
-    public PropertyContainsValidator(IAppLogger logger)
+    public PropertyContains(IAppLogger logger)
     : base(logger, "Property.Contains")
     {
       RegisterInput("Property");
@@ -16,8 +16,8 @@ namespace TaskRunner.Validators.Core
 
     public override bool Validate(StepContext context, StepValidatorConfig config)
     {
-      // TODO: [TESTS] (PropertyContainsValidator) Add tests
-      // TODO: [REFACTOR] (PropertyContainsValidator) Create a helper method for getting arguments
+      // TODO: [TESTS] (PropertyContains) Add tests
+      // TODO: [REFACTOR] (PropertyContains) Create a helper method for getting arguments
 
       var property = GetInput(config, "Property");
       var contains = GetInput(config, "Contains");

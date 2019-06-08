@@ -36,8 +36,7 @@ namespace TaskRunner
 
       // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
-      var testTask = GetDnsUpdateTask();
-      taskRunner.RunTask(testTask);
+      taskRunner.RunTask(GetDnsUpdateTask());
 
 
       DisposeServices();
@@ -57,6 +56,7 @@ namespace TaskRunner
         FrequencyArgs = "5",
         Steps = new[]
         {
+          // Id = 0
           new StepConfig
           {
             Name = "log_start",
@@ -67,6 +67,7 @@ namespace TaskRunner
               {"Message", "Attempting to do something different!"}
             }
           },
+          // Id = 1
           new StepConfig
           {
             Name = "update_dns",
@@ -89,6 +90,7 @@ namespace TaskRunner
               }
             }
           },
+          // Id = 2
           new StepConfig
           {
             Name = "log_result",
@@ -96,6 +98,16 @@ namespace TaskRunner
             Inputs = new Dictionary<string, string>
             {
               {"Message", "Http.Get completed with a '{@update_dns.response.status_code}' response code!"}
+            }
+          },
+          // Id = 3
+          new StepConfig
+          {
+            Name = "log_result",
+            Step = "Console.Log",
+            Inputs = new Dictionary<string, string>
+            {
+              {"Message", "Response was: '{@1.response.content}'"}
             }
           }
         }
@@ -136,7 +148,7 @@ namespace TaskRunner
 
       // Validators
       collection
-        .AddSingleton<IStepValidator, PropertyContainsValidator>();
+        .AddSingleton<IStepValidator, PropertyContains>();
 
       _serviceProvider = collection.BuildServiceProvider();
     }

@@ -13,6 +13,7 @@ namespace TaskRunner.Shared.Tasks
     public string StepName { get; set; }
     public bool DataPublished { get; private set; }
     public string TaskName { get; set; }
+    public Dictionary<int, string> StepNameLookup { get; set; }
 
     // TODO: [RENAME] (StepContext) Come up with a better name for this
     public List<ValidatorAndArguments> ValidatorInfo { get; private set; }
@@ -23,7 +24,6 @@ namespace TaskRunner.Shared.Tasks
     private Dictionary<string, string> _inputs;
     private readonly Dictionary<string, Dictionary<string, string>> _publishedData;
 
-
     // Constructor
     public StepContext()
     {
@@ -31,6 +31,8 @@ namespace TaskRunner.Shared.Tasks
 
       _inputs = new Dictionary<string, string>();
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
+      StepNameLookup = new Dictionary<int, string>();
+
       ValidatorInfo = new List<ValidatorAndArguments>();
       DataPublished = false;
     }
@@ -139,6 +141,20 @@ namespace TaskRunner.Shared.Tasks
       {
         var stepName = match.Groups[2].Value;
         var dataKey = match.Groups[3].Value;
+
+        if (stepName.IsNumeric())
+        {
+          var stepId = stepName.ToInt(-1);
+
+          // TODO: [REVISE] (StepContext) Handle this better
+          if (stepId == -1)
+            return input;
+
+          if (!StepNameLookup.ContainsKey(stepId))
+            return input;
+
+          stepName = StepNameLookup[stepId];
+        }
 
         input = input.Replace(
           match.Groups[1].Value,

@@ -75,5 +75,22 @@ namespace TaskRunner.Shared.Extensions
         .Replace(" ", "_") // do not want any spaces in step names
         .TrimAndLower();
     }
+
+    public static bool IsNumeric(this string input)
+    {
+      // TODO: [TESTS] (StringExtensions) Add tests
+
+      return input.MatchesRxPattern("^\\d{1,}$");
+    }
+
+    public static int ToInt(this string input, int fallback = 0)
+    {
+      // TODO: [TESTS] (StringExtensions) Add tests
+
+      if (int.TryParse(input, out var parsed))
+        return parsed;
+
+      return fallback;
+    }
   }
 }
