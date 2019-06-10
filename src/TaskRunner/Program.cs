@@ -36,7 +36,7 @@ namespace TaskRunner
 
       // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
-      taskRunner.RunTask(GetDnsUpdateTask());
+      taskRunner.RunTask(GetMysqlDumpTask());
 
 
       DisposeServices();
@@ -56,7 +56,7 @@ namespace TaskRunner
         FrequencyArgs = "5",
         Steps = new[]
         {
-          // Id = 0
+          // Id = 0 (Test log)
           new StepConfig
           {
             Name = "log_start",
@@ -67,7 +67,7 @@ namespace TaskRunner
               {"Message", "Attempting to do something different!"}
             }
           },
-          // Id = 1
+          // Id = 1 (Update DNS entry)
           new StepConfig
           {
             Name = "update_dns",
@@ -90,7 +90,7 @@ namespace TaskRunner
               }
             }
           },
-          // Id = 2
+          // Id = 2 (Log response code)
           new StepConfig
           {
             Name = "log_result",
@@ -100,7 +100,7 @@ namespace TaskRunner
               {"Message", "Http.Get completed with a '{@update_dns.response.status_code}' response code!"}
             }
           },
-          // Id = 3
+          // Id = 3 (Test @id accessing)
           new StepConfig
           {
             Name = "log_result",
@@ -108,6 +108,38 @@ namespace TaskRunner
             Inputs = new Dictionary<string, string>
             {
               {"Message", "Response was: '{@1.response.content}'"}
+            }
+          }
+        }
+      };
+    }
+
+    private static TaskConfig GetMysqlDumpTask()
+    {
+      // mysqldump --databases Confluence -u richardn -p > dump.sql
+      //   https://dev.mysql.com/downloads/mysql/
+      //    -> Windows (x86, 64-bit), ZIP Archive
+      //    -> Open the ZIP archive and go to "bin" folder
+      //    -> extract MYSQLDUMP.EXE where you want
+      //    -> https://dev.mysql.com/doc/refman/5.5/en/mysqldump.html
+      //    -> VIP: https://unix.stackexchange.com/questions/227648/mysqldump-via-crontab-pass-password-hashed-password-file-so-i-can-use-via-c
+
+      return new TaskConfig
+      {
+        Name = "Backup Clean-Home DB",
+        Enabled = true,
+        Frequency = TaskInterval.Days,
+        FrequencyArgs = "1",
+        Steps = new[]
+        {
+          new StepConfig
+          {
+            Name = "Log Hi",
+            Step = "Console.Log",
+            Inputs = new Dictionary<string, string>
+            {
+              {"Severity", "Info"},
+              {"Message", "Starting backup of CleanHome DB"}
             }
           }
         }
