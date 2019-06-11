@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using TaskRunner.Shared.Configuration;
-using TaskRunner.Shared.Interfaces.Logging;
-using TaskRunner.Shared.Interfaces.Steps;
+using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Steps;
 
 namespace TaskRunner.Shared.Validators
 {
-  public abstract class BaseValidator : IStepValidator
+  public abstract class BaseValidator : IValidator
   {
     // TODO: [DOCS] (BaseValidator) Document this
 

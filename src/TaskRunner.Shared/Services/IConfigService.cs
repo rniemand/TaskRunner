@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Shared.Interfaces.Services
+﻿namespace TaskRunner.Shared.Services
 {
   public interface IConfigService
   {

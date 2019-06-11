@@ -1,7 +1,7 @@
 ﻿using System;
+using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Enums;
-using TaskRunner.Shared.Interfaces.Abstractions;
-using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Mappers;
 using TaskRunner.Shared.Steps;
 

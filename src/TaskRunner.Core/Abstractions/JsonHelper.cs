@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using TaskRunner.Shared.Interfaces.Abstractions;
+using TaskRunner.Shared.Abstractions;
 
 namespace TaskRunner.Core.Abstractions
 {

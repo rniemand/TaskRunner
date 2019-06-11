@@ -2,7 +2,7 @@
 using System.Net.Http;
 using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Steps;
 
 namespace TaskRunner.Steps.Http

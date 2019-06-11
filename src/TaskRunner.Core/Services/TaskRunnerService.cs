@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Interfaces.Logging;
-using TaskRunner.Shared.Interfaces.Services;
-using TaskRunner.Shared.Interfaces.Steps;
+using TaskRunner.Shared.Logging;
+using TaskRunner.Shared.Services;
 using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Validators;
 
@@ -16,7 +15,7 @@ namespace TaskRunner.Core.Services
   {
     private readonly IAppLogger _logger;
 
-    private readonly List<ITaskStep> _steps;
+    private readonly List<IStep> _steps;
     private readonly List<BaseValidator> _validators;
     private readonly ISecretsService _secretsService;
 
@@ -24,8 +23,8 @@ namespace TaskRunner.Core.Services
     public TaskRunnerService(
       IAppLogger logger,
       ISecretsService secretsService,
-      IEnumerable<ITaskStep> steps,
-      IEnumerable<IStepValidator> stepValidators)
+      IEnumerable<IStep> steps,
+      IEnumerable<IValidator> stepValidators)
     {
       _logger = logger;
       _secretsService = secretsService;

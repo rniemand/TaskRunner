@@ -1,6 +1,6 @@
 ﻿using TaskRunner.Shared.Configuration;
 
-namespace TaskRunner.Shared.Interfaces.Services
+namespace TaskRunner.Shared.Services
 {
   public interface ISecretsService
   {

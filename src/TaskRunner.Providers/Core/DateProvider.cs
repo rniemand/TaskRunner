@@ -1,4 +1,4 @@
-﻿using TaskRunner.Shared.Interfaces.Logging;
+﻿using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Providers;
 
 namespace TaskRunner.Providers.Core

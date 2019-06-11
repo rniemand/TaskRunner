@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using TaskRunner.Shared.Interfaces.Abstractions;
+using TaskRunner.Shared.Abstractions;
 
 namespace TaskRunner.Core.Abstractions
 {

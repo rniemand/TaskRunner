@@ -1,5 +1,5 @@
 ﻿using TaskRunner.Shared.Configuration;
-using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Validators;
 

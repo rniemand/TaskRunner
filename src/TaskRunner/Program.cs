@@ -5,13 +5,14 @@ using TaskRunner.Core.Abstractions;
 using TaskRunner.Core.Builders;
 using TaskRunner.Core.Logging;
 using TaskRunner.Core.Services;
+using TaskRunner.Shared.Abstractions;
+using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Enums;
-using TaskRunner.Shared.Interfaces.Abstractions;
-using TaskRunner.Shared.Interfaces.Builders;
-using TaskRunner.Shared.Interfaces.Logging;
-using TaskRunner.Shared.Interfaces.Services;
-using TaskRunner.Shared.Interfaces.Steps;
+using TaskRunner.Shared.Logging;
+using TaskRunner.Shared.Services;
+using TaskRunner.Shared.Steps;
+using TaskRunner.Shared.Validators;
 using TaskRunner.Steps.Console;
 using TaskRunner.Steps.Http;
 using TaskRunner.Validators.Core;
@@ -182,12 +183,12 @@ namespace TaskRunner
 
       // Steps
       collection
-        .AddSingleton<ITaskStep, ConsoleLogger>()
-        .AddSingleton<ITaskStep, HttpGet>();
+        .AddSingleton<IStep, ConsoleLogger>()
+        .AddSingleton<IStep, HttpGet>();
 
       // Validators
       collection
-        .AddSingleton<IStepValidator, PropertyContains>();
+        .AddSingleton<IValidator, PropertyContains>();
 
       _serviceProvider = collection.BuildServiceProvider();
     }

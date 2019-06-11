@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TaskRunner.Shared.Interfaces.Logging;
+using TaskRunner.Shared.Logging;
 
 namespace TaskRunner.Shared.Providers
 {

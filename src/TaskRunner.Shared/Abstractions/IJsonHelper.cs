@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TaskRunner.Shared.Interfaces.Abstractions
+namespace TaskRunner.Shared.Abstractions
 {
   public interface IJsonHelper
   {

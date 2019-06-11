@@ -1,7 +1,7 @@
 ﻿using System.IO;
+using TaskRunner.Shared.Abstractions;
+using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Interfaces.Abstractions;
-using TaskRunner.Shared.Interfaces.Builders;
 
 namespace TaskRunner.Core.Builders
 {

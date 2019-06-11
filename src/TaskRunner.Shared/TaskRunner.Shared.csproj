@@ -55,20 +55,20 @@
     <Compile Include="Enums\TaskInterval.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Interfaces\Abstractions\IAppDomain.cs" />
-    <Compile Include="Interfaces\Abstractions\IConsole.cs" />
-    <Compile Include="Interfaces\Abstractions\IDirectory.cs" />
-    <Compile Include="Interfaces\Abstractions\IFile.cs" />
-    <Compile Include="Interfaces\Abstractions\IJsonHelper.cs" />
-    <Compile Include="Interfaces\Builders\IPathBuilder.cs" />
-    <Compile Include="Interfaces\Steps\IStepValidator.cs" />
-    <Compile Include="Interfaces\Logging\IAppLogger.cs" />
-    <Compile Include="Interfaces\Services\IConfigService.cs" />
-    <Compile Include="Interfaces\Services\ISchedulerService.cs" />
-    <Compile Include="Interfaces\Services\ISecretsService.cs" />
-    <Compile Include="Interfaces\Services\ITaskRunnerService.cs" />
-    <Compile Include="Interfaces\Services\ITasksService.cs" />
-    <Compile Include="Interfaces\Steps\ITaskStep.cs" />
+    <Compile Include="Abstractions\IAppDomain.cs" />
+    <Compile Include="Abstractions\IConsole.cs" />
+    <Compile Include="Abstractions\IDirectory.cs" />
+    <Compile Include="Abstractions\IFile.cs" />
+    <Compile Include="Abstractions\IJsonHelper.cs" />
+    <Compile Include="Builders\IPathBuilder.cs" />
+    <Compile Include="Validators\IValidator.cs" />
+    <Compile Include="Logging\IAppLogger.cs" />
+    <Compile Include="Services\IConfigService.cs" />
+    <Compile Include="Services\ISchedulerService.cs" />
+    <Compile Include="Services\ISecretsService.cs" />
+    <Compile Include="Services\ITaskRunnerService.cs" />
+    <Compile Include="Services\ITasksService.cs" />
+    <Compile Include="Steps\IStep.cs" />
     <Compile Include="Mappers\SeverityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\BaseProvider.cs" />
@@ -83,5 +83,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TaskRunner.Shared.Abstractions;
+using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
-using TaskRunner.Shared.Interfaces.Abstractions;
-using TaskRunner.Shared.Interfaces.Builders;
-using TaskRunner.Shared.Interfaces.Logging;
-using TaskRunner.Shared.Interfaces.Services;
+using TaskRunner.Shared.Logging;
+using TaskRunner.Shared.Services;
 
 namespace TaskRunner.Core.Services
 {

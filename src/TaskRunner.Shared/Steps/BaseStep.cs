@@ -4,12 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using TaskRunner.Shared.Enums;
-using TaskRunner.Shared.Interfaces.Logging;
-using TaskRunner.Shared.Interfaces.Steps;
+using TaskRunner.Shared.Logging;
 
 namespace TaskRunner.Shared.Steps
 {
-  public abstract class BaseStep : ITaskStep
+  public abstract class BaseStep : IStep
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }
