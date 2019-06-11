@@ -142,13 +142,17 @@ namespace TaskRunner
             Inputs = new Dictionary<string, string>
             {
               {"Severity", "Info"},
-              {"Message", "The provided date is: {$Date}"}
+              {"Message", "The provided date is: {$Date} ({$UtcDate})"},
             },
             Providers = new List<ProviderConfig>
             {
               new ProviderConfig
               {
                 Provider = "Date"
+              },
+              new ProviderConfig
+              {
+                Provider = "UtcDate"
               }
             }
           }
@@ -190,6 +194,7 @@ namespace TaskRunner
 
       // Providers
       collection
+        .AddSingleton<IProvider, UtcDateProvider>()
         .AddSingleton<IProvider, DateProvider>();
 
       // Validators

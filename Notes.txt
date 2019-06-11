@@ -2,4 +2,4 @@ Accessing data
 	
 	- {@<STEP|StepID>.<KEY>}			[StepContext.ReplaceTags]										Accessing published step data
 	- {!<SECTION>.<KEY>}					[TaskRunnerService.GenerateStepInputs]			Accessing application secrets
-	- {$<KEY>}										[StepContext.ReplaceTags]										Accessing provided values
+	- {$<KEY>}										[StepContext.RunStepProviders]							Accessing provided values

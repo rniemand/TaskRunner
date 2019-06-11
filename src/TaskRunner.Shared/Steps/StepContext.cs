@@ -22,7 +22,7 @@ namespace TaskRunner.Shared.Steps
     public string TaskName { get; set; }
 
     private const string PublishedDataRx = @"({@([^\.]+)\.([^}]+)})";
-    private const string ProvidedDataRx = @"({\$([^|]+)})";
+    private const string ProvidedDataRx = @"({\$([^}]+)})";
 
     private readonly Dictionary<string, Dictionary<string, string>> _publishedData;
     private readonly Dictionary<string, string> _provided;
@@ -215,7 +215,7 @@ namespace TaskRunner.Shared.Steps
       Inputs = newInputs;
     }
 
-    public string ReplaceProvidedPlaceholders(string input)
+    private string ReplaceProvidedPlaceholders(string input)
     {
       // Look for any placeholders
       if (!input.MatchesRxPattern(ProvidedDataRx))
