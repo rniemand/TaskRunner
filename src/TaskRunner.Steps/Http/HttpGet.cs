@@ -27,7 +27,7 @@ namespace TaskRunner.Steps.Http
       RegisterInput("Url", InputValidator.Url);
     }
 
-    public override bool Execute(StepContext context)
+    public override bool Run(StepContext context)
     {
       // TODO: [TESTS] (HttpGet) Add tests
 

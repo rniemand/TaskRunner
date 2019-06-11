@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Validators;
 
@@ -9,19 +10,16 @@ namespace TaskRunner.Shared.Steps
   {
     // TODO: [DOCS] (StepContext) Document this
 
-    public int StepId { get; set; }
-    public string StepName { get; set; }
+    public int StepId { get; private set; }
+    public string StepName { get; private set; }
     public bool DataPublished { get; private set; }
-    public string TaskName { get; set; }
+    public Dictionary<string, string> Inputs { get; private set; }
+    public List<ValidatorAndArguments> Validators { get; private set; }
     public Dictionary<int, string> StepNameLookup { get; set; }
 
-    // TODO: [RENAME] (StepContext) Come up with a better name for this
-    public List<ValidatorAndArguments> ValidatorInfo { get; private set; }
+    public string TaskName { get; set; }
 
     private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
-
-    // TODO: [RENAME] (StepContext) Not happy with the name "_publishedData" - think of something better
-    private Dictionary<string, string> _inputs;
     private readonly Dictionary<string, Dictionary<string, string>> _publishedData;
 
     // Constructor
@@ -29,11 +27,10 @@ namespace TaskRunner.Shared.Steps
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      _inputs = new Dictionary<string, string>();
+      Inputs = new Dictionary<string, string>();
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
       StepNameLookup = new Dictionary<int, string>();
-
-      ValidatorInfo = new List<ValidatorAndArguments>();
+      Validators = new List<ValidatorAndArguments>();
       DataPublished = false;
     }
 
@@ -74,42 +71,25 @@ namespace TaskRunner.Shared.Steps
 
 
     // Public methods | called from "TaskRunnerService"
-    public void ResetDataPublished()
+    public void SetCurrentStep(
+      StepConfig currentStep,
+      Dictionary<string, string> inputs,
+      List<ValidatorAndArguments> validators)
     {
       // TODO: [TESTS] (StepContext) Add tests
 
+      // Set the current step ID and Name
+      StepId = currentStep.StepId;
+      StepName = currentStep.Name;
+
+      // Reset core properties
       DataPublished = false;
-    }
+      Inputs.Clear();
+      Validators.Clear();
 
-    public void ClearStepValidators()
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      ValidatorInfo.Clear();
-    }
-
-    public void SetCurrentStepInputs(Dictionary<string, string> inputs)
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      _inputs.Clear();
-
-      if (inputs.Count == 0)
-        return;
-
-      _inputs = inputs;
-    }
-
-    public void RegisterSuccessValidators(List<ValidatorAndArguments> validators = null)
-    {
-      // TODO: [TESTS] (StepContext) Add tests
-
-      ValidatorInfo.Clear();
-
-      if (validators == null || validators.Count == 0)
-        return;
-
-      ValidatorInfo = validators;
+      // Wire up all required collections
+      Inputs = inputs;
+      Validators = validators;
     }
 
     public Dictionary<string, string> GetLastPublishedData()
@@ -174,23 +154,23 @@ namespace TaskRunner.Shared.Steps
       // TODO: [TESTS] (StepContext) Add tests
 
       // Ensure that we have something to work with
-      if (_inputs == null || _inputs.Count == 0)
+      if (Inputs == null || Inputs.Count == 0)
         return fallback;
 
       // Check to see if the requested input exists
       // ReSharper disable once ConvertIfStatementToReturnStatement
-      if (!_inputs.ContainsKey(input))
+      if (!Inputs.ContainsKey(input))
         return fallback;
 
       // Argument exists, return it
-      return _inputs[input];
+      return Inputs[input];
     }
 
     public Dictionary<string, string> GetResolvedInputs()
     {
       // TODO: [TESTS] (StepContext) Add tests
 
-      return _inputs;
+      return Inputs;
     }
 
 

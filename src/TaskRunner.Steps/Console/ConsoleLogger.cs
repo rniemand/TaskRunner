@@ -28,14 +28,13 @@ namespace TaskRunner.Steps.Console
     }
 
     // Public methods
-    public override bool Execute(StepContext context)
+    public override bool Run(StepContext context)
     {
       // TODO: [TESTS] (ConsoleLog) Add tests
 
-      Log(
-        GetInput(context, "Severity", SeverityMapper.MapSeverity),
-        GetInput(context, "Message")
-      );
+      var severity = GetInput(context, "Severity", SeverityMapper.MapSeverity);
+      var message = GetInput(context, "Message");
+      Log(severity, message);
 
       return true;
     }

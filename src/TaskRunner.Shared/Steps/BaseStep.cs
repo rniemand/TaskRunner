@@ -27,14 +27,13 @@ namespace TaskRunner.Shared.Steps
 
 
     // Public methods
-    public bool RunMe(StepContext context)
+    public bool Execute(StepContext context)
     {
       // TODO: [TESTS] (BaseStep) Add tests
-      // TODO: [RENAME] (BaseStep) Rename this to something more meaningful
 
       // Time and run the step
       var executeStopwatch = Stopwatch.StartNew();
-      var success = Execute(context);
+      var success = Run(context);
       executeStopwatch.Stop();
 
       // TODO: [COMPLETE] (BaseStep) Publish total elapsed MS for step execution
@@ -49,7 +48,7 @@ namespace TaskRunner.Shared.Steps
       LogResolvedInputs(context.GetResolvedInputs(), context.StepName);
 
       // ReSharper disable once InvertIf
-      if (context.ValidatorInfo.Count > 0 && RunStepValidators(context) == false)
+      if (context.Validators.Count > 0 && RunStepValidators(context) == false)
       {
         Logger.Error("Step '{step}' for task '{task}' failed validation - stopping task",
           context.StepName, context.TaskName);
@@ -61,7 +60,7 @@ namespace TaskRunner.Shared.Steps
       return success;
     }
 
-    public virtual bool Execute(StepContext context)
+    public virtual bool Run(StepContext context)
     {
       throw new NotImplementedException();
     }
@@ -145,9 +144,9 @@ namespace TaskRunner.Shared.Steps
       // TODO: [TESTS] (BaseStep) Add tests
 
       Logger.Debug("Running {count} validator(s) against step '{name}' from task '{task}'",
-        context.ValidatorInfo.Count, context.StepName, context.TaskName);
+        context.Validators.Count, context.StepName, context.TaskName);
 
-      foreach (var validatorInfo in context.ValidatorInfo)
+      foreach (var validatorInfo in context.Validators)
       {
         // PASS - continue
         if (validatorInfo.Validator.Run(context, validatorInfo.Config))

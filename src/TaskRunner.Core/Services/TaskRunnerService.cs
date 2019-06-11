@@ -70,35 +70,11 @@ namespace TaskRunner.Core.Services
 
       foreach (var currentStep in task.Steps)
       {
-        SyncStep(stepContext, currentStep);
-        var runnerStep = ResolveStep(currentStep.Step);
-
-        // TODO: [CURRENT] (TaskRunnerService) Discover and load all task validators dynamically
-        // TODO: [CURRENT] (TaskRunnerService) Take into consideration the "Enabled" state of the validator when loading
-        // TODO: [00000] (TaskRunnerService) Move this into a helper method
-
-        // Resolve and assign validators for the current step
-        if (currentStep.Validators.Count > 0)
-        {
-          _logger.Debug("Resolving validators for current step");
-          var stepValidators = new List<ValidatorAndArguments>();
-
-          // We only want enabled validators
-          foreach (var validatorConfig in currentStep.Validators.Where(x => x.Enabled).ToList())
-          {
-            // Safe to assign here - we confirmed that the requested validator exists when we verified the task
-            stepValidators.Add(new ValidatorAndArguments
-            {
-              Validator = GetStepValidator(validatorConfig.Validator),
-              Config = validatorConfig
-            });
-          }
-
-          stepContext.RegisterSuccessValidators(stepValidators);
-        }
+        var step = ResolveStep(currentStep.Step);
+        SyncStepContext(stepContext, currentStep);
 
         // Run the current step to decide what needs to happen next
-        if (!runnerStep.RunMe(stepContext))
+        if (!step.Execute(stepContext))
         {
           // TODO: [COMPLETE] (TaskRunnerService) Handle step execution failed (based on configuration)
 
@@ -458,21 +434,38 @@ namespace TaskRunner.Core.Services
       return arguments;
     }
 
-    private void SyncStep(StepContext context, StepConfig step)
+    private List<ValidatorAndArguments> GenerateStepValidators(StepConfig currentStep)
+    {
+      var validators = new List<ValidatorAndArguments>();
+
+      if (currentStep.Validators.Count == 0)
+        return validators;
+
+      _logger.Debug("Resolving validators for current step");
+      var stepValidators = new List<ValidatorAndArguments>();
+
+      // We only want enabled validators
+      foreach (var validatorConfig in currentStep.Validators.Where(x => x.Enabled).ToList())
+      {
+        // Safe to assign here - we confirmed that the requested validator exists when we verified the task
+        stepValidators.Add(new ValidatorAndArguments
+        {
+          Validator = GetStepValidator(validatorConfig.Validator),
+          Config = validatorConfig
+        });
+      }
+
+      return validators;
+    }
+
+    private void SyncStepContext(StepContext context, StepConfig currentStep)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
-      // Ensure that the StepId and Name are correct
-      context.StepId = step.StepId;
-      context.StepName = step.Name;
-
-      // Clear out all validators and reset the "DataPublished" flag
-      context.ResetDataPublished();
-      context.ClearStepValidators();
-
-      // Generate and update the current steps arguments
-      var stepInputs = GenerateStepInputs(context, step);
-      context.SetCurrentStepInputs(stepInputs);
+      context.SetCurrentStep(
+        currentStep,
+        GenerateStepInputs(context, currentStep),
+        GenerateStepValidators(currentStep));
     }
 
     private BaseValidator GetStepValidator(string validatorName)
