@@ -55,16 +55,23 @@ namespace TaskRunner.Shared.Configuration
     /// List of validators to run after the step has executed. These will determine the overall
     /// success of the step execution. If there are no validators we will fall back to using the
     /// determined outcome from the step itself. This is mainly used to allow the user to add
-    /// additional validation to a step. <= rough doc - will update
+    /// additional validation to a step. rough doc - will update
     /// </summary>
-    public List<StepValidatorConfig> Validators { get; set; }
+    public List<ValidatorConfig> Validators { get; set; }
+
+    /// <summary>
+    /// Collection of providers to run before the current step is executed, providers are used
+    /// to inject additional values into the step pipeline.
+    /// </summary>
+    public List<ProviderConfig> Providers { get; set; }
 
     public StepConfig()
     {
       Enabled = true;
       FailAction = StepFailAction.Stop;
       Inputs = new Dictionary<string, string>();
-      Validators = new List<StepValidatorConfig>();
+      Validators = new List<ValidatorConfig>();
+      Providers = new List<ProviderConfig>();
     }
   }
 }

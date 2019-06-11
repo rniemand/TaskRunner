@@ -47,27 +47,20 @@ namespace TaskRunner.Core.Services
 
       // TODO: [OPTIMIZATION] (TaskRunnerService) Find a better way to run this - i.e. cache validated tasks on load
       // Ensure that this task meets requirements to run
-      if (!ValidateTask(task))
+      if (ValidateTask(task) == false)
       {
         _logger.Error("Task validation failed for {task}, skipping", task.Name);
         return;
-      }
-
-      // TODO: [MOVE] (TaskRunnerService) Move into better place
-      var stepLookup = new Dictionary<int, string>();
-
-      foreach (var step in task.Steps)
-      {
-        stepLookup[step.StepId] = step.Name;
       }
 
       // Generate the initial step context and execute steps one by one
       var stepContext = new StepContext
       {
         TaskName = task.Name,
-        StepNameLookup = stepLookup
+        StepNameLookup = GenerateStepLookup(task)
       };
 
+      // Execute each enabled task step (in the order they appear)
       foreach (var currentStep in task.Steps)
       {
         var step = ResolveStep(currentStep.Step);
@@ -91,6 +84,8 @@ namespace TaskRunner.Core.Services
         _logger.Debug("Step {name} execution succeeded", currentStep.Name);
       }
 
+      // Task execution has completed
+      // TODO: [COMPLETE] (TaskRunnerService) Handle task execution completed
     }
 
 
@@ -473,6 +468,21 @@ namespace TaskRunner.Core.Services
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
       return _validators.FirstOrDefault(x => x.Name == validatorName);
+    }
+
+    private static Dictionary<int, string> GenerateStepLookup(TaskConfig task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [REVISE] (TaskRunnerService) Perhaps move this into an extension method
+
+      var stepLookup = new Dictionary<int, string>();
+
+      foreach (var step in task.Steps)
+      {
+        stepLookup[step.StepId] = step.Name;
+      }
+
+      return stepLookup;
     }
   }
 }

@@ -2,9 +2,9 @@
 
 namespace TaskRunner.Shared.Configuration
 {
-  public class StepValidatorConfig
+  public class ValidatorConfig
   {
-    // TODO: [DOCS] (StepValidatorConfig) Document this
+    // TODO: [DOCS] (ValidatorConfig) Document this
 
     public bool Enabled { get; set; }
 
@@ -18,7 +18,7 @@ namespace TaskRunner.Shared.Configuration
     /// </summary>
     public Dictionary<string, string> Arguments { get; set; }
 
-    public StepValidatorConfig()
+    public ValidatorConfig()
     {
       Enabled = true;
       Arguments = new Dictionary<string, string>();

@@ -8,6 +8,6 @@ namespace TaskRunner.Shared.Validators
 
     public BaseValidator Validator { get; set; }
 
-    public StepValidatorConfig Config { get; set; }
+    public ValidatorConfig Config { get; set; }
   }
 }

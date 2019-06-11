@@ -76,9 +76,9 @@ namespace TaskRunner
             {
               {"Url", "{!FreeDns.NAS}"}
             },
-            Validators = new List<StepValidatorConfig>
+            Validators = new List<ValidatorConfig>
             {
-              new StepValidatorConfig
+              new ValidatorConfig
               {
                 Enabled = true,
                 Validator = "Property.Contains",
@@ -140,6 +140,13 @@ namespace TaskRunner
             {
               {"Severity", "Info"},
               {"Message", "Starting backup of CleanHome DB"}
+            },
+            Providers = new List<ProviderConfig>
+            {
+              new ProviderConfig
+              {
+                Provider = "DateProvider"
+              }
             }
           }
         }

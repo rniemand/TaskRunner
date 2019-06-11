@@ -28,14 +28,14 @@ namespace TaskRunner.Shared.Validators
 
 
     // Public methods | called by "implemented class"
-    public virtual bool Validate(StepContext context, StepValidatorConfig config)
+    public virtual bool Validate(StepContext context, ValidatorConfig config)
     {
       // TODO: [TESTS] (BaseValidator) Add tests
 
       throw new NotImplementedException();
     }
 
-    public string GetInput(StepValidatorConfig config, string inputName)
+    public string GetInput(ValidatorConfig config, string inputName)
     {
       // TODO: [TESTS] (BaseValidator) Add tests
 
@@ -51,7 +51,7 @@ namespace TaskRunner.Shared.Validators
 
 
     // Public methods | called from "BaseStep"
-    public bool Run(StepContext context, StepValidatorConfig config)
+    public bool Run(StepContext context, ValidatorConfig config)
     {
       // TODO: [TESTS] (BaseValidator) Add tests
 
@@ -71,7 +71,7 @@ namespace TaskRunner.Shared.Validators
 
 
     // Public methods | called from "TaskRunnerService"
-    public bool HasRequiredInputs(StepValidatorConfig config)
+    public bool HasRequiredInputs(ValidatorConfig config)
     {
       // TODO: [TESTS] (BaseValidator) Add tests
 

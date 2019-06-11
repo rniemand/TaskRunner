@@ -14,7 +14,7 @@ namespace TaskRunner.Validators.Core
       RegisterInput("Contains");
     }
 
-    public override bool Validate(StepContext context, StepValidatorConfig config)
+    public override bool Validate(StepContext context, ValidatorConfig config)
     {
       // TODO: [TESTS] (PropertyContains) Add tests
       // TODO: [REFACTOR] (PropertyContains) Create a helper method for getting arguments
