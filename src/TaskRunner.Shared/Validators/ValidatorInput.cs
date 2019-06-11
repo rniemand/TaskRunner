@@ -1,4 +1,4 @@
-﻿namespace TaskRunner.Shared.Tasks
+﻿namespace TaskRunner.Shared.Validators
 {
   public struct ValidatorInput
   {

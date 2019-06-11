@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskRunner", "TaskRunner\TaskRunner.csproj", "{1F67DD4C-D4D2-4410-BA23-886DB67A69D2}"
 EndProject
@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskRunner.Core", "TaskRunn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRunner.Shared", "TaskRunner.Shared\TaskRunner.Shared.csproj", "{7FA38EAC-701C-43F6-A2F1-BFDCE73B55A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRunner.Validators", "TaskRunner.Validators\TaskRunner.Validators.csproj", "{4272EE00-EA3A-4360-947E-3A9FEAB373FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskRunner.Validators", "TaskRunner.Validators\TaskRunner.Validators.csproj", "{4272EE00-EA3A-4360-947E-3A9FEAB373FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRunner.Providers", "TaskRunner.Providers\TaskRunner.Providers.csproj", "{419D769D-A170-465D-81B4-4E1BED92C60A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{4272EE00-EA3A-4360-947E-3A9FEAB373FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4272EE00-EA3A-4360-947E-3A9FEAB373FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4272EE00-EA3A-4360-947E-3A9FEAB373FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{419D769D-A170-465D-81B4-4E1BED92C60A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{419D769D-A170-465D-81B4-4E1BED92C60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{419D769D-A170-465D-81B4-4E1BED92C60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{419D769D-A170-465D-81B4-4E1BED92C60A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{37C76DE0-364F-45A3-80CA-E2432DE85A20} = {27E985E5-71C1-4ED8-A535-56B612D241B1}
 		{7FA38EAC-701C-43F6-A2F1-BFDCE73B55A9} = {27E985E5-71C1-4ED8-A535-56B612D241B1}
 		{4272EE00-EA3A-4360-947E-3A9FEAB373FE} = {27E985E5-71C1-4ED8-A535-56B612D241B1}
+		{419D769D-A170-465D-81B4-4E1BED92C60A} = {27E985E5-71C1-4ED8-A535-56B612D241B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38D67513-8652-4F73-8082-8AC80B1F4479}

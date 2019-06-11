@@ -8,7 +8,6 @@ using TaskRunner.Shared.Interfaces.Logging;
 using TaskRunner.Shared.Interfaces.Services;
 using TaskRunner.Shared.Interfaces.Steps;
 using TaskRunner.Shared.Steps;
-using TaskRunner.Shared.Tasks;
 using TaskRunner.Shared.Validators;
 
 namespace TaskRunner.Core.Services
@@ -18,7 +17,7 @@ namespace TaskRunner.Core.Services
     private readonly IAppLogger _logger;
 
     private readonly List<ITaskStep> _steps;
-    private readonly List<BaseStepValidator> _validators;
+    private readonly List<BaseValidator> _validators;
     private readonly ISecretsService _secretsService;
 
 
@@ -32,7 +31,7 @@ namespace TaskRunner.Core.Services
       _secretsService = secretsService;
 
       _steps = steps.ToList();
-      _validators = stepValidators.Cast<BaseStepValidator>().ToList();
+      _validators = stepValidators.Cast<BaseValidator>().ToList();
 
       // Log all loaded steps for troubleshooting
       _logger.Debug("Loaded {count} step(s): {stepList}",
@@ -388,7 +387,7 @@ namespace TaskRunner.Core.Services
 
 
     // Step execution methods
-    private TaskStepBase ResolveStep(string stepName)
+    private BaseStep ResolveStep(string stepName)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 
@@ -403,7 +402,7 @@ namespace TaskRunner.Core.Services
       // TODO: [VALIDATION] (TaskRunnerService) Ensure that we have a match
       // TODO: [LOGGING] (TaskRunnerService) Log if we are missing the requested step
 
-      return (TaskStepBase)builderStep;
+      return (BaseStep)builderStep;
     }
 
     private void LogPublishedData(StepContext stepContext)
@@ -476,7 +475,7 @@ namespace TaskRunner.Core.Services
       context.SetCurrentStepInputs(stepInputs);
     }
 
-    private BaseStepValidator GetStepValidator(string validatorName)
+    private BaseValidator GetStepValidator(string validatorName)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
 

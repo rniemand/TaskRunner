@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TaskRunner.Shared.Extensions;
-using TaskRunner.Shared.Steps;
+using TaskRunner.Shared.Validators;
 
-namespace TaskRunner.Shared.Tasks
+namespace TaskRunner.Shared.Steps
 {
   public class StepContext
   {
@@ -168,7 +168,7 @@ namespace TaskRunner.Shared.Tasks
 
 
 
-    // Public methods | called from "TaskStepBase"
+    // Public methods | called from "BaseStep"
     public string GetInput(string input, string fallback = null)
     {
       // TODO: [TESTS] (StepContext) Add tests

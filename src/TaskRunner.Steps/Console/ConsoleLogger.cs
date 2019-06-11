@@ -4,7 +4,6 @@ using TaskRunner.Shared.Interfaces.Abstractions;
 using TaskRunner.Shared.Interfaces.Logging;
 using TaskRunner.Shared.Mappers;
 using TaskRunner.Shared.Steps;
-using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Steps.Console
 {
@@ -13,7 +12,7 @@ namespace TaskRunner.Steps.Console
   // TODO: [DOCS] (ConsoleLog) Document argument: Message
   // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments
 
-  public class ConsoleLogger : TaskStepBase
+  public class ConsoleLogger : BaseStep
   {
     private readonly IConsole _console;
 

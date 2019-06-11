@@ -4,11 +4,10 @@ using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Interfaces.Logging;
 using TaskRunner.Shared.Steps;
-using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Steps.Http
 {
-  public class HttpGet : TaskStepBase
+  public class HttpGet : BaseStep
   {
     // TODO: [DOCS] (HttpGet) Document this step
     // TODO: [COMPLETE] (ConsoleLog) Add logic to validate required arguments

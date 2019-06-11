@@ -6,12 +6,10 @@ using System.Text;
 using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Interfaces.Logging;
 using TaskRunner.Shared.Interfaces.Steps;
-using TaskRunner.Shared.Tasks;
 
 namespace TaskRunner.Shared.Steps
 {
-  // TODO: [RENAME] (TaskStepBase) I do not like this name
-  public class TaskStepBase : ITaskStep
+  public abstract class BaseStep : ITaskStep
   {
     public string Name { get; }
     public IAppLogger Logger { get; set; }
@@ -19,7 +17,7 @@ namespace TaskRunner.Shared.Steps
 
 
     // Constructor
-    public TaskStepBase(IAppLogger logger, string name)
+    protected BaseStep(IAppLogger logger, string name)
     {
       Logger = logger;
       Name = name;
@@ -31,15 +29,15 @@ namespace TaskRunner.Shared.Steps
     // Public methods
     public bool RunMe(StepContext context)
     {
-      // TODO: [TESTS] (TaskStepBase) Add tests
-      // TODO: [RENAME] (TaskStepBase) Rename this to something more meaningful
+      // TODO: [TESTS] (BaseStep) Add tests
+      // TODO: [RENAME] (BaseStep) Rename this to something more meaningful
 
       // Time and run the step
       var executeStopwatch = Stopwatch.StartNew();
       var success = Execute(context);
       executeStopwatch.Stop();
 
-      // TODO: [COMPLETE] (TaskStepBase) Publish total elapsed MS for step execution
+      // TODO: [COMPLETE] (BaseStep) Publish total elapsed MS for step execution
 
       Logger.Info(
         "Step {name} took {ms} ms to run",
@@ -47,7 +45,7 @@ namespace TaskRunner.Shared.Steps
         executeStopwatch.ElapsedMilliseconds);
 
 
-      // TODO: [COMPLETE] (TaskStepBase) Publish resolved arguments used for the task
+      // TODO: [COMPLETE] (BaseStep) Publish resolved arguments used for the task
       LogResolvedInputs(context.GetResolvedInputs(), context.StepName);
 
       // ReSharper disable once InvertIf
@@ -72,7 +70,7 @@ namespace TaskRunner.Shared.Steps
 
     public bool RequiredInputsSet(Dictionary<string, string> stepInputs, string stepName, string taskName)
     {
-      // TODO: [TESTS] (TaskStepBase) Add tests
+      // TODO: [TESTS] (BaseStep) Add tests
 
       // Ensure that all required parameters are present
       var requiredParams = Inputs.Where(p => p.Required).ToList();
@@ -94,9 +92,9 @@ namespace TaskRunner.Shared.Steps
 
     public string GetInput(StepContext context, string name)
     {
-      // TODO: [TESTS] (TaskStepBase) Add tests
+      // TODO: [TESTS] (BaseStep) Add tests
 
-      // TODO: [COMPLETE] (TaskStepBase) Handle this better - should we LOG or THROW?
+      // TODO: [COMPLETE] (BaseStep) Handle this better - should we LOG or THROW?
       if (Inputs.All(x => x.Name != name))
         throw new Exception($"Requested parameter {name} was not provided");
 
@@ -105,15 +103,15 @@ namespace TaskRunner.Shared.Steps
 
       var argument = context.GetInput(param.Name, param.DefaultValue);
 
-      // TODO: [COMPLETE] (TaskStepBase) Validate the parameter based on "param.Validator"
+      // TODO: [COMPLETE] (BaseStep) Validate the parameter based on "param.Validator"
 
       return argument;
     }
 
     public T GetInput<T>(StepContext context, string name, Func<string, T> convertFunc)
     {
-      // TODO: [DOCS] (TaskStepBase) Document this function
-      // TODO: [TESTS] (TaskStepBase) Add tests
+      // TODO: [DOCS] (BaseStep) Document this function
+      // TODO: [TESTS] (BaseStep) Add tests
 
       var value = string.Empty;
 
@@ -128,7 +126,7 @@ namespace TaskRunner.Shared.Steps
 
     public void RegisterInput(string inputName, InputValidator validator, bool required = true, string defaultValue = null)
     {
-      // TODO: [TESTS] (TaskStepBase) Add tests
+      // TODO: [TESTS] (BaseStep) Add tests
 
       Inputs.Add(new StepInput
       {
@@ -144,7 +142,7 @@ namespace TaskRunner.Shared.Steps
     // Internal methods
     private bool RunStepValidators(StepContext context)
     {
-      // TODO: [TESTS] (TaskStepBase) Add tests
+      // TODO: [TESTS] (BaseStep) Add tests
 
       Logger.Debug("Running {count} validator(s) against step '{name}' from task '{task}'",
         context.ValidatorInfo.Count, context.StepName, context.TaskName);

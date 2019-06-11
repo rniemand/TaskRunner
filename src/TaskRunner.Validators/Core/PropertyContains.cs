@@ -1,11 +1,11 @@
 ﻿using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Interfaces.Logging;
-using TaskRunner.Shared.Tasks;
+using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Validators;
 
 namespace TaskRunner.Validators.Core
 {
-  public class PropertyContains : BaseStepValidator
+  public class PropertyContains : BaseValidator
   {
     public PropertyContains(IAppLogger logger)
     : base(logger, "Property.Contains")

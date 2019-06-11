@@ -4,13 +4,13 @@ using System.Linq;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Interfaces.Logging;
 using TaskRunner.Shared.Interfaces.Steps;
-using TaskRunner.Shared.Tasks;
+using TaskRunner.Shared.Steps;
 
 namespace TaskRunner.Shared.Validators
 {
-  public class BaseStepValidator : IStepValidator
+  public abstract class BaseValidator : IStepValidator
   {
-    // TODO: [DOCS] (BaseStepValidator) Document this
+    // TODO: [DOCS] (BaseValidator) Document this
 
     public string Name { get; }
     public IAppLogger Logger { get; }
@@ -19,7 +19,7 @@ namespace TaskRunner.Shared.Validators
 
 
     // Constructor
-    public BaseStepValidator(IAppLogger logger, string name)
+    protected BaseValidator(IAppLogger logger, string name)
     {
       Logger = logger;
       Name = name;
@@ -30,14 +30,14 @@ namespace TaskRunner.Shared.Validators
     // Public methods | called by "implemented class"
     public virtual bool Validate(StepContext context, StepValidatorConfig config)
     {
-      // TODO: [TESTS] (BaseStepValidator) Add tests
+      // TODO: [TESTS] (BaseValidator) Add tests
 
       throw new NotImplementedException();
     }
 
     public string GetInput(StepValidatorConfig config, string inputName)
     {
-      // TODO: [TESTS] (BaseStepValidator) Add tests
+      // TODO: [TESTS] (BaseValidator) Add tests
 
       if (string.IsNullOrWhiteSpace(inputName))
         return string.Empty;
@@ -50,10 +50,10 @@ namespace TaskRunner.Shared.Validators
     }
 
 
-    // Public methods | called from "TaskStepBase"
+    // Public methods | called from "BaseStep"
     public bool Run(StepContext context, StepValidatorConfig config)
     {
-      // TODO: [TESTS] (BaseStepValidator) Add tests
+      // TODO: [TESTS] (BaseValidator) Add tests
 
       return Validate(context, config);
     }
@@ -73,7 +73,7 @@ namespace TaskRunner.Shared.Validators
     // Public methods | called from "TaskRunnerService"
     public bool HasRequiredInputs(StepValidatorConfig config)
     {
-      // TODO: [TESTS] (BaseStepValidator) Add tests
+      // TODO: [TESTS] (BaseValidator) Add tests
 
       var requiredInputs = _inputs.Where(x => x.Required).ToList();
 
