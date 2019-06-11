@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
+using TaskRunner.Shared.Providers;
 using TaskRunner.Shared.Validators;
 
 namespace TaskRunner.Shared.Steps
@@ -15,23 +16,31 @@ namespace TaskRunner.Shared.Steps
     public bool DataPublished { get; private set; }
     public Dictionary<string, string> Inputs { get; private set; }
     public List<ValidatorAndArguments> Validators { get; private set; }
+    public List<ProviderAndInputs> Providers { get; set; }
     public Dictionary<int, string> StepNameLookup { get; set; }
 
     public string TaskName { get; set; }
 
-    private const string TaskDataRx = @"({@([^\.]+)\.([^}]+)})";
+    private const string PublishedDataRx = @"({@([^\.]+)\.([^}]+)})";
+    private const string ProvidedDataRx = @"({\$([^|]+)})";
+
     private readonly Dictionary<string, Dictionary<string, string>> _publishedData;
+    private readonly Dictionary<string, string> _provided;
 
     // Constructor
     public StepContext()
     {
       // TODO: [TESTS] (StepContext) Add tests
 
+      DataPublished = false;
+
       Inputs = new Dictionary<string, string>();
-      _publishedData = new Dictionary<string, Dictionary<string, string>>();
       StepNameLookup = new Dictionary<int, string>();
       Validators = new List<ValidatorAndArguments>();
-      DataPublished = false;
+      Providers = new List<ProviderAndInputs>();
+
+      _publishedData = new Dictionary<string, Dictionary<string, string>>();
+      _provided = new Dictionary<string, string>();
     }
 
 
@@ -74,7 +83,8 @@ namespace TaskRunner.Shared.Steps
     public void SetCurrentStep(
       StepConfig currentStep,
       Dictionary<string, string> inputs,
-      List<ValidatorAndArguments> validators)
+      List<ValidatorAndArguments> validators,
+      List<ProviderAndInputs> providers)
     {
       // TODO: [TESTS] (StepContext) Add tests
 
@@ -86,10 +96,13 @@ namespace TaskRunner.Shared.Steps
       DataPublished = false;
       Inputs.Clear();
       Validators.Clear();
+      Providers.Clear();
+      _provided.Clear();
 
       // Wire up all required collections
       Inputs = inputs;
       Validators = validators;
+      Providers = providers;
     }
 
     public Dictionary<string, string> GetLastPublishedData()
@@ -112,11 +125,11 @@ namespace TaskRunner.Shared.Steps
         return input;
 
       // Look for any placeholders
-      if (!input.MatchesRxPattern(TaskDataRx))
+      if (!input.MatchesRxPattern(PublishedDataRx))
         return input;
 
       // Find and replace all placeholders
-      var matches = input.GetRxMatches(TaskDataRx);
+      var matches = input.GetRxMatches(PublishedDataRx);
       foreach (Match match in matches)
       {
         var stepName = match.Groups[2].Value;
@@ -142,7 +155,7 @@ namespace TaskRunner.Shared.Steps
         );
       }
 
-      // Return the modified input
+      // Return updated input
       return input;
     }
 
@@ -173,6 +186,59 @@ namespace TaskRunner.Shared.Steps
       return Inputs;
     }
 
+    public void RunStepProviders()
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      if (Providers.Count == 0)
+        return;
+
+      // We need inputs to provide for
+      if (Inputs.Count == 0)
+        return;
+
+      foreach (var provider in Providers)
+      {
+        provider.Provider.Execute(this, provider.Inputs);
+      }
+
+      // TODO: [REVISE] (StepContext) Find a better way to do this....
+
+      var newInputs = new Dictionary<string, string>();
+
+      foreach (var input in Inputs)
+      {
+        newInputs[input.Key] = ReplaceProvidedPlaceholders(input.Value);
+      }
+
+      // Hot swap the inputs for now...
+      Inputs = newInputs;
+    }
+
+    public string ReplaceProvidedPlaceholders(string input)
+    {
+      // Look for any placeholders
+      if (!input.MatchesRxPattern(ProvidedDataRx))
+        return input;
+
+      // Find and replace all placeholders
+      var matches = input.GetRxMatches(ProvidedDataRx);
+      foreach (Match match in matches)
+      {
+        var providedKey = match.Groups[2].Value;
+
+        if (_provided.ContainsKey(providedKey))
+        {
+          input = input.Replace(
+            match.Groups[1].Value,
+            _provided[providedKey]
+          );
+        }
+      }
+
+      // Return updated input
+      return input;
+    }
 
 
     // Public methods | called from "IStepSuccessValidator"
@@ -188,6 +254,16 @@ namespace TaskRunner.Shared.Steps
         return string.Empty;
 
       return _publishedData[stepName][key];
+    }
+
+
+
+    // Public methods | called from "BaseProvider"
+    public void Provide(string key, string value)
+    {
+      // TODO: [TESTS] (StepContext) Add tests
+
+      _provided[key] = value;
     }
   }
 }

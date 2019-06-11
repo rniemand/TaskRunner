@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskRunner", "TaskRunner\TaskRunner.csproj", "{1F67DD4C-D4D2-4410-BA23-886DB67A69D2}"
 EndProject
@@ -19,7 +19,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRunner.Shared", "TaskRu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskRunner.Validators", "TaskRunner.Validators\TaskRunner.Validators.csproj", "{4272EE00-EA3A-4360-947E-3A9FEAB373FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRunner.Providers", "TaskRunner.Providers\TaskRunner.Providers.csproj", "{419D769D-A170-465D-81B4-4E1BED92C60A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskRunner.Providers", "TaskRunner.Providers\TaskRunner.Providers.csproj", "{419D769D-A170-465D-81B4-4E1BED92C60A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{046B98ED-62E2-44C3-B6F9-8E9E391D5FA7}"
+	ProjectSection(SolutionItems) = preProject
+		..\Notes.txt = ..\Notes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

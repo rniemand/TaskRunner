@@ -30,6 +30,9 @@ namespace TaskRunner.Shared.Steps
     {
       // TODO: [TESTS] (BaseStep) Add tests
 
+      // Check for and run all step providers
+      context.RunStepProviders();
+
       // Time and run the step
       var executeStopwatch = Stopwatch.StartNew();
       var success = Run(context);

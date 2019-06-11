@@ -61,6 +61,8 @@
     <Compile Include="Abstractions\IFile.cs" />
     <Compile Include="Abstractions\IJsonHelper.cs" />
     <Compile Include="Builders\IPathBuilder.cs" />
+    <Compile Include="Providers\IProvider.cs" />
+    <Compile Include="Providers\ProviderAndInputs.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Logging\IAppLogger.cs" />
     <Compile Include="Services\IConfigService.cs" />

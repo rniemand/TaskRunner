@@ -5,11 +5,13 @@ using TaskRunner.Core.Abstractions;
 using TaskRunner.Core.Builders;
 using TaskRunner.Core.Logging;
 using TaskRunner.Core.Services;
+using TaskRunner.Providers.Core;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Logging;
+using TaskRunner.Shared.Providers;
 using TaskRunner.Shared.Services;
 using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Validators;
@@ -140,13 +142,13 @@ namespace TaskRunner
             Inputs = new Dictionary<string, string>
             {
               {"Severity", "Info"},
-              {"Message", "Starting backup of CleanHome DB"}
+              {"Message", "The provided date is: {$Date}"}
             },
             Providers = new List<ProviderConfig>
             {
               new ProviderConfig
               {
-                Provider = "DateProvider"
+                Provider = "Date"
               }
             }
           }
@@ -185,6 +187,10 @@ namespace TaskRunner
       collection
         .AddSingleton<IStep, ConsoleLogger>()
         .AddSingleton<IStep, HttpGet>();
+
+      // Providers
+      collection
+        .AddSingleton<IProvider, DateProvider>();
 
       // Validators
       collection

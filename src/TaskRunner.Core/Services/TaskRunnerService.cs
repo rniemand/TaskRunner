@@ -5,6 +5,7 @@ using System.Text;
 using TaskRunner.Shared.Configuration;
 using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Logging;
+using TaskRunner.Shared.Providers;
 using TaskRunner.Shared.Services;
 using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Validators;
@@ -17,6 +18,7 @@ namespace TaskRunner.Core.Services
 
     private readonly List<IStep> _steps;
     private readonly List<BaseValidator> _validators;
+    private readonly List<BaseProvider> _providers;
     private readonly ISecretsService _secretsService;
 
 
@@ -24,13 +26,15 @@ namespace TaskRunner.Core.Services
       IAppLogger logger,
       ISecretsService secretsService,
       IEnumerable<IStep> steps,
-      IEnumerable<IValidator> stepValidators)
+      IEnumerable<IValidator> stepValidators,
+      IEnumerable<IProvider> providers)
     {
       _logger = logger;
       _secretsService = secretsService;
 
       _steps = steps.ToList();
       _validators = stepValidators.Cast<BaseValidator>().ToList();
+      _providers = providers.Cast<BaseProvider>().ToList();
 
       // Log all loaded steps for troubleshooting
       _logger.Debug("Loaded {count} step(s): {stepList}",
@@ -147,6 +151,8 @@ namespace TaskRunner.Core.Services
         task.Enabled = false;
         return false;
       }
+
+      // TODO: [COMPLETE] (TaskRunnerService) Validate task providers
 
       // TODO: [COMPLETE] (TaskRunnerService) Ensure that any changes are persisted to the original task file
 
@@ -452,6 +458,36 @@ namespace TaskRunner.Core.Services
       return validators;
     }
 
+    private List<ProviderAndInputs> GenerateProviders(StepConfig currentStep)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      var providers = new List<ProviderAndInputs>();
+
+      if (currentStep.Providers.Count == 0)
+        return providers;
+
+      if (!currentStep.Providers.Any(p => p.Enabled))
+        return providers;
+
+
+      foreach (var providerConfig in currentStep.Providers.Where(p => p.Enabled).ToList())
+      {
+        var provider = _providers.FirstOrDefault(p => p.Name == providerConfig.Provider);
+
+        if (provider == null)
+          continue;
+
+        providers.Add(new ProviderAndInputs
+        {
+          Provider = provider,
+          Inputs = providerConfig.Inputs
+        });
+      }
+
+      return providers;
+    }
+
     private void SyncStepContext(StepContext context, StepConfig currentStep)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
@@ -459,7 +495,8 @@ namespace TaskRunner.Core.Services
       context.SetCurrentStep(
         currentStep,
         GenerateStepInputs(context, currentStep),
-        GenerateStepValidators(currentStep));
+        GenerateStepValidators(currentStep),
+        GenerateProviders(currentStep));
     }
 
     private BaseValidator GetStepValidator(string validatorName)
