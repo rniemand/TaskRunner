@@ -130,7 +130,6 @@ namespace TaskRunner
       return new TaskConfig
       {
         Name = "Backup Clean-Home DB",
-        Enabled = true,
         Frequency = TaskInterval.Days,
         FrequencyArgs = "1",
         Steps = new[]
@@ -139,21 +138,21 @@ namespace TaskRunner
           {
             Name = "Log Hi",
             Step = "Console.Log",
+            Providers = new List<ProviderConfig>
+            {
+              new ProviderConfig("Date")
+              {
+                Inputs = new Dictionary<string, string>
+                {
+                  {"Format", "yyyymmdd_hhmmss"}
+                }
+              },
+              new ProviderConfig("UtcDate")
+            },
             Inputs = new Dictionary<string, string>
             {
               {"Severity", "Info"},
-              {"Message", "The provided date is: {$Date} ({$UtcDate})"},
-            },
-            Providers = new List<ProviderConfig>
-            {
-              new ProviderConfig
-              {
-                Provider = "Date"
-              },
-              new ProviderConfig
-              {
-                Provider = "UtcDate"
-              }
+              {"Message", "The provided date is: {$Date}.sql ({$UtcDate})"},
             }
           }
         }

@@ -15,5 +15,11 @@ namespace TaskRunner.Shared.Configuration
       Enabled = true;
       Inputs = new Dictionary<string, string>();
     }
+
+    public ProviderConfig(string provider)
+     : this()
+    {
+      Provider = provider;
+    }
   }
 }

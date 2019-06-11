@@ -66,6 +66,9 @@ namespace TaskRunner.Shared.Configuration
     public TaskConfig()
     {
       Enabled = true;
+      FrequencyArgs = string.Empty;
+      RunAtStartup = false;
+      RunCount = 0;
     }
   }
 }

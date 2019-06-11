@@ -69,6 +69,7 @@ namespace TaskRunner.Shared.Configuration
     {
       Enabled = true;
       FailAction = StepFailAction.Stop;
+      FailActionArg = string.Empty;
       Inputs = new Dictionary<string, string>();
       Validators = new List<ValidatorConfig>();
       Providers = new List<ProviderConfig>();
