@@ -10,7 +10,7 @@ using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Services;
 
-namespace TaskRunner.Core.Services
+namespace TaskRunner.App.Services
 {
   public class SecretsService : ISecretsService
   {

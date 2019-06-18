@@ -3,7 +3,7 @@ using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Extensions;
 
-namespace TaskRunner.Core.Builders
+namespace TaskRunner.App.Builders
 {
   public class PathBuilder : IPathBuilder
   {

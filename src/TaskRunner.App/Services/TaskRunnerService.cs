@@ -10,7 +10,7 @@ using TaskRunner.Shared.Services;
 using TaskRunner.Shared.Steps;
 using TaskRunner.Shared.Validators;
 
-namespace TaskRunner.Core.Services
+namespace TaskRunner.App.Services
 {
   public class TaskRunnerService : ITaskRunnerService
   {

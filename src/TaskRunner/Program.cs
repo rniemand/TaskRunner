@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using TaskRunner.Core.Abstractions;
-using TaskRunner.Core.Builders;
-using TaskRunner.Core.Logging;
-using TaskRunner.Core.Services;
+using TaskRunner.App.Abstractions;
+using TaskRunner.App.Builders;
+using TaskRunner.App.Logging;
+using TaskRunner.App.Services;
 using TaskRunner.Providers.Core;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;

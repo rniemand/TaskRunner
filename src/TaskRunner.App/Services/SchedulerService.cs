@@ -1,6 +1,6 @@
 ﻿using TaskRunner.Shared.Services;
 
-namespace TaskRunner.Core.Services
+namespace TaskRunner.App.Services
 {
   public class SchedulerService : ISchedulerService
   {

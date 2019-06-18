@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using TaskRunner.Shared.Abstractions;
 
-namespace TaskRunner.Core.Abstractions
+namespace TaskRunner.App.Abstractions
 {
   public class JsonHelper : IJsonHelper
   {

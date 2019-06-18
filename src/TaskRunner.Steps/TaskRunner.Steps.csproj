@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskRunner.Core\TaskRunner.Core.csproj" />
+    <ProjectReference Include="..\TaskRunner.Shared\TaskRunner.Shared.csproj" />
   </ItemGroup>
 
 </Project>

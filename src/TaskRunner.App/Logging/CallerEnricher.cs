@@ -3,7 +3,7 @@ using System.Linq;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace TaskRunner.Core.Logging
+namespace TaskRunner.App.Logging
 {
   public class CallerEnricher : ILogEventEnricher
   {

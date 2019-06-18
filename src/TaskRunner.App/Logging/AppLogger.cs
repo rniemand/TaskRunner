@@ -3,7 +3,7 @@ using Serilog.Core;
 using Serilog.Events;
 using TaskRunner.Shared.Logging;
 
-namespace TaskRunner.Core.Logging
+namespace TaskRunner.App.Logging
 {
   public class AppLogger : IAppLogger
   {

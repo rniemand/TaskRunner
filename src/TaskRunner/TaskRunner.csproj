@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskRunner.Core\TaskRunner.Core.csproj" />
+    <ProjectReference Include="..\TaskRunner.App\TaskRunner.App.csproj" />
     <ProjectReference Include="..\TaskRunner.Providers\TaskRunner.Providers.csproj" />
     <ProjectReference Include="..\TaskRunner.Shared\TaskRunner.Shared.csproj" />
     <ProjectReference Include="..\TaskRunner.Steps\TaskRunner.Steps.csproj" />
