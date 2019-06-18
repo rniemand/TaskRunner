@@ -10,5 +10,8 @@ namespace TaskRunner.App.Abstractions
 
     public DirectoryInfo CreateDirectory(string path)
       => Directory.CreateDirectory(path);
+
+    public IDirectoryInfo GetDirectoryInfo(string path)
+      => new RunnerDirectoryInfo(path);
   }
 }

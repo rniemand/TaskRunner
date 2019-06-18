@@ -6,5 +6,6 @@ namespace TaskRunner.Shared.Services
   {
     // TODO: [REMOVE] (ITaskRunnerService) Remove this once initial dev testing has been completed
     void RunTask(TaskConfig task);
+    void Run();
   }
 }

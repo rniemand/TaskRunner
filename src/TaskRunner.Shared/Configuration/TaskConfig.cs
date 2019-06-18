@@ -63,6 +63,11 @@ namespace TaskRunner.Shared.Configuration
     /// </summary>
     public long RunCount { get; set; }
 
+    /// <summary>
+    /// Path to the physical task file
+    /// </summary>
+    public string TaskFilePath { get; set; }
+
     public TaskConfig()
     {
       Enabled = true;

@@ -3,7 +3,9 @@
   public interface IAppLogger
   {
     // Verbose
+    void Verbose<T1>(string template, T1 p1);
     void Verbose<T1, T2>(string template, T1 p1, T2 p2);
+
 
     // Debug
     void Debug(string template);
@@ -25,6 +27,7 @@
 
 
     // Error
+    void Error(string template);
     void Error<T1>(string template, T1 p1);
     void Error<T1, T2>(string template, T1 p1, T2 p2);
     void Error<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3);

@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\IDirectoryInfo.cs" />
     <Compile Include="Abstractions\IEnvironment.cs" />
+    <Compile Include="Abstractions\IFileInfo.cs" />
     <Compile Include="Configuration\ProviderConfig.cs" />
     <Compile Include="Configuration\StepConfig.cs" />
     <Compile Include="Configuration\ValidatorConfig.cs" />

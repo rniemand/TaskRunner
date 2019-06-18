@@ -35,6 +35,11 @@ namespace TaskRunner.App.Logging
 
 
     // Verbose
+    public void Verbose<T1>(string template, T1 p1)
+    {
+      _logger.Verbose(template, p1);
+    }
+
     public void Verbose<T1, T2>(string template, T1 p1, T2 p2)
     {
       _logger.Verbose(template, p1, p2);
@@ -98,6 +103,11 @@ namespace TaskRunner.App.Logging
 
 
     // Error
+    public void Error(string template)
+    {
+      _logger.Error(template);
+    }
+
     public void Error<T1>(string template, T1 p1)
     {
       _logger.Error(template, p1);

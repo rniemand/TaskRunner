@@ -50,7 +50,8 @@ namespace TaskRunner
 
       // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
-      taskRunner.RunTask(GetDnsUpdateTask());
+      //taskRunner.RunTask(GetDnsUpdateTask());
+      taskRunner.Run();
     }
 
 

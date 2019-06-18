@@ -91,6 +91,11 @@ namespace TaskRunner.App.Services
       // TODO: [COMPLETE] (TaskRunnerService) Handle task execution completed
     }
 
+    public void Run()
+    {
+
+    }
+
 
     // Task and Step validation methods
     private bool ValidateTask(TaskConfig task)
@@ -98,25 +103,8 @@ namespace TaskRunner.App.Services
       // TODO: [TESTS] (TaskRunnerService) Add tests
       // TODO: [DOCS] (TaskRunnerService) Document this feature
 
-      // Ensure that the task has some steps defined
-      if (task.Steps == null || task.Steps.Length == 0)
-      {
-        _logger.Error("Task '{task}' has no steps defined, disabling", task.Name);
-        task.Enabled = false;
-        return false;
-      }
-
-      // Ensure that there is at least one enabled step
-      if (!task.Steps.Any(x => x.Enabled))
-      {
-        _logger.Error("Task '{task}' has no enabled steps, disabling", task.Name);
-        task.Enabled = false;
-        return false;
-      }
-
       // Ensure each step has an associated stepId (do not move this method!)
       AssignStepIds(task);
-
 
       // Ensure that all task steps have been registered through DI
       if (!EnsureTaskStepRunnersExist(task))

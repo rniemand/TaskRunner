@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
@@ -13,18 +15,24 @@ namespace TaskRunner.App.Services
     private readonly ISecretsService _secretsService;
     private readonly IPathBuilder _pathBuilder;
     private readonly IDirectory _directory;
+    private readonly IFile _file;
+    private readonly IJsonHelper _jsonHelper;
 
 
     public TasksService(
       IAppLogger logger,
       ISecretsService secretsService,
       IPathBuilder pathBuilder,
-      IDirectory directory)
+      IDirectory directory,
+      IFile file,
+      IJsonHelper jsonHelper)
     {
       _logger = logger;
       _secretsService = secretsService;
       _pathBuilder = pathBuilder;
       _directory = directory;
+      _file = file;
+      _jsonHelper = jsonHelper;
     }
 
 
@@ -49,9 +57,14 @@ namespace TaskRunner.App.Services
 
       EnsureTaskDirExists(tasksDir);
 
-      // Load defined tasks into memory
+      // Check to see if we need to seed some sample tasks for the user
+      if (HasTaskFiles(tasksDir) == false)
+      {
+        SeedSampleTasks();
+      }
 
-      _logger.Info("Time to load seeded tasks");
+      // Load defined tasks into memory
+      LoadTasks(tasksDir);
 
       // TODO: [CONFIG] (TasksService) Ensure that StepId is populated on load
     }
@@ -86,6 +99,118 @@ namespace TaskRunner.App.Services
       // TODO: [NEXT] (ConfigService) Define and seed a sample task file
 
       _logger.Info("Time to seed some sample tasks");
+    }
+
+    private bool HasTaskFiles(string tasksDir)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      var di = _directory.GetDirectoryInfo(tasksDir);
+      var tasks = di.GetFiles("*.json", SearchOption.AllDirectories);
+      return tasks.Count > 0;
+    }
+
+    private void LoadTasks(string tasksDir)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      var di = _directory.GetDirectoryInfo(tasksDir);
+      var tasks = di.GetFiles("*.json", SearchOption.AllDirectories);
+
+      _logger.Info("Found {count} tasks to load", tasks.Count);
+
+      foreach (var task in tasks)
+      {
+        LoadTask(task.FullName);
+      }
+
+
+    }
+
+    private void LoadTask(string taskFilePath)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      _logger.Verbose("Attempting to load task file: {file}", taskFilePath);
+
+
+      try
+      {
+        var json = _file.ReadAllText(taskFilePath);
+        var task = _jsonHelper.DeserializeObject<TaskConfig>(json);
+        task.TaskFilePath = taskFilePath;
+
+        // We need to validate as much of the task at this point
+        // Move some validation methods out of the TaskRunnerService
+
+        if (ValidateTask(task) == false)
+          return;
+
+
+      }
+      catch (Exception ex)
+      {
+        // TODO: [HANDLE] (TasksService) Handle this better!
+        _logger.Error(ex.Message);
+      }
+
+
+    }
+
+
+    // Task validation methods
+    private bool ValidateTask(TaskConfig task)
+    {
+      if (EnsureTaskIsEnabled(task) == false)
+        return false;
+
+      if (EnsureTaskHasSteps(task) == false)
+        return false;
+
+      if (EnsureTaskHasAnEnabledStep(task) == false)
+        return false;
+
+
+      return true;
+    }
+
+    private bool EnsureTaskIsEnabled(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      if (task.Enabled)
+        return true;
+
+      _logger.Info("Skipping task '{name}' ({file}) - it's disabled",
+        task.Name, task.TaskFilePath);
+
+      return false;
+    }
+
+    private bool EnsureTaskHasSteps(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      if (task.Steps.Length > 0)
+        return true;
+
+      _logger.Error("Task '{name}' ({file}) has no steps defined, skipping",
+        task.Name, task.TaskFilePath);
+
+      return false;
+    }
+
+    private bool EnsureTaskHasAnEnabledStep(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [LOGGING] (TasksService) Revise logging
+
+      if (task.Steps.Any(x => x.Enabled))
+        return true;
+
+      _logger.Error("Task '{task}' has no enabled steps, disabling", task.Name);
+
+      return false;
     }
   }
 }

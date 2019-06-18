@@ -1,4 +1,5 @@
-﻿using TaskRunner.Shared.Configuration;
+﻿using TaskRunner.Shared.Abstractions;
+using TaskRunner.Shared.Configuration;
 
 namespace TaskRunner.Shared.Services
 {
