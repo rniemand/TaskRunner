@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
+using TaskRunner.Shared.Enums;
 using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Services;
 
@@ -17,6 +18,7 @@ namespace TaskRunner.App.Services
     private readonly ISecretsService _secretsService;
     private readonly ITasksService _tasksService;
     private readonly IPathBuilder _pathBuilder;
+    private readonly IEnvironment _environment;
 
     public string ConfigFilePath { get; }
 
@@ -30,7 +32,8 @@ namespace TaskRunner.App.Services
       IJsonHelper jsonHelper,
       ISecretsService secretsService,
       ITasksService tasksService,
-      IDirectory directory)
+      IDirectory directory,
+      IEnvironment environment)
     {
       _logger = logger;
       _file = file;
@@ -38,6 +41,7 @@ namespace TaskRunner.App.Services
       _secretsService = secretsService;
       _tasksService = tasksService;
       _directory = directory;
+      _environment = environment;
       _pathBuilder = pathBuilder;
 
       // TODO: [TESTS] (ConfigService) Add tests
@@ -112,16 +116,22 @@ namespace TaskRunner.App.Services
       _file.WriteAllText(ConfigFilePath, configJson);
     }
 
-    private static TaskRunnerConfig GenerateDefaultConfig()
+    private TaskRunnerConfig GenerateDefaultConfig()
     {
       // TODO: [TESTS] (ConfigService) Add tests
       // TODO: [COMPLETE] (ConfigService) Ensure that we are setting sensible configuration here
 
+
+      // TODO: [REVERT] (ConfigService) Revert when the program is stable enough
+      // Generate an appropriate configuration file path for the current development environment
+      var secretsFile = "./config/secrets.json";
+      if (_environment.HostEnvironment == HostEnvironment.Windows)
+        secretsFile = "\\\\10.0.0.50\\p$\\secrets.json";
+
+      // Generate and return the default application configuration
       return new TaskRunnerConfig
       {
-        // TODO: [REVERT] (ConfigService) Revert when the program is stable enough
-        //SecretsFile = "./config/secrets.json",
-        SecretsFile = "\\\\10.0.0.50\\p$\\secrets.json",
+        SecretsFile = secretsFile,
         TasksFolder = "{!Core.TasksDir}"
       };
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using TaskRunner.App.Abstractions;
@@ -174,6 +173,7 @@ namespace TaskRunner
         .AddSingleton<IFile, RunnerFile>()
         .AddSingleton<IDirectory, RunnerDirectory>()
         .AddSingleton<IConsole, RunnerConsole>()
+        .AddSingleton<IEnvironment, RunnerEnvironment>()
 
         // Services
         .AddSingleton<IConfigService, ConfigService>()
