@@ -17,4 +17,10 @@
     <ProjectReference Include="..\TaskRunner.Validators\TaskRunner.Validators.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="config\tasks\HelloWorld.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

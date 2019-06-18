@@ -1,0 +1,26 @@
+{
+  "Name": "Hello World",
+  "Enabled": true,
+  "Steps": [
+    {
+      "Enabled": true,
+      "Name": "step_1",
+      "StepId": 0,
+      "Inputs": {
+        "Message": "Hello World!",
+        "Severity": "Info"
+      },
+      "FailAction": 0,
+      "FailActionArg": "",
+      "Step": "Console.Log",
+      "Validators": [],
+      "Providers": []
+    }
+  ],
+  "Frequency": 0,
+  "FrequencyArgs": "30",
+  "RunAtStartup": true,
+  "LastRunTime": null,
+  "NextRunTime": null,
+  "RunCount": 0
+}

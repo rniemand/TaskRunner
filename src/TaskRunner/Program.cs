@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using TaskRunner.App.Abstractions;
 using TaskRunner.App.Builders;
 using TaskRunner.App.Logging;
@@ -33,6 +34,15 @@ namespace TaskRunner
       RegisterServices();
 
 
+      RunTaskRunner();
+
+
+      DisposeServices();
+      Console.ReadLine();
+    }
+
+    private static void RunTaskRunner()
+    {
       // Hack:  for now - need "IConfigService" to configure secrets and tasks
       //        This will be resolved when we make use of the TaskService to resolve and run tasks
       var configService = _serviceProvider.GetService<IConfigService>();
@@ -41,12 +51,7 @@ namespace TaskRunner
       // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
       taskRunner.RunTask(GetDnsUpdateTask());
-
-
-      DisposeServices();
-      Console.ReadLine();
     }
-
 
 
     // Initial development support methods
@@ -158,6 +163,34 @@ namespace TaskRunner
           }
         }
       };
+    }
+
+    private static void BuildHelloWorldTask()
+    {
+      var task = new TaskConfig
+      {
+        Name = "Hello World",
+        Enabled = true,
+        Frequency = TaskInterval.Seconds,
+        FrequencyArgs = "30",
+        RunAtStartup = true,
+        Steps = new StepConfig[]
+        {
+          new StepConfig
+          {
+            Enabled = true,
+            Step = "Console.Log",
+            Name = "step_1",
+            Inputs = new Dictionary<string, string>
+            {
+              {"Message", "Hello World!"},
+              {"Severity", "Info" }
+            }
+          }
+        }
+      };
+
+      var taskJson = JsonConvert.SerializeObject(task, Formatting.Indented);
     }
 
 
