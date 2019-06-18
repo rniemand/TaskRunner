@@ -2,7 +2,8 @@
 {
   public interface IAppLogger
   {
-    // TODO: [0000] (IAppLogger) Add Verbose() logging method
+    // Verbose
+    void Verbose<T1, T2>(string template, T1 p1, T2 p2);
 
     // Debug
     void Debug(string template);

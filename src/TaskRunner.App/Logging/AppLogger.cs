@@ -34,7 +34,11 @@ namespace TaskRunner.App.Logging
     }
 
 
-    // TODO: [CURRENT] (AppLogger) Add Verbose() to logger - this can be used for noisy important DEBUG messages
+    // Verbose
+    public void Verbose<T1, T2>(string template, T1 p1, T2 p2)
+    {
+      _logger.Verbose(template, p1, p2);
+    }
 
 
     // Debug

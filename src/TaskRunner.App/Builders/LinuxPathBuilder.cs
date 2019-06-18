@@ -1,6 +1,7 @@
-﻿using System;
+﻿using System.IO;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
+using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Logging;
 
 namespace TaskRunner.App.Builders
@@ -8,24 +9,45 @@ namespace TaskRunner.App.Builders
   public class LinuxPathBuilder : IPathBuilder
   {
     private readonly IAppLogger _logger;
+    private readonly string _rootDir;
 
     public LinuxPathBuilder(
       IAppLogger logger,
       IAppDomain appDomain)
     {
-      _logger = logger;
+      // TODO: [TESTS] (LinuxPathBuilder) Add tests
 
-      var appDomainBaseDirectory = appDomain.BaseDirectory;
+      _logger = logger;
+      _rootDir = appDomain.BaseDirectory.AppendIfMissing("/");
     }
 
     public string Build(string path)
     {
-      throw new NotImplementedException();
+      // TODO: [TESTS] (LinuxPathBuilder) Add tests
+
+      if (string.IsNullOrWhiteSpace(path))
+        return path;
+
+      var builtPath = path
+        .Replace("{root}", _rootDir)
+        .Replace("./", _rootDir)
+        .Replace("\\", "/")
+        .Replace("//", "/");
+
+      // Log whenever we build a new path for troubleshooting
+      if (path != builtPath)
+      {
+        _logger.Verbose("Changed '{path}' to '{newPath}'", path, builtPath);
+      }
+
+      return builtPath;
     }
 
     public string GetDirectoryName(string path)
     {
-      throw new NotImplementedException();
+      // TODO: [TESTS] (LinuxPathBuilder) Add tests
+
+      return Path.GetDirectoryName(path);
     }
   }
 }
