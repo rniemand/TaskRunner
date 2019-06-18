@@ -41,7 +41,8 @@ namespace TaskRunner.App.Services
       _pathBuilder = pathBuilder;
 
       // TODO: [TESTS] (ConfigService) Add tests
-      ConfigFilePath = pathBuilder.Build("{root}\\config\\TaskBuilder.json");
+      ConfigFilePath = pathBuilder.Build("./config/TaskBuilder.json");
+
       Reconfigure();
     }
 

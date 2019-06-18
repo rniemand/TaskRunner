@@ -77,7 +77,7 @@ namespace TaskRunner.App.Services
     private void LoadSecretsFile(TaskRunnerConfig config)
     {
       // TODO: [TESTS] (ConfigService) Add tests
-
+      
       // Generate the path to the secrets file and ensure it exists
       var rawFilePath = config.SecretsFile;
       var secretsFilePath = _pathBuilder.Build(rawFilePath);

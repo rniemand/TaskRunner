@@ -92,5 +92,18 @@ namespace TaskRunner.Shared.Extensions
 
       return fallback;
     }
+
+    public static string AppendIfMissing(this string input, string append)
+    {
+      // TODO: [TESTS] (StringExtensions) Add tests
+
+      if (string.IsNullOrWhiteSpace(input))
+        return input;
+
+      if (input.EndsWith(append))
+        return input;
+
+      return input + append;
+    }
   }
 }

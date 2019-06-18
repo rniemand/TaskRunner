@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using TaskRunner.App.Abstractions;
 using TaskRunner.App.Builders;
@@ -171,36 +173,58 @@ namespace TaskRunner
         .AddSingleton<IJsonHelper, JsonHelper>()
         .AddSingleton<IFile, RunnerFile>()
         .AddSingleton<IDirectory, RunnerDirectory>()
-        .AddSingleton<IConsole, RunnerConsole>();
+        .AddSingleton<IConsole, RunnerConsole>()
 
-      // Services
-      collection
+        // Services
         .AddSingleton<IConfigService, ConfigService>()
         .AddSingleton<ISecretsService, SecretsService>()
         .AddSingleton<ITasksService, TasksService>()
         .AddSingleton<ITaskRunnerService, TaskRunnerService>()
-        .AddSingleton<ISchedulerService, SchedulerService>();
+        .AddSingleton<ISchedulerService, SchedulerService>()
 
-      // Misc
-      collection
-        .AddScoped<IAppLogger, AppLogger>()
-        .AddSingleton<IPathBuilder, PathBuilder>();
+        // Misc
+        .AddSingleton<IAppLogger, AppLogger>()
 
-      // Steps
-      collection
+        // Steps
         .AddSingleton<IStep, ConsoleLogger>()
-        .AddSingleton<IStep, HttpGet>();
+        .AddSingleton<IStep, HttpGet>()
 
-      // Providers
-      collection
+        // Providers
         .AddSingleton<IProvider, UtcDateProvider>()
-        .AddSingleton<IProvider, DateProvider>();
+        .AddSingleton<IProvider, DateProvider>()
 
-      // Validators
-      collection
+        // Validators
         .AddSingleton<IValidator, PropertyContains>();
 
+
+      // Register platform specific services and objects
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+      {
+        RegisterLinuxServices(collection);
+      }
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      {
+        RegisterWindowsServices(collection);
+      }
+      else
+      {
+        // TODO: [EX] (Program) Make use of a better exception type here
+        throw new Exception("Unsupported OS - for now...");
+      }
+
       _serviceProvider = collection.BuildServiceProvider();
+    }
+
+    private static void RegisterLinuxServices(IServiceCollection collection)
+    {
+      collection
+        .AddSingleton<IPathBuilder, LinuxPathBuilder>();
+    }
+
+    private static void RegisterWindowsServices(IServiceCollection collection)
+    {
+      collection
+        .AddSingleton<IPathBuilder, WinPathBuilder>();
     }
 
     private static void DisposeServices()
