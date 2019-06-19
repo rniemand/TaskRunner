@@ -23,6 +23,7 @@ namespace TaskRunner.App.Services
     private readonly IJsonHelper _jsonHelper;
     private readonly List<IStep> _steps;
     private readonly List<BaseValidator> _validators;
+    private List<TaskConfig> _tasks;
 
 
     public TasksService(
@@ -43,6 +44,7 @@ namespace TaskRunner.App.Services
       _jsonHelper = jsonHelper;
       _steps = steps.ToList();
       _validators = stepValidators.Cast<BaseValidator>().ToList();
+      _tasks = new List<TaskConfig>();
     }
 
 
@@ -54,6 +56,16 @@ namespace TaskRunner.App.Services
       LoadTasks(baseConfig);
     }
 
+    public List<TaskConfig> GetRunnableTasks()
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // TODO: [COMPLETE] (TasksService) Complete this
+
+      return _tasks;
+    }
+
+
 
     // Configuration related methods
     private void LoadTasks(TaskRunnerConfig baseConfig)
@@ -62,6 +74,7 @@ namespace TaskRunner.App.Services
       // TODO: [REVISE] (ConfigService) Move into a TasksService
 
       // Generate the task folder path and ensure that it exists
+      _tasks.Clear();
       var rawTasksDir = _secretsService.ReplaceTags(baseConfig.TasksFolder);
       var tasksDir = _pathBuilder.Build(rawTasksDir);
 
@@ -137,9 +150,11 @@ namespace TaskRunner.App.Services
         if (ValidateTask(task) == false)
           return;
 
+        // TODO: [COMPLETE] (TasksService) Calculate the next run time for this task
+
         // Task has passed validation, log and persist it
         _logger.Info("Loaded task '{name}' ({file})", task.Name, task.TaskFilePath);
-
+        _tasks.Add(task);
       }
       catch (Exception ex)
       {

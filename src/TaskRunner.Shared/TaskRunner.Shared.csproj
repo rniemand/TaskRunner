@@ -81,7 +81,7 @@
     <Compile Include="Providers\ProviderInput.cs" />
     <Compile Include="Steps\StepInput.cs" />
     <Compile Include="Steps\BaseStep.cs" />
-    <Compile Include="Validators\ValidatorAndArguments.cs" />
+    <Compile Include="Validators\ValidatorAndInputs.cs" />
     <Compile Include="Steps\StepContext.cs" />
     <Compile Include="Validators\ValidatorInput.cs" />
     <Compile Include="Validators\BaseValidator.cs" />

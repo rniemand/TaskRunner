@@ -2,9 +2,9 @@
 
 namespace TaskRunner.Shared.Validators
 {
-  public class ValidatorAndArguments
+  public class ValidatorAndInputs
   {
-    // TODO: [REVISE] (ValidatorAndArguments) Find a better way to do this
+    // TODO: [REVISE] (ValidatorAndInputs) Find a better way to do this
 
     public BaseValidator Validator { get; set; }
 

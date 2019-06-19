@@ -36,7 +36,6 @@ namespace TaskRunner.Shared.Steps
       // Time and run the step
       var executeStopwatch = Stopwatch.StartNew();
       var success = Run(context);
-      executeStopwatch.Stop();
 
       // TODO: [COMPLETE] (BaseStep) Publish total elapsed MS for step execution
 

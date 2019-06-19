@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using TaskRunner.App.Abstractions;
@@ -33,9 +34,7 @@ namespace TaskRunner
     {
       RegisterServices();
 
-
       RunTaskRunner();
-
 
       DisposeServices();
       Console.ReadLine();
@@ -50,8 +49,13 @@ namespace TaskRunner
 
       // Compile and run the development test task
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
-      //taskRunner.RunTask(GetDnsUpdateTask());
-      taskRunner.Run();
+
+      // Continuously run registered tasks
+      for (;;)
+      {
+        taskRunner.Run();
+        Thread.Sleep(1000);
+      }
     }
 
 

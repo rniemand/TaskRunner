@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TaskRunner.Shared.Configuration;
-using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Providers;
 using TaskRunner.Shared.Services;
@@ -15,11 +14,11 @@ namespace TaskRunner.App.Services
   public class TaskRunnerService : ITaskRunnerService
   {
     private readonly IAppLogger _logger;
-
     private readonly List<IStep> _steps;
     private readonly List<BaseValidator> _validators;
     private readonly List<BaseProvider> _providers;
     private readonly ISecretsService _secretsService;
+    private readonly ITasksService _tasksService;
 
 
     public TaskRunnerService(
@@ -27,10 +26,12 @@ namespace TaskRunner.App.Services
       ISecretsService secretsService,
       IEnumerable<IStep> steps,
       IEnumerable<IValidator> stepValidators,
-      IEnumerable<IProvider> providers)
+      IEnumerable<IProvider> providers,
+      ITasksService tasksService)
     {
       _logger = logger;
       _secretsService = secretsService;
+      _tasksService = tasksService;
 
       _steps = steps.ToList();
       _validators = stepValidators.Cast<BaseValidator>().ToList();
@@ -43,26 +44,36 @@ namespace TaskRunner.App.Services
     }
 
 
-    // Public methods
-    public void RunTask(TaskConfig task)
+    // Run() and supporting methods
+    public void Run()
     {
-      // TODO: [REMOVE] (ITaskRunnerService) Remove this once initial development testing has been completed
+      // TODO: [TESTS] (TaskRunnerService) Add tests
 
-      // Generate the initial step context and execute steps one by one
-      var stepContext = new StepContext
+      var tasks = _tasksService.GetRunnableTasks();
+
+      if (tasks.Count == 0)
+        return;
+
+      foreach (var task in tasks)
       {
-        TaskName = task.Name,
-        StepNameLookup = GenerateStepLookup(task)
-      };
+        RunTask(task);
+      }
+    }
+
+    private void RunTask(TaskConfig task)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      var stepContext = CreateStepContext(task);
 
       // Execute each enabled task step (in the order they appear)
       foreach (var currentStep in task.Steps)
       {
-        var step = ResolveStep(currentStep.Step);
         SyncStepContext(stepContext, currentStep);
+        var step = ResolveStep(currentStep.Step);
 
         // Run the current step to decide what needs to happen next
-        if (!step.Execute(stepContext))
+        if (step.Execute(stepContext) == false)
         {
           // TODO: [COMPLETE] (TaskRunnerService) Handle step execution failed (based on configuration)
 
@@ -83,63 +94,26 @@ namespace TaskRunner.App.Services
       // TODO: [COMPLETE] (TaskRunnerService) Handle task execution completed
     }
 
-    public void Run()
+
+
+    // StepContext related methods
+    private static StepContext CreateStepContext(TaskConfig task)
     {
-
-    }
-
-
-
-    // Step execution methods
-    private BaseStep ResolveStep(string stepName)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-
-      // TODO: [EXCEPTIONS] (TaskRunnerService) Throw a more specific exception here
-      if (string.IsNullOrWhiteSpace(stepName))
-        throw new Exception("Provided 'step' is blank!");
-
-      // TODO: [REFACTOR] (TaskRunnerService) ToLower() all step names when registering - drop the IgnoreCase below
-      var builderStep = _steps
-        .FirstOrDefault(x => x.Name.Equals(stepName, StringComparison.InvariantCultureIgnoreCase));
-
-      // TODO: [VALIDATION] (TaskRunnerService) Ensure that we have a match
-      // TODO: [LOGGING] (TaskRunnerService) Log if we are missing the requested step
-
-      return (BaseStep)builderStep;
-    }
-
-    private void LogPublishedData(StepContext stepContext)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-      // TODO: [REFACTOR] (TaskRunnerService) Make this logging configurable
-
-      // Check to see if the step published any data
-      if (!stepContext.DataPublished)
-        return;
-
-      // Count published data points and work out the longest "key" length
-      var publishedData = stepContext.GetLastPublishedData();
-      var longestKey = publishedData.Select(x => x.Key).Max(x => x.Length);
-      var count = publishedData.Count;
-
-      // Generate published data message
-      var sb = new StringBuilder()
-        .Append($"Step '{stepContext.StepName}' published {count} ")
-        .Append(count == 1 ? "item " : "items ")
-        .Append("during its execution: ")
-        .Append(Environment.NewLine);
-
-      // Generate a line per published item (use "longestKey" to align logged data for easier reading)
-      foreach (var (key, value) in publishedData)
+      return new StepContext(task.Name)
       {
-        sb.Append($"    {stepContext.StepName}.{key.PadRight(longestKey, ' ')} : ");
-        sb.Append(value);
-        sb.Append(Environment.NewLine);
-      }
+        StepNameLookup = GenerateStepLookup(task)
+      };
+    }
 
-      // Finally log published data message
-      _logger.Debug(sb.ToString().Trim());
+    private void SyncStepContext(StepContext context, StepConfig currentStep)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      context.SetCurrentStep(
+        currentStep,
+        GenerateStepInputs(context, currentStep),
+        GenerateStepValidators(currentStep),
+        GenerateProviders(currentStep));
     }
 
     private Dictionary<string, string> GenerateStepInputs(StepContext context, StepConfig step)
@@ -162,23 +136,23 @@ namespace TaskRunner.App.Services
       return arguments;
     }
 
-    private List<ValidatorAndArguments> GenerateStepValidators(StepConfig currentStep)
+    private List<ValidatorAndInputs> GenerateStepValidators(StepConfig currentStep)
     {
-      var validators = new List<ValidatorAndArguments>();
+      var validators = new List<ValidatorAndInputs>();
 
       if (currentStep.Validators.Count == 0)
         return validators;
 
       _logger.Debug("Resolving validators for current step");
-      var stepValidators = new List<ValidatorAndArguments>();
+      var stepValidators = new List<ValidatorAndInputs>();
 
       // We only want enabled validators
       foreach (var validatorConfig in currentStep.Validators.Where(x => x.Enabled).ToList())
       {
         // Safe to assign here - we confirmed that the requested validator exists when we verified the task
-        stepValidators.Add(new ValidatorAndArguments
+        stepValidators.Add(new ValidatorAndInputs
         {
-          Validator = GetStepValidator(validatorConfig.Validator),
+          Validator = ResolveValidator(validatorConfig.Validator),
           Config = validatorConfig
         });
       }
@@ -216,24 +190,6 @@ namespace TaskRunner.App.Services
       return providers;
     }
 
-    private void SyncStepContext(StepContext context, StepConfig currentStep)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-
-      context.SetCurrentStep(
-        currentStep,
-        GenerateStepInputs(context, currentStep),
-        GenerateStepValidators(currentStep),
-        GenerateProviders(currentStep));
-    }
-
-    private BaseValidator GetStepValidator(string validatorName)
-    {
-      // TODO: [TESTS] (TaskRunnerService) Add tests
-
-      return _validators.FirstOrDefault(x => x.Name == validatorName);
-    }
-
     private static Dictionary<int, string> GenerateStepLookup(TaskConfig task)
     {
       // TODO: [TESTS] (TaskRunnerService) Add tests
@@ -247,6 +203,70 @@ namespace TaskRunner.App.Services
       }
 
       return stepLookup;
+    }
+
+
+
+    // Resolver methods
+    private BaseStep ResolveStep(string stepName)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      // TODO: [EXCEPTIONS] (TaskRunnerService) Throw a more specific exception here
+      if (string.IsNullOrWhiteSpace(stepName))
+        throw new Exception("Provided 'step' is blank!");
+
+      // TODO: [REFACTOR] (TaskRunnerService) ToLower() all step names when registering - drop the IgnoreCase below
+      var builderStep = _steps
+        .FirstOrDefault(x => x.Name.Equals(stepName, StringComparison.InvariantCultureIgnoreCase));
+
+      // TODO: [VALIDATION] (TaskRunnerService) Ensure that we have a match
+      // TODO: [LOGGING] (TaskRunnerService) Log if we are missing the requested step
+
+      return (BaseStep)builderStep;
+    }
+
+    private BaseValidator ResolveValidator(string validatorName)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+
+      return _validators.FirstOrDefault(x => x.Name == validatorName);
+    }
+
+
+
+    // Misc. methods
+    private void LogPublishedData(StepContext stepContext)
+    {
+      // TODO: [TESTS] (TaskRunnerService) Add tests
+      // TODO: [REFACTOR] (TaskRunnerService) Make this logging configurable
+
+      // Check to see if the step published any data
+      if (stepContext.DataPublished == false)
+        return;
+
+      // Count published data points and work out the longest "key" length
+      var publishedData = stepContext.GetLastPublishedData();
+      var longestKey = publishedData.Select(x => x.Key).Max(x => x.Length);
+      var count = publishedData.Count;
+
+      // Generate published data message
+      var sb = new StringBuilder()
+        .Append($"Step '{stepContext.StepName}' published {count} ")
+        .Append(count == 1 ? "item " : "items ")
+        .Append("during its execution: ")
+        .Append(Environment.NewLine);
+
+      // Generate a line per published item (use "longestKey" to align logged data for easier reading)
+      foreach (var (key, value) in publishedData)
+      {
+        sb.Append($"    {stepContext.StepName}.{key.PadRight(longestKey, ' ')} : ");
+        sb.Append(value);
+        sb.Append(Environment.NewLine);
+      }
+
+      // Finally log published data message
+      _logger.Debug(sb.ToString().Trim());
     }
   }
 }

@@ -15,11 +15,11 @@ namespace TaskRunner.Shared.Steps
     public string StepName { get; private set; }
     public bool DataPublished { get; private set; }
     public Dictionary<string, string> Inputs { get; private set; }
-    public List<ValidatorAndArguments> Validators { get; private set; }
+    public List<ValidatorAndInputs> Validators { get; private set; }
     public List<ProviderAndInputs> Providers { get; set; }
     public Dictionary<int, string> StepNameLookup { get; set; }
 
-    public string TaskName { get; set; }
+    public string TaskName { get; }
 
     private const string PublishedDataRx = @"({@([^\.]+)\.([^}]+)})";
     private const string ProvidedDataRx = @"({\$([^}]+)})";
@@ -28,15 +28,16 @@ namespace TaskRunner.Shared.Steps
     private readonly Dictionary<string, string> _provided;
 
     // Constructor
-    public StepContext()
+    public StepContext(string taskName)
     {
       // TODO: [TESTS] (StepContext) Add tests
 
+      TaskName = taskName;
       DataPublished = false;
 
       Inputs = new Dictionary<string, string>();
       StepNameLookup = new Dictionary<int, string>();
-      Validators = new List<ValidatorAndArguments>();
+      Validators = new List<ValidatorAndInputs>();
       Providers = new List<ProviderAndInputs>();
 
       _publishedData = new Dictionary<string, Dictionary<string, string>>();
@@ -83,7 +84,7 @@ namespace TaskRunner.Shared.Steps
     public void SetCurrentStep(
       StepConfig currentStep,
       Dictionary<string, string> inputs,
-      List<ValidatorAndArguments> validators,
+      List<ValidatorAndInputs> validators,
       List<ProviderAndInputs> providers)
     {
       // TODO: [TESTS] (StepContext) Add tests
