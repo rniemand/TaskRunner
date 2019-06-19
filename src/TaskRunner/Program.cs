@@ -66,7 +66,7 @@ namespace TaskRunner
       {
         Enabled = true,
         Name = "DNS Update Task",
-        Frequency = TaskInterval.Seconds,
+        Frequency = TaskRunInterval.Seconds,
         FrequencyArgs = "5",
         Steps = new[]
         {
@@ -141,7 +141,7 @@ namespace TaskRunner
       return new TaskConfig
       {
         Name = "Backup Clean-Home DB",
-        Frequency = TaskInterval.Days,
+        Frequency = TaskRunInterval.Days,
         FrequencyArgs = "1",
         Steps = new[]
         {
@@ -176,7 +176,7 @@ namespace TaskRunner
       {
         Name = "Hello World",
         Enabled = true,
-        Frequency = TaskInterval.Seconds,
+        Frequency = TaskRunInterval.Seconds,
         FrequencyArgs = "30",
         RunAtStartup = true,
         Steps = new StepConfig[]
@@ -212,6 +212,7 @@ namespace TaskRunner
         .AddSingleton<IDirectory, RunnerDirectory>()
         .AddSingleton<IConsole, RunnerConsole>()
         .AddSingleton<IEnvironment, RunnerEnvironment>()
+        .AddSingleton<IDateTime, RunnerDateTime>()
 
         // Services
         .AddSingleton<IConfigService, ConfigService>()

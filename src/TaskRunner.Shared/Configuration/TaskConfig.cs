@@ -30,7 +30,7 @@ namespace TaskRunner.Shared.Configuration
     /// <summary>
     /// The frequency modifier for the task (how often it should run)
     /// </summary>
-    public TaskInterval Frequency { get; set; }
+    public TaskRunInterval Frequency { get; set; }
 
     // TODO: [COMPLETE] (TaskConfig) Ensure that this property is being set / updated
     /// <summary>

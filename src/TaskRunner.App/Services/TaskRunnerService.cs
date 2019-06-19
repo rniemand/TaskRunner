@@ -90,8 +90,8 @@ namespace TaskRunner.App.Services
         _logger.Debug("Step {name} execution succeeded", currentStep.Name);
       }
 
-      // Task execution has completed
-      // TODO: [COMPLETE] (TaskRunnerService) Handle task execution completed
+      // Task execution succeeded
+      _tasksService.TaskRanSuccessfully(task);
     }
 
 

@@ -45,6 +45,11 @@ namespace TaskRunner.App.Logging
       _logger.Verbose(template, p1, p2);
     }
 
+    public void Verbose<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3)
+    {
+      _logger.Verbose(template, p1, p2, p3);
+    }
+
 
     // Debug
     public void Debug(string template)
@@ -82,6 +87,11 @@ namespace TaskRunner.App.Logging
     public void Info<T1, T2>(string template, T1 p1, T2 p2)
     {
       _logger.Information(template, p1, p2);
+    }
+
+    public void Info<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3)
+    {
+      _logger.Information(template, p1, p2, p3);
     }
 
 

@@ -21,9 +21,11 @@ namespace TaskRunner.App.Services
     private readonly IDirectory _directory;
     private readonly IFile _file;
     private readonly IJsonHelper _jsonHelper;
+    private readonly ISchedulerService _scheduler;
+    private readonly IDateTime _dateTime;
     private readonly List<IStep> _steps;
     private readonly List<BaseValidator> _validators;
-    private List<TaskConfig> _tasks;
+    private readonly List<TaskConfig> _tasks;
 
 
     public TasksService(
@@ -34,7 +36,9 @@ namespace TaskRunner.App.Services
       IFile file,
       IJsonHelper jsonHelper,
       IEnumerable<IStep> steps,
-      IEnumerable<IValidator> stepValidators)
+      IEnumerable<IValidator> stepValidators,
+      ISchedulerService scheduler,
+      IDateTime dateTime)
     {
       _logger = logger;
       _secretsService = secretsService;
@@ -42,10 +46,13 @@ namespace TaskRunner.App.Services
       _directory = directory;
       _file = file;
       _jsonHelper = jsonHelper;
+      _scheduler = scheduler;
+      _dateTime = dateTime;
       _steps = steps.ToList();
       _validators = stepValidators.Cast<BaseValidator>().ToList();
       _tasks = new List<TaskConfig>();
     }
+
 
 
     // Public methods
@@ -62,7 +69,20 @@ namespace TaskRunner.App.Services
 
       // TODO: [COMPLETE] (TasksService) Complete this
 
-      return _tasks;
+      var currentTime = _dateTime.Now;
+
+      return _tasks.Where(x => x.Enabled && x.NextRunTime <= currentTime).ToList();
+    }
+
+    public void TaskRanSuccessfully(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // TODO: [COMPLETE] (TasksService) Complete me
+
+      _scheduler.ScheduleNextRun(task);
+
+      SaveTaskState(task);
     }
 
 
@@ -150,10 +170,15 @@ namespace TaskRunner.App.Services
         if (ValidateTask(task) == false)
           return;
 
-        // TODO: [COMPLETE] (TasksService) Calculate the next run time for this task
+        // Tasks passed validation, schedule next run time and persist the new state
+        _scheduler.ScheduleNextRun(task);
+        SaveTaskState(task);
 
-        // Task has passed validation, log and persist it
-        _logger.Info("Loaded task '{name}' ({file})", task.Name, task.TaskFilePath);
+        _logger.Info("Loaded task '{name}' ({file}) which is scheduled to run next at '{time}'",
+          task.Name,
+          task.TaskFilePath,
+          task.NextRunTime);
+
         _tasks.Add(task);
       }
       catch (Exception ex)
@@ -170,6 +195,10 @@ namespace TaskRunner.App.Services
 
       // We can only run enabled tasks
       if (TaskEnabled(task) == false)
+        return false;
+
+      // Ensure that the task has a valid schedule defined
+      if (HasValidScheduleDefined(task) == false)
         return false;
 
       // A task needs to have some steps defined to execute
@@ -208,6 +237,13 @@ namespace TaskRunner.App.Services
       // TODO: [COMPLETE] (TasksService) Ensure that any changes are persisted to the original task file
 
       return true;
+    }
+
+    private void SaveTaskState(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // TODO: [COMPLETE] (TasksService) Complete me
     }
 
 
@@ -480,6 +516,20 @@ namespace TaskRunner.App.Services
 
       // Looks like all required validator inputs are present :)
       return true;
+    }
+
+    private bool HasValidScheduleDefined(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      if (string.IsNullOrWhiteSpace(task.FrequencyArgs) == false)
+        return true;
+
+      _logger.Error("Task '{task}' ({file}) is missing a value for FrequencyArgs!",
+        task.Name,
+        task.TaskFilePath);
+
+      return false;
     }
   }
 }

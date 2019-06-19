@@ -5,6 +5,7 @@
     // Verbose
     void Verbose<T1>(string template, T1 p1);
     void Verbose<T1, T2>(string template, T1 p1, T2 p2);
+    void Verbose<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3);
 
 
     // Debug
@@ -18,6 +19,7 @@
     void Info(string template);
     void Info<T>(string template, T p1);
     void Info<T1, T2>(string template, T1 p1, T2 p2);
+    void Info<T1, T2, T3>(string template, T1 p1, T2 p2, T3 p3);
 
 
     // Warn

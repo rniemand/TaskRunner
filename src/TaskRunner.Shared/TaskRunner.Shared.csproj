@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\IDateTime.cs" />
     <Compile Include="Abstractions\IDirectoryInfo.cs" />
     <Compile Include="Abstractions\IEnvironment.cs" />
     <Compile Include="Abstractions\IFileInfo.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="Enums\InputValidator.cs" />
     <Compile Include="Enums\RunnerSeverity.cs" />
     <Compile Include="Enums\StepFailAction.cs" />
-    <Compile Include="Enums\TaskInterval.cs" />
+    <Compile Include="Enums\TaskRunInterval.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Abstractions\IAppDomain.cs" />
