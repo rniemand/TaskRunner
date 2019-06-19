@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
+using TaskRunner.Shared.Extensions;
 using TaskRunner.Shared.Logging;
 using TaskRunner.Shared.Services;
+using TaskRunner.Shared.Steps;
+using TaskRunner.Shared.Validators;
 
 namespace TaskRunner.App.Services
 {
@@ -17,6 +21,8 @@ namespace TaskRunner.App.Services
     private readonly IDirectory _directory;
     private readonly IFile _file;
     private readonly IJsonHelper _jsonHelper;
+    private readonly List<IStep> _steps;
+    private readonly List<BaseValidator> _validators;
 
 
     public TasksService(
@@ -25,7 +31,9 @@ namespace TaskRunner.App.Services
       IPathBuilder pathBuilder,
       IDirectory directory,
       IFile file,
-      IJsonHelper jsonHelper)
+      IJsonHelper jsonHelper,
+      IEnumerable<IStep> steps,
+      IEnumerable<IValidator> stepValidators)
     {
       _logger = logger;
       _secretsService = secretsService;
@@ -33,6 +41,8 @@ namespace TaskRunner.App.Services
       _directory = directory;
       _file = file;
       _jsonHelper = jsonHelper;
+      _steps = steps.ToList();
+      _validators = stepValidators.Cast<BaseValidator>().ToList();
     }
 
 
@@ -41,12 +51,12 @@ namespace TaskRunner.App.Services
     {
       // TODO: [TESTS] (TasksService) Add tests
 
-      LoadTaskFiles(baseConfig);
+      LoadTasks(baseConfig);
     }
 
 
-    // Configuration file related methods
-    private void LoadTaskFiles(TaskRunnerConfig baseConfig)
+    // Configuration related methods
+    private void LoadTasks(TaskRunnerConfig baseConfig)
     {
       // TODO: [TESTS] (ConfigService) Add tests
       // TODO: [REVISE] (ConfigService) Move into a TasksService
@@ -57,14 +67,22 @@ namespace TaskRunner.App.Services
 
       EnsureTaskDirExists(tasksDir);
 
+      // Search for user defined tasks
+      var directoryInfo = _directory.GetDirectoryInfo(tasksDir);
+      var tasks = directoryInfo.GetFiles("*.json", SearchOption.AllDirectories);
+
       // Check to see if we need to seed some sample tasks for the user
-      if (HasTaskFiles(tasksDir) == false)
+      if (tasks.Count == 0)
       {
         SeedSampleTasks();
+        tasks = directoryInfo.GetFiles("*.json", SearchOption.AllDirectories);
       }
 
-      // Load defined tasks into memory
-      LoadTasks(tasksDir);
+      // Let's load and parse all discovered user defined tasks
+      _logger.Info("Found {count} tasks to load", tasks.Count);
+
+      foreach (var task in tasks)
+        LoadTask(task.FullName);
 
       // TODO: [CONFIG] (TasksService) Ensure that StepId is populated on load
     }
@@ -101,32 +119,6 @@ namespace TaskRunner.App.Services
       _logger.Info("Time to seed some sample tasks");
     }
 
-    private bool HasTaskFiles(string tasksDir)
-    {
-      // TODO: [TESTS] (TasksService) Add tests
-
-      var di = _directory.GetDirectoryInfo(tasksDir);
-      var tasks = di.GetFiles("*.json", SearchOption.AllDirectories);
-      return tasks.Count > 0;
-    }
-
-    private void LoadTasks(string tasksDir)
-    {
-      // TODO: [TESTS] (TasksService) Add tests
-
-      var di = _directory.GetDirectoryInfo(tasksDir);
-      var tasks = di.GetFiles("*.json", SearchOption.AllDirectories);
-
-      _logger.Info("Found {count} tasks to load", tasks.Count);
-
-      foreach (var task in tasks)
-      {
-        LoadTask(task.FullName);
-      }
-
-
-    }
-
     private void LoadTask(string taskFilePath)
     {
       // TODO: [TESTS] (TasksService) Add tests
@@ -136,16 +128,17 @@ namespace TaskRunner.App.Services
 
       try
       {
+        // Try to load and deserialize the given task
         var json = _file.ReadAllText(taskFilePath);
         var task = _jsonHelper.DeserializeObject<TaskConfig>(json);
         task.TaskFilePath = taskFilePath;
 
-        // We need to validate as much of the task at this point
-        // Move some validation methods out of the TaskRunnerService
-
+        // Run some strict validation on the task, we only want to let the good ones through :P
         if (ValidateTask(task) == false)
           return;
 
+        // Task has passed validation, log and persist it
+        _logger.Info("Loaded task '{name}' ({file})", task.Name, task.TaskFilePath);
 
       }
       catch (Exception ex)
@@ -153,28 +146,87 @@ namespace TaskRunner.App.Services
         // TODO: [HANDLE] (TasksService) Handle this better!
         _logger.Error(ex.Message);
       }
-
-
     }
 
-
-    // Task validation methods
     private bool ValidateTask(TaskConfig task)
     {
-      if (EnsureTaskIsEnabled(task) == false)
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [DOCS] (TasksService) Document this feature
+
+      // We can only run enabled tasks
+      if (TaskEnabled(task) == false)
         return false;
 
-      if (EnsureTaskHasSteps(task) == false)
+      // A task needs to have some steps defined to execute
+      if (TaskHasSteps(task) == false)
         return false;
 
-      if (EnsureTaskHasAnEnabledStep(task) == false)
+      // There has got to be at least 1 enabled step
+      if (HasEnabledSteps(task) == false)
         return false;
 
+      // Auto-assign step IDs for indexing purposes
+      AssignStepIds(task);
+
+      // Ensure that all unique step-runners are registered
+      if (EnabledStepRunnersRegistered(task) == false)
+        return false;
+
+      // Make sure all REQUIRED step inputs are present
+      if (RequiredStepInputsPresent(task) == false)
+        return false;
+
+      // Make sure each step confirms to the naming convention
+      AssignMissingStepName(task);
+      NormalizeStepNames(task);
+      EnsureAllStepNamesAreUnique(task);
+
+      // Make sure all requested step validators are registered
+      if (EnabledValidatorsRegistered(task) == false)
+        return false;
+
+      // Ensure that all step validators have their required arguments \ inputs
+      // ReSharper disable once ConvertIfStatementToReturnStatement
+      if (!RequiredValidatorInputsPresent(task))
+        return false;
+
+      // TODO: [COMPLETE] (TasksService) Ensure that any changes are persisted to the original task file
 
       return true;
     }
 
-    private bool EnsureTaskIsEnabled(TaskConfig task)
+
+
+    // Object resolving methods
+    private BaseValidator GetStepValidator(string validatorName)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      return _validators.FirstOrDefault(x => x.Name == validatorName);
+    }
+
+    private BaseStep ResolveStep(string stepName)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // TODO: [EXCEPTIONS] (TasksService) Throw a more specific exception here
+      if (string.IsNullOrWhiteSpace(stepName))
+        throw new Exception("Provided 'step' is blank!");
+
+      // TODO: [REFACTOR] (TasksService) ToLower() all step names when registering - drop the IgnoreCase below
+      var builderStep = _steps
+        .FirstOrDefault(x => x.Name.Equals(stepName, StringComparison.InvariantCultureIgnoreCase));
+
+      // TODO: [VALIDATION] (TasksService) Ensure that we have a match
+      // TODO: [LOGGING] (TasksService) Log if we are missing the requested step
+
+      return (BaseStep)builderStep;
+    }
+
+
+
+    // Task validation methods
+    private bool TaskEnabled(TaskConfig task)
     {
       // TODO: [TESTS] (TasksService) Add tests
 
@@ -187,7 +239,7 @@ namespace TaskRunner.App.Services
       return false;
     }
 
-    private bool EnsureTaskHasSteps(TaskConfig task)
+    private bool TaskHasSteps(TaskConfig task)
     {
       // TODO: [TESTS] (TasksService) Add tests
 
@@ -200,7 +252,7 @@ namespace TaskRunner.App.Services
       return false;
     }
 
-    private bool EnsureTaskHasAnEnabledStep(TaskConfig task)
+    private bool HasEnabledSteps(TaskConfig task)
     {
       // TODO: [TESTS] (TasksService) Add tests
       // TODO: [LOGGING] (TasksService) Revise logging
@@ -211,6 +263,208 @@ namespace TaskRunner.App.Services
       _logger.Error("Task '{task}' has no enabled steps, disabling", task.Name);
 
       return false;
+    }
+
+    private static void AssignStepIds(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // We assign all steps an ID (even disabled) as the ID is used for indexing
+
+      var stepId = 0;
+
+      foreach (var step in task.Steps)
+      {
+        step.StepId = stepId++;
+      }
+    }
+
+    private bool EnabledStepRunnersRegistered(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // Get a list of all unique step-runners used for this task
+      var uniqueStepRunners = task.Steps
+        .Where(x => x.Enabled)
+        .Select(x => x.Step)
+        .Distinct()
+        .ToList();
+
+      // Ensure that the requested step-runners are in the DI container
+      foreach (var stepRunnerName in uniqueStepRunners)
+      {
+        if (_steps.Any(x => x.Name == stepRunnerName))
+          continue;
+
+        // Unable to find the requested step-runner
+        _logger.Error("Unable to find requested step-runner '{name}' for task '{task}', disabling task",
+          stepRunnerName, task.Name);
+
+        return false;
+      }
+
+      // It looks like all requested step-runners exist
+      return true;
+    }
+
+    private bool RequiredStepInputsPresent(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [DOCS] (TasksService) Document this feature
+
+      // Get all enabled steps to check
+      var enabledSteps = task.Steps.Where(x => x.Enabled).ToList();
+
+      foreach (var currentStep in enabledSteps)
+      {
+        var step = ResolveStep(currentStep.Step);
+        var inputs = task.Steps[currentStep.StepId].Inputs;
+
+        if (step.RequiredInputsSet(inputs, currentStep.Name, task.Name))
+          continue;
+
+        // Step argument validation failed, we won't be able to run the given task
+        _logger.Error("Task '{task}' step '{step}' is missing required inputs, disabling",
+          task.Name, currentStep.Name);
+
+        return false;
+      }
+
+      // All task steps have passed argument validation
+      return true;
+    }
+
+    private void AssignMissingStepName(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [DOCS] (TasksService) Document this feature
+
+      foreach (var step in task.Steps)
+      {
+        // Step has a name - we can skip it
+        if (string.IsNullOrWhiteSpace(step.Name) == false)
+          continue;
+
+        // We are missing a Name - let's fix that
+        step.Name = $"{step.Step}_{step.StepId}".CleanStepName();
+
+        _logger.Warn("Step {id} on Task '{task}' has no Name - setting it to {name}",
+          step.StepId, task.Name, step.Name);
+      }
+    }
+
+    private void NormalizeStepNames(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [DOCS] (TasksService) Document this feature
+
+      foreach (var step in task.Steps)
+      {
+        // Generate the IDEAL step name
+        var cleanStepName = step.Name.CleanStepName();
+
+        // If the current step name == IDEAL NAME we are good
+        if (cleanStepName == step.Name)
+          continue;
+
+        // Bad step name defined, let's fix that
+        _logger.Warn(
+          "The assigned step name '{name}' for stepId {id} on task '{task}' does " +
+          "not meet the naming convention - setting step name to '{newName}'",
+          step.Name, step.StepId, task.Name, cleanStepName);
+
+        step.Name = cleanStepName;
+      }
+    }
+
+    private void EnsureAllStepNamesAreUnique(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [DOCS] (TasksService) Document this feature
+
+      var duplicateStepNames = task.Steps
+        .Select(x => x.Name).GroupBy(x => x).Where(x => x.Count() > 1)
+        .Select(x => x.Key)
+        .ToList();
+
+      // No duplicates - we are good
+      if (duplicateStepNames.Count == 0)
+        return;
+
+      // Got duplicate names - let's fix them
+      foreach (var duplicateName in duplicateStepNames)
+      {
+        var steps = task.Steps.Where(x => x.Name == duplicateName).ToList();
+        var counter = 1;
+
+        foreach (var step in steps)
+        {
+          // Generate an unique name for each duplicate step
+          step.Name = $"{step.Name}_{counter++}".CleanStepName();
+
+          _logger.Warn(
+            "Name '{name}' (stepId: {id}) is not unique and is shared with {count} other " +
+            "step(s) - renaming this step to '{newName}' to avoid collisions.",
+            duplicateName, step.StepId, steps.Count, step.Name);
+        }
+      }
+    }
+
+    private bool EnabledValidatorsRegistered(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [REVISE] (TasksService) Revise this
+
+      var uniqueValidators = task.Steps
+        .Where(step => step.Enabled && step.Validators.Count > 0)
+        .SelectMany(v => v.Validators.Select(x => x.Validator).ToList())
+        .Distinct()
+        .ToList();
+
+      foreach (var validator in uniqueValidators)
+      {
+        if (_validators.Any(x => x.Name == validator))
+          continue;
+
+        // Validator not found
+        _logger.Error("Cannot find requested validator '{validator}' for task '{task}', disabling",
+          validator, task.Name);
+
+        return false;
+      }
+
+      // Looks like all requested validators have been found
+      return true;
+    }
+
+    private bool RequiredValidatorInputsPresent(TaskConfig task)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [REVISE] (TasksService) Clean up this code
+
+      var steps = task.Steps
+        .Where(s => s.Enabled && s.Validators.Count > 0)
+        .ToList();
+
+      foreach (var step in steps)
+      {
+        foreach (var validator in step.Validators)
+        {
+          // TODO: [IDEA] (TasksService) Try returning the missing input so we can log it
+
+          if (GetStepValidator(validator.Validator).HasRequiredInputs(validator))
+            continue;
+
+          // Missing required inputs
+          _logger.Error("Step '{step}' in Task '{task}' is missing a required input for the Validator '{validator}'",
+            step.Name, task.Name, validator.Validator);
+
+          return false;
+        }
+      }
+
+      // Looks like all required validator inputs are present :)
+      return true;
     }
   }
 }
