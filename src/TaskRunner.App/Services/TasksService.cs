@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using TaskRunner.Shared.Abstractions;
 using TaskRunner.Shared.Builders;
 using TaskRunner.Shared.Configuration;
@@ -80,6 +81,8 @@ namespace TaskRunner.App.Services
 
       // TODO: [COMPLETE] (TasksService) Complete me
 
+      task.LastRunTime = _dateTime.Now;
+      task.RunCount += 1;
       _scheduler.ScheduleNextRun(task);
 
       SaveTaskState(task);
@@ -169,6 +172,10 @@ namespace TaskRunner.App.Services
         var task = _jsonHelper.DeserializeObject<TaskConfig>(json);
         task.TaskFilePath = stateFile;
 
+        // To ensure we run at start-up we set the NextRunTime to null
+        if (task.RunAtStartup)
+          task.NextRunTime = null;
+
         // Run some strict validation on the task, we only want to let the good ones through :P
         if (ValidateTask(task) == false)
           return;
@@ -245,6 +252,8 @@ namespace TaskRunner.App.Services
     private string GetStateFilePath(string taskFilePath)
     {
       // TODO: [TESTS] (TasksService) Add tests
+      // TODO: [DOC] (TasksService) Document this
+      // TODO: [REVISE] (TasksService) Re-create the state file if the original file has changed (compare create times!)
 
       // TRF = Task Runner File (original, I know)
 
@@ -264,6 +273,15 @@ namespace TaskRunner.App.Services
       // TODO: [TESTS] (TasksService) Add tests
 
       // TODO: [COMPLETE] (TasksService) Complete me
+
+      var taskJson = _jsonHelper.SerializeObject(task, Formatting.Indented);
+
+      _logger.Verbose(
+        "Persisting task '{task}' state to file: {file}", 
+        task.Name, task.TaskFilePath);
+
+      _file.Delete(task.TaskFilePath);
+      _file.WriteAllText(task.TaskFilePath, taskJson);
     }
 
 

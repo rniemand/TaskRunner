@@ -20,6 +20,7 @@ namespace TaskRunner.App.Services
       _dateTime = dateTime;
     }
 
+
     // Public methods
     public void ScheduleNextRun(TaskConfig task)
     {
