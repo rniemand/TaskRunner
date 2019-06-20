@@ -19,5 +19,8 @@ namespace TaskRunner.App.Abstractions
 
     public void Delete(string path)
       => File.Delete(path);
+
+    public IFileInfo GetFileInfo(string path)
+      => new RunnerFileInfo(path);
   }
 }

@@ -253,14 +253,16 @@ namespace TaskRunner.App.Services
     {
       // TODO: [TESTS] (TasksService) Add tests
       // TODO: [DOC] (TasksService) Document this
-      // TODO: [REVISE] (TasksService) Re-create the state file if the original file has changed (compare create times!)
 
       // TRF = Task Runner File (original, I know)
 
       var stateFilePath = taskFilePath.Replace(Path.GetExtension(taskFilePath), ".trf");
 
-      if (_file.Exists(stateFilePath) == true)
-        return stateFilePath;
+      // We will always reload the state file as the user could have made changes to it
+      if (_file.Exists(stateFilePath))
+      {
+        _file.Delete(stateFilePath);
+      }
 
       _logger.Info("Creating missing state file: {path}", stateFilePath);
       _file.Copy(taskFilePath, stateFilePath);
@@ -271,8 +273,6 @@ namespace TaskRunner.App.Services
     private void SaveTaskState(TaskConfig task)
     {
       // TODO: [TESTS] (TasksService) Add tests
-
-      // TODO: [COMPLETE] (TasksService) Complete me
 
       var taskJson = _jsonHelper.SerializeObject(task, Formatting.Indented);
 

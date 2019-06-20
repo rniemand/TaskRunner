@@ -18,7 +18,7 @@
     }
   ],
   "Frequency": 0,
-  "FrequencyArgs": "30",
+  "FrequencyArgs": "5",
   "RunAtStartup": true,
   "LastRunTime": null,
   "NextRunTime": null,
