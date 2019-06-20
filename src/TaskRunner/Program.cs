@@ -51,7 +51,7 @@ namespace TaskRunner
       var taskRunner = _serviceProvider.GetService<ITaskRunnerService>();
 
       // Continuously run registered tasks
-      for (;;)
+      for (; ; )
       {
         taskRunner.Run();
         Thread.Sleep(1000);
@@ -60,9 +60,9 @@ namespace TaskRunner
 
 
     // Initial development support methods
-    private static TaskConfig GetDnsUpdateTask()
+    private static void BuildDnsUpdateTask()
     {
-      return new TaskConfig
+      var updateTask = new TaskConfig
       {
         Enabled = true,
         Name = "DNS Update Task",
@@ -126,6 +126,8 @@ namespace TaskRunner
           }
         }
       };
+
+      var taskJson = JsonConvert.SerializeObject(updateTask, Formatting.Indented);
     }
 
     private static TaskConfig GetMysqlDumpTask()
