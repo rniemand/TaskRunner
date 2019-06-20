@@ -13,5 +13,8 @@ namespace TaskRunner.App.Abstractions
 
     public string ReadAllText(string path)
       => File.ReadAllText(path);
+
+    public void Copy(string sourceFileName, string destFileName)
+      => File.Copy(sourceFileName, destFileName);
   }
 }

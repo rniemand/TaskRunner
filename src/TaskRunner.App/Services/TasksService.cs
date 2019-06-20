@@ -92,6 +92,7 @@ namespace TaskRunner.App.Services
     {
       // TODO: [TESTS] (ConfigService) Add tests
       // TODO: [REVISE] (ConfigService) Move into a TasksService
+      // TODO: [FUTURE] (TasksService) Run integrity check to remove orphaned tasks
 
       // Generate the task folder path and ensure that it exists
       _tasks.Clear();
@@ -162,9 +163,11 @@ namespace TaskRunner.App.Services
       try
       {
         // Try to load and deserialize the given task
-        var json = _file.ReadAllText(taskFilePath);
+        var stateFile = GetStateFilePath(taskFilePath);
+
+        var json = _file.ReadAllText(stateFile);
         var task = _jsonHelper.DeserializeObject<TaskConfig>(json);
-        task.TaskFilePath = taskFilePath;
+        task.TaskFilePath = stateFile;
 
         // Run some strict validation on the task, we only want to let the good ones through :P
         if (ValidateTask(task) == false)
@@ -237,6 +240,23 @@ namespace TaskRunner.App.Services
       // TODO: [COMPLETE] (TasksService) Ensure that any changes are persisted to the original task file
 
       return true;
+    }
+
+    private string GetStateFilePath(string taskFilePath)
+    {
+      // TODO: [TESTS] (TasksService) Add tests
+
+      // TRF = Task Runner File (original, I know)
+
+      var stateFilePath = taskFilePath.Replace(Path.GetExtension(taskFilePath), ".trf");
+
+      if (_file.Exists(stateFilePath) == true)
+        return stateFilePath;
+
+      _logger.Info("Creating missing state file: {path}", stateFilePath);
+      _file.Copy(taskFilePath, stateFilePath);
+
+      return stateFilePath;
     }
 
     private void SaveTaskState(TaskConfig task)
